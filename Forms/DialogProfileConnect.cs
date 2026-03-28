@@ -111,7 +111,7 @@ namespace GenieClient
                     }
                 }
                 _profiles.ExpandAll();
-                if(_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); //this will scroll the window to the top of the list
+                if (_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); //this will scroll the window to the top of the list
 
             }
 
@@ -122,7 +122,7 @@ namespace GenieClient
         {
             int start = profileContents.IndexOf(element + "=");
             string returnValue = string.Empty;
-            if(start > 0)
+            if (start > 0)
             {
                 start += element.Length + 2;
                 int end = profileContents.IndexOf('"', start);

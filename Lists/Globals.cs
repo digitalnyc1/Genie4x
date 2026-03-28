@@ -15,7 +15,7 @@ namespace GenieClient.Genie
     public class Globals
     {
         private Config _Config = new Config();
-       
+
 
         public Config Config
         {
@@ -47,7 +47,7 @@ namespace GenieClient.Genie
 
         public delegate void ConfigChangedEventHandler(Config.ConfigFieldUpdated oField);
 
-    public Events Events = new Events();
+        public Events Events = new Events();
         public CommandQueue CommandQueue = new CommandQueue();
         public Aliases AliasList = new Aliases();
         public Macros MacroList = new Macros();
@@ -70,7 +70,7 @@ namespace GenieClient.Genie
         private Log _Log = new Log();
 
         public Log Log
-        {            
+        {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
@@ -107,9 +107,9 @@ namespace GenieClient.Genie
             }
             else
             {
-            //    Config.ConfigChanged(oField);
+                //    Config.ConfigChanged(oField);
                 ConfigChanged?.Invoke(oField);
-            //    Config.ConfigChanged?.Invoke(oField);
+                //    Config.ConfigChanged?.Invoke(oField);
             }
         }
 
@@ -220,7 +220,7 @@ namespace GenieClient.Genie
                 sText = sText.Replace("@spelltime@", "0");
                 sText = sText.Replace("@casttimeremaining@", "0");
             }
-            
+
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
             sText = sText.Replace("@time24@", DateTime.Now.ToString("HH:mm:ss tt").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
@@ -436,9 +436,9 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception Err)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -494,9 +494,9 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -753,9 +753,9 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception Err)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -818,9 +818,9 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -839,7 +839,7 @@ namespace GenieClient.Genie
                 Add("up", "0", VariableType.Reserved);
                 Add("down", "0", VariableType.Reserved);
                 Add("out", "0", VariableType.Reserved);
-                
+
                 Add("roomname", "", VariableType.Reserved);
                 Add("roomdesc", "", VariableType.Reserved);
                 Add("roomobjs", "", VariableType.Reserved);
@@ -853,13 +853,13 @@ namespace GenieClient.Genie
                 Add("mana", "100", VariableType.Reserved);
                 Add("spirit", "100", VariableType.Reserved);
                 Add("stamina", "100", VariableType.Reserved);
-                
+
                 Add("charactername", "", VariableType.Reserved);
                 Add("account", "", VariableType.Reserved);
                 Add("gamename", "", VariableType.Reserved);
                 Add("gamehost", "eaccess.play.net", VariableType.Reserved);
                 Add("gameport", "7910", VariableType.Reserved);
-                
+
                 Add("scriptdir", "@scriptdir@", VariableType.Reserved);
                 Add("mapdir", "@mapdir@", VariableType.Reserved);
                 Add("plugindir", "@plugindir@", VariableType.Reserved);
@@ -886,7 +886,7 @@ namespace GenieClient.Genie
                 Add("righthandnoun", "", VariableType.Reserved);
 
                 Add("gametime", "0", VariableType.Reserved);
-                               
+
 
                 Add("poisoned", "0", VariableType.Reserved);
                 Add("diseased", "0", VariableType.Reserved);
@@ -1105,9 +1105,9 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -1182,9 +1182,9 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -1565,9 +1565,9 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception Err)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -1641,9 +1641,9 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -1793,9 +1793,9 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception Err)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -1870,9 +1870,9 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-                #pragma warning disable CS0168
+#pragma warning disable CS0168
                 catch (Exception ex)
-                #pragma warning restore CS0168
+#pragma warning restore CS0168
                 {
                     return false;
                 }
@@ -2019,9 +2019,9 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception Err)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }

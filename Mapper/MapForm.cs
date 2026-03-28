@@ -156,7 +156,7 @@ namespace GenieClient.Mapper
         private int _mapOffsetY;
         private Point3D GetOffset()
         {
-            if(m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
+            if (m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
             return new Point3D((int)(this.Width / 2 * m_Scale), (int)(this.Height / 2 * m_Scale));
         }
 
@@ -318,9 +318,9 @@ namespace GenieClient.Mapper
 
                 return true;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -583,9 +583,9 @@ namespace GenieClient.Mapper
 
                 return sReturn;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return string.Empty;
             }
@@ -834,7 +834,7 @@ namespace GenieClient.Mapper
                 m_NodeList.FixArcLinks();
                 UpdateMapSize(true);
                 var m_Offset = GetOffset();
-                    m_Offset = m_NodeList.GetOffset();
+                m_Offset = m_NodeList.GetOffset();
                 m_Offset.X *= m_Scale;
                 m_Offset.Y *= m_Scale;
                 _mapOffsetX = m_Offset.X;
@@ -859,9 +859,9 @@ namespace GenieClient.Mapper
 
                 return true;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -988,9 +988,9 @@ namespace GenieClient.Mapper
                 xw.Close();
                 return true;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -1113,7 +1113,7 @@ namespace GenieClient.Mapper
 
                     if (Information.IsNothing(m_SelectedNodes.Find(m_MovingNode.ID)))
                     {
-                        if (m_ShiftPress == false&& m_ControlPress == false)
+                        if (m_ShiftPress == false && m_ControlPress == false)
                         {
                             m_SelectedNodes.Clear();
                             m_SelectedLabels.Clear();
@@ -1910,7 +1910,7 @@ namespace GenieClient.Mapper
             NodeX += m_Offset.X;
             NodeY *= m_Scale;
             NodeY += m_Offset.Y;
-            
+
             var withBlock = PanelBase.AutoScrollPosition;
             // Debug.WriteLine("===============")
 
@@ -1949,7 +1949,7 @@ namespace GenieClient.Mapper
             if (iScrollY == 0)
                 iScrollY = -withBlock.Y;
             PanelBase.AutoScrollPosition = new Point(iScrollX, iScrollY);
-            
+
         }
 
         private bool m_ToggleSnapToGrid = true;

@@ -250,40 +250,40 @@ namespace GenieClient.Mapper
                     try
                     {
                         if ((dif.Extension.ToLower() ?? "") == ".xml")
-                    {
-                        xdoc = new XmlDocument();
-                        
-                        xdoc.Load(new StreamReader(dif.FullName,true));
-                        xnlist = xdoc.SelectNodes("zone/node");
-                        foreach (XmlNode xn in xnlist)
                         {
-                            // Don't match linked node rooms as they are duplicates.
-                            if (!GetValue(xn, "note").Contains(".xml"))
+                            xdoc = new XmlDocument();
+
+                            xdoc.Load(new StreamReader(dif.FullName, true));
+                            xnlist = xdoc.SelectNodes("zone/node");
+                            foreach (XmlNode xn in xnlist)
                             {
-                                if ((oNode.Name ?? "") == (GetValue(xn, "name") ?? ""))
+                                // Don't match linked node rooms as they are duplicates.
+                                if (!GetValue(xn, "note").Contains(".xml"))
                                 {
-                                    bool bDescMatch = false;
-                                    var xDescs = xn.SelectNodes("description");
-                                    foreach (XmlNode xdesc in xDescs)
+                                    if ((oNode.Name ?? "") == (GetValue(xn, "name") ?? ""))
                                     {
-                                        if (!Information.IsNothing(xdesc))
+                                        bool bDescMatch = false;
+                                        var xDescs = xn.SelectNodes("description");
+                                        foreach (XmlNode xdesc in xDescs)
                                         {
-                                            if ((oNode.Descriptions[0] ?? "") == (xdesc.InnerText ?? ""))
+                                            if (!Information.IsNothing(xdesc))
                                             {
-                                                bDescMatch = true;
+                                                if ((oNode.Descriptions[0] ?? "") == (xdesc.InnerText ?? ""))
+                                                {
+                                                    bDescMatch = true;
+                                                }
                                             }
                                         }
-                                    }
 
-                                    if (bDescMatch == true)
-                                    {
-                                        // Check exits here in a later version
-                                        return dif.FullName;
+                                        if (bDescMatch == true)
+                                        {
+                                            // Check exits here in a later version
+                                            return dif.FullName;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
                     }
                     catch (Exception ex)
                     {
@@ -1081,7 +1081,7 @@ namespace GenieClient.Mapper
                                 }
                                 break;
                             }
-                            
+
                             // No file name specified, attempt to use current file name:
                             if (m_Form.SaveXML() == false)
                             {
@@ -1133,7 +1133,8 @@ namespace GenieClient.Mapper
 
                     case "snap":
                         {
-                            if (sArg.Length > 0) {
+                            if (sArg.Length > 0)
+                            {
                                 bool snapSetting = StringToBoolean(sArg);
                                 EchoText("[" + Name + "] Snap to grid - " + snapSetting, true);
                                 m_Form.SetSnapToggle(snapSetting);
@@ -1196,10 +1197,10 @@ namespace GenieClient.Mapper
                                 int iNodeID = 0;
                                 if (sArg.Length > 5) //Temp fix raising to 5 to allow for all of crossing to fit on one map 
                                 {                    //A better solution is to check on arg count for cross map traveling
-                                // Other zone
-                                // - Find the destination map
-                                // - Find what path it needs to take trough the different zones
-                                // Integer.TryParse(sArg.Substring(0, 3), iNodeID)
+                                                     // Other zone
+                                                     // - Find the destination map
+                                                     // - Find what path it needs to take trough the different zones
+                                                     // Integer.TryParse(sArg.Substring(0, 3), iNodeID)
                                 }
                                 else
                                 {
@@ -1287,7 +1288,7 @@ namespace GenieClient.Mapper
                                 // selecting multiple nodes doesn't seem to work
                                 string[] splitArgs = sArg.Split('|');
                                 m_Form.SelectNodes(splitArgs[0], splitArgs[1]);
-                                EchoText("[" + Name + "] Selected nodes " + splitArgs[0] + " and " + splitArgs[1]  + ".", true);
+                                EchoText("[" + Name + "] Selected nodes " + splitArgs[0] + " and " + splitArgs[1] + ".", true);
                             }
                             else
                             {
@@ -1306,7 +1307,8 @@ namespace GenieClient.Mapper
                                 {
                                     m_Form.EraseRoom(m_LastNode);
                                     EchoText("[" + Name + "] Deleting current room (" + m_LastNode.ID + ")", true);
-                                } else
+                                }
+                                else
                                 {
                                     EchoText("[" + Name + "] Delete - can't delete, current room is unknown.", true);
                                 }
@@ -1328,7 +1330,8 @@ namespace GenieClient.Mapper
                                     {
                                         EchoText("[" + Name + "] Delete - could not locate room \"" + sArg + "\".", true);
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     EchoText("[" + Name + "] Delete - invalid room specified \"" + sArg + "\"", true);
                                 }
@@ -1360,8 +1363,9 @@ namespace GenieClient.Mapper
                             if (!Information.IsNothing(m_LastNode))
                             {
                                 EchoText("[" + Name + "] Label added for current room: " + sArg, true);
-                                m_LastNode.Note = Conversions.ToString(Interaction.IIf(m_LastNode.Note.Length > 0, m_LastNode.Note + "|", "") + sArg);   
-                            } else
+                                m_LastNode.Note = Conversions.ToString(Interaction.IIf(m_LastNode.Note.Length > 0, m_LastNode.Note + "|", "") + sArg);
+                            }
+                            else
                             {
                                 EchoText("[" + Name + "] Current location unknown, cannot add note.", true);
                             }
@@ -1382,7 +1386,8 @@ namespace GenieClient.Mapper
                                         m_Form.UpdateGraph(m_LastNode, m_Nodes, m_eLastMovement);
                                     }
                                 }
-                            } else
+                            }
+                            else
                             {
                                 EchoText("[" + Name + "] Please specify a color (ex: green).", true);
                             }
@@ -1439,7 +1444,8 @@ namespace GenieClient.Mapper
                             {
                                 int.TryParse(sArg, out m_TimeOutMS);
                                 EchoText("[" + Name + "] Time out set to (milliseconds): " + m_TimeOutMS.ToString(), true);
-                            } else
+                            }
+                            else
                             {
                                 EchoText("[" + Name + "] Please specify timeout in milliseconds.", true);
                             }
@@ -1465,15 +1471,18 @@ namespace GenieClient.Mapper
                                         }
 
                                         m_LastNode = oNode;
-                                    } else
+                                    }
+                                    else
                                     {
                                         EchoText("[" + Name + "] Room id " + ID + " not found on this map.", true);
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     EchoText("[" + Name + "] Invalid roomid specified - please enter a number.", true);
                                 }
-                            } else
+                            }
+                            else
                             {
                                 EchoText("[" + Name + "] Please specify a roomid.", true);
                             }

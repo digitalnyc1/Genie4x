@@ -126,7 +126,7 @@ namespace GenieClient.Genie
                 }
                 else
                 {
-                    if(_client != null) return _client.Connected;
+                    if (_client != null) return _client.Connected;
                     return m_SocketClient.Connected;
                 }
             }
@@ -185,7 +185,7 @@ namespace GenieClient.Genie
                 m_sHostname = sHostname;
                 _client = new TcpClient();
                 m_SocketClient = _client.Client;
-                
+
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
                 _client.Connect(sHostname, iPort);
@@ -203,9 +203,9 @@ namespace GenieClient.Genie
                         _client.Close();
                     }
                     // Complete the connection
-                    
+
                     PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
-                    
+
                     EventConnected?.Invoke();
                 }
                 catch (SocketException ex)
@@ -285,19 +285,19 @@ namespace GenieClient.Genie
                 }
             }
             return CurrentAuthState;
-            
 
-            
+
+
         }
 
         public string GetLoginKey(string instance, string character)
         {
-                        // Sanity checks
+            // Sanity checks
             if (!IsConnected || sslStream == null)
             {
                 return "E\tThe connection was lost.";
             }
-            
+
             if (string.IsNullOrWhiteSpace(instance))
             {
                 return "E\tThe game instance was not specified.";
@@ -349,12 +349,12 @@ namespace GenieClient.Genie
                 CurrentAuthState = AuthState.Disconnected;
                 return characterResponse;
             }
-            
+
             // Looking for specific character to get login key for
             List<string> characterKeys = characterResponse.Split('\t').ToList<string>();
             string characterKey = string.Empty;
             string lastKey = string.Empty;
-            foreach(string key in characterKeys)
+            foreach (string key in characterKeys)
             {
                 if (key.ToUpper().Equals(character.ToUpper()))
                 {
@@ -366,7 +366,7 @@ namespace GenieClient.Genie
                     lastKey = key;
                 }
             }
-            
+
             if (string.IsNullOrWhiteSpace(characterKey))
             {
                 sslStream.Close();
@@ -383,7 +383,7 @@ namespace GenieClient.Genie
             buffer = new byte[MAX_PACKET_SIZE];
             CurrentAuthState = AuthState.Authenticated;
             _ = sslStream.Read(buffer, 0, buffer.Length);
-            
+
             sslStream.Close();
             string loginKey = Encoding.Default.GetString(buffer);
             return loginKey;
@@ -440,7 +440,7 @@ namespace GenieClient.Genie
                 {
                     EventDisconnected?.Invoke();
                 }
-                
+
             }
             catch (SocketException ex)
             {
@@ -492,7 +492,7 @@ namespace GenieClient.Genie
                 PrintSocketError("Connection failure", ex.ErrorCode);
             }
         }
-        
+
         private void SendCallback(IAsyncResult ar)
         {
             try
@@ -547,7 +547,7 @@ namespace GenieClient.Genie
                     int bytes = s.Client.EndReceive(ar);
                     if (bytes > 0)
                     {
-                        if(CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
+                        if (CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
                         {
                             return;
                         }

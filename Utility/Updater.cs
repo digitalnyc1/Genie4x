@@ -38,7 +38,7 @@ namespace GenieClient
         }
         public static string ServerUpdaterVersion
         {
-            get 
+            get
             {
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
@@ -73,17 +73,17 @@ namespace GenieClient
             }
         }
 
-        public static bool ClientIsCurrent 
-        { 
+        public static bool ClientIsCurrent
+        {
             get
             {
                 return LocalClientVersion == ServerClientVersion;
-            } 
+            }
         }
 
         public static bool UpdaterIsCurrent
         {
-            get 
+            get
             {
                 return LocalUpdaterVersion == ServerUpdaterVersion;
             }
@@ -98,7 +98,7 @@ namespace GenieClient
 
             var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
             Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-            
+
             latest.LoadAssets();
             if (latest.Assets.ContainsKey(UpdaterFilename))
             {
@@ -163,7 +163,7 @@ namespace GenieClient
                 if (!string.IsNullOrWhiteSpace(AssetsURL))
                 {
                     Assets = new Dictionary<string, Asset>();
-                    
+
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
                     client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
@@ -192,9 +192,9 @@ namespace GenieClient
             }
         }
 
-        
 
-        
+
+
 
     }
 }

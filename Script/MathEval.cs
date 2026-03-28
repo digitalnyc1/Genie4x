@@ -21,7 +21,7 @@ namespace GenieClient.Genie.Script
                 bsym = (ClassSymbol)y;
                 if (String.Compare(asym.Token, bsym.Token) > 0)
                     return 1;
-                if (String.Compare(asym.Token,bsym.Token) < 0)
+                if (String.Compare(asym.Token, bsym.Token) < 0)
                     return -1;
                 if ((int)asym.PrecedenceLevel == -1 | (int)bsym.PrecedenceLevel == -1)
                     return 0;

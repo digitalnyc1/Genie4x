@@ -7,7 +7,7 @@ namespace GenieClient.Genie
 {
     public class CommandQueue
     {
-        public struct CommandRestrictions 
+        public struct CommandRestrictions
         {
             public bool WaitForRoundtime = false;
             public bool WaitForStunned = false;
@@ -47,7 +47,7 @@ namespace GenieClient.Genie
             {
                 CommandRestrictions restrictions = new CommandRestrictions();
                 restrictions.WaitForRoundtime = bWaitForRoundtime;
-                restrictions.WaitForWebbed = WaitForWebbed; 
+                restrictions.WaitForWebbed = WaitForWebbed;
                 restrictions.WaitForStunned = WaitForStunned;
                 object argvalue = new EventItem(dDelay, sAction, restrictions);
                 Add(argvalue);
@@ -68,11 +68,11 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    CommandRestrictions restrictions = new CommandRestrictions 
-                    { 
-                        WaitForRoundtime = WaitForRoundtime, 
-                        WaitForStunned = WaitForStunned, 
-                        WaitForWebbed = WaitForWebbed 
+                    CommandRestrictions restrictions = new CommandRestrictions
+                    {
+                        WaitForRoundtime = WaitForRoundtime,
+                        WaitForStunned = WaitForStunned,
+                        WaitForWebbed = WaitForWebbed
                     };
                     EventList.Add(Delay, Action, restrictions);
                     if (EventList.Count == 1) // Only item in list. Set the timer!

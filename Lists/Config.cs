@@ -79,7 +79,7 @@ namespace GenieClient.Genie
         public string ScriptExtension { get; set; } = "cmd";
         public string ScriptRepo { get; set; } = string.Empty;
         public string ArtRepo { get; set; } = string.Empty;
-        public string MapRepo { get; set;} = string.Empty;
+        public string MapRepo { get; set; } = string.Empty;
         public string PluginRepo { get; set; } = string.Empty;
         public int AutoMapperAlpha
         {
@@ -305,7 +305,7 @@ namespace GenieClient.Genie
                 iPickerColors = value;
             }
         }
-        
+
         public string ConfigDir
         {
             get
@@ -520,9 +520,9 @@ namespace GenieClient.Genie
                 oStreamWriter.Close();
                 return true;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -550,7 +550,7 @@ namespace GenieClient.Genie
                         }
                         catch
                         {
-                           //Settings! We got bad settings here! See? No one cares.
+                            //Settings! We got bad settings here! See? No one cares.
                         }
                     }
 
@@ -1473,9 +1473,9 @@ namespace GenieClient.Genie
                 }
                 return messages;
             }
-            catch(Exception up)
+            catch (Exception up)
             {
-                throw up;
+                throw;
             }
         }
     }

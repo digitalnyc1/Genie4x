@@ -205,7 +205,7 @@ namespace GenieClient.Genie
         public event ListPluginsEventHandler ListPlugins;
 
         public delegate void ListPluginsEventHandler();
-        
+
         private Script.Eval m_oEval = new Script.Eval();
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;
@@ -395,7 +395,7 @@ namespace GenieClient.Genie
                                             string filename = string.Empty;
                                             int width = 0;
                                             int height = 0;
-                                            foreach(string arg in oArgs)
+                                            foreach (string arg in oArgs)
                                             {
                                                 if (arg.StartsWith("#")) continue;
                                                 else if (arg.StartsWith(">")) sOutputWindow = arg.Substring(1);
@@ -411,7 +411,7 @@ namespace GenieClient.Genie
                                             }
                                             if (string.IsNullOrEmpty(filename)) EchoText("No File Name was specified for the Image Command.");
                                             else DisplayImage(filename, sOutputWindow, width, height);
-                                            break;   
+                                            break;
                                         }
 
                                     case "lc":
@@ -1494,7 +1494,7 @@ namespace GenieClient.Genie
                                                                     EchoText(message + System.Environment.NewLine);
                                                                 }
                                                             }
-                                                            catch(Exception ex)
+                                                            catch (Exception ex)
                                                             {
                                                                 EchoText("Invalid syntax: " + sRow + System.Environment.NewLine);
                                                                 EchoText(ex.Message + System.Environment.NewLine);
@@ -1508,7 +1508,7 @@ namespace GenieClient.Genie
                                                 try
                                                 {
                                                     List<string> response = oGlobals.Config.SetSetting(oArgs[1].ToString(), Utility.ArrayToString(oArgs, 2));
-                                                    foreach(string message in response)
+                                                    foreach (string message in response)
                                                     {
                                                         EchoText(message + System.Environment.NewLine);
                                                     }
@@ -1952,7 +1952,7 @@ namespace GenieClient.Genie
                                                                 string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
                                                                 bool caseSensitive = oArgs.Count > 6 ? oArgs[6].ToString().ToUpper() == "TRUE" : false;
                                                                 bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
-                                                                oGlobals.HighlightList.Add(highlightText, highlightWholeRow, color , caseSensitive, soundFile, className, isActive);
+                                                                oGlobals.HighlightList.Add(highlightText, highlightWholeRow, color, caseSensitive, soundFile, className, isActive);
                                                                 oGlobals.HighlightList.RebuildStringIndex();
                                                             }
 
@@ -2362,7 +2362,7 @@ namespace GenieClient.Genie
 
                                                                 EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             }
-                                                            catch(Exception ex)
+                                                            catch (Exception ex)
                                                             {
                                                                 EchoColorText(ex.Message + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
                                                             }
@@ -2553,7 +2553,7 @@ namespace GenieClient.Genie
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
         }
-     
+
         private void Do(ArrayList oArgs)
         {
             if (oArgs.Count > 1)
@@ -2667,7 +2667,7 @@ namespace GenieClient.Genie
             string s = m_oEval.EvalString(sText, oGlobals);
             return s;
         }
-        
+
         private void DisplayImage(string filename, string window, int width, int height)
         {
             EventAddImage?.Invoke(filename, window, width, height);

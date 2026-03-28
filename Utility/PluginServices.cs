@@ -17,7 +17,7 @@ namespace GenieClient
             public string Key;
             public string Interface;
         }
-        
+
         public static class Interfaces
         {
             public const string Legacy = "GeniePlugin.Interfaces.IPlugin";

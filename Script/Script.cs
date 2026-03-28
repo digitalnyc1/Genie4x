@@ -1952,7 +1952,7 @@ namespace GenieClient
             bool waitForEvent = m_bWaitForEvent;
             CurrentLine oldCurrentLine = m_oCurrentLine;
             ScriptLine oldCurrentScriptLine = m_oScript.get_Item(oldCurrentLine.LineValue) as ScriptLine;
-            Dictionary<Line, ScriptLine> oldScriptLines = new Dictionary<Line, ScriptLine> ();
+            Dictionary<Line, ScriptLine> oldScriptLines = new Dictionary<Line, ScriptLine>();
             foreach (Line jump in oldCurrentLine.oLineList) if (!oldScriptLines.ContainsKey(jump)) oldScriptLines.Add(jump, m_oScript.get_Item(jump.iIndex) as ScriptLine);
             if (ReloadFile(FileName) && m_oScriptLabels.Contains(label))
             {
@@ -1986,13 +1986,13 @@ namespace GenieClient
         {
             if (jump.iFileRow == 0) return 0;
             int nearestMatch = 0;
-            for(int i = 0;i < m_oScript.Count;i++)
+            for (int i = 0; i < m_oScript.Count; i++)
             {
                 ScriptLine line = m_oScript[i] as ScriptLine;
                 if (jump.sRowContent == line.sRowContent && jump.iFileId == line.iFileId)
                 {
                     if (nearestMatch == 0) nearestMatch = i;
-                    else if(Math.Abs(jump.iFileRow - line.iFileRow) < nearestMatch) nearestMatch = i;
+                    else if (Math.Abs(jump.iFileRow - line.iFileRow) < nearestMatch) nearestMatch = i;
                 }
             }
             return nearestMatch;
@@ -2692,7 +2692,7 @@ namespace GenieClient
                         EvalWaitString(Utility.GetArgumentString(ParsedLine));
                         break;
                     }
-                    
+
                 case ScriptFunctions.waiteval:
                     {
                         int argiLevel11 = 2;
@@ -3023,9 +3023,9 @@ namespace GenieClient
                             m_oTimerStart = DateTime.Parse(Utility.GetArgumentString(sText));
                             m_oLocalVarList.Add("t", "@timer@"); // set automatically "start" timer
                         }
-                        #pragma warning disable CS0168
+#pragma warning disable CS0168
                         catch (Exception ex)
-                        #pragma warning restore CS0168
+#pragma warning restore CS0168
                         {
                             PrintError("Invalid datetime format in TIMER SETSTART command: " + Utility.GetArgumentString(sText), iFileId, iFileRow);
                             AbortOnScriptError();
@@ -3183,7 +3183,7 @@ namespace GenieClient
                 m_oLocalVarList.Add(sVar, d.ToString());
                 TriggerVariableChanged("%" + sVar);
             }
-            catch(System.InvalidCastException ex)
+            catch (System.InvalidCastException ex)
             {
                 PrintError(ex.Message + ". Local Variable " + sVar + " has been set to 0.");
                 m_oLocalVarList.Add(sVar, "0");
@@ -3262,9 +3262,9 @@ namespace GenieClient
             {
                 return Utility.MathCalc(dValue, sExpression);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 PrintError("Invalid MATH expression: " + sExpression, iFileId, iFileRow);
                 AbortOnScriptError();
@@ -3429,24 +3429,24 @@ namespace GenieClient
                     return false;
                 }
                 MatchCollection doRegex = Regex.Matches(FullCommand, PARAMETER_REGEX);
-                if(doRegex.Count == 0)
-                {   
+                if (doRegex.Count == 0)
+                {
                     DoCommandText = FullCommand;
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Count == 1)
-                {   
+                else if (doRegex.Count == 1)
+                {
                     DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Count > 1)
+                else if (doRegex.Count > 1)
                 {
                     DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
-                    DoCommandAdditionalRegex = doRegex[1].Captures[0].ToString() ;
+                    DoCommandAdditionalRegex = doRegex[1].Captures[0].ToString();
                     DoCommandAdditionalRegex = DoCommandAdditionalRegex.Substring(1, DoCommandAdditionalRegex.Length - 2);
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString() + "|" + DoCommandAdditionalRegex;
                 }
@@ -3600,17 +3600,17 @@ namespace GenieClient
                     return false;
                 }
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (FileNotFoundException ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 PrintError("File not found: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();
                 return false;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (FileLoadException ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 PrintError("File load exception: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();
@@ -3717,17 +3717,17 @@ namespace GenieClient
                     return false;
                 }
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (FileNotFoundException ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 PrintError("File not found: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();
                 return false;
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (FileLoadException ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 PrintError("File load exception: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();

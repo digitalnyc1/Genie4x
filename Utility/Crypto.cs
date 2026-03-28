@@ -232,9 +232,9 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -246,9 +246,9 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -300,9 +300,9 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -314,9 +314,9 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -460,7 +460,7 @@ namespace GenieClient
                 }
                 catch (CryptographicException ex)
                 {
-                    throw ex;
+                    throw;
                 }
             }
             else
@@ -561,7 +561,7 @@ namespace GenieClient
                 }
                 catch (CryptographicException ex)
                 {
-                    throw ex;
+                    throw;
                 }
             }
             else
@@ -610,7 +610,7 @@ namespace GenieClient
                 }
                 catch (CryptographicException ex)
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {

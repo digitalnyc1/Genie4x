@@ -461,9 +461,9 @@ namespace GenieClient.Genie.Script
                         oSections.ReleaseReaderLock();
                     }
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.Print(ex.Message);
             }
@@ -674,7 +674,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -700,7 +701,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -721,7 +723,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -742,7 +745,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -763,7 +767,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -784,7 +789,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -811,7 +817,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -832,7 +839,8 @@ namespace GenieClient.Genie.Script
                                 else
                                 {
                                     ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                }
+                                ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
                                 ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
                                 return true;
                             }
@@ -891,7 +899,8 @@ namespace GenieClient.Genie.Script
                             else
                             {
                                 ((Sections)oSections[iStart]).sBlock = "0";
-                            } ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
+                            }
+                            ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
                         else
@@ -945,7 +954,8 @@ namespace GenieClient.Genie.Script
                             else
                             {
                                 ((Sections)oSections[iStart]).sBlock = "0";
-                            } ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
+                            }
+                            ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
                         else
@@ -967,7 +977,8 @@ namespace GenieClient.Genie.Script
                             else
                             {
                                 ((Sections)oSections[iStart]).sBlock = "0";
-                            } ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
+                            }
+                            ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
                         else
@@ -989,7 +1000,8 @@ namespace GenieClient.Genie.Script
                             else
                             {
                                 ((Sections)oSections[iStart]).sBlock = "0";
-                            } ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
+                            }
+                            ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
                         else
@@ -1086,9 +1098,9 @@ namespace GenieClient.Genie.Script
                     {
                         if (args.Count == 3)
                         {
-                            int stringLength = ((Sections)args[0]).sBlock.Length;                   
-                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);   
-                            int substringLength = Conversions.ToInteger(((Sections)args[2]).sBlock);   
+                            int stringLength = ((Sections)args[0]).sBlock.Length;
+                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);
+                            int substringLength = Conversions.ToInteger(((Sections)args[2]).sBlock);
                             if (substringLength < 0)
                             {
                                 //This allows for negative substrings lengths to read starting before the start index
@@ -1100,15 +1112,15 @@ namespace GenieClient.Genie.Script
                                     startPosition = startPosition + substringLength;
                                     substringLength = System.Math.Abs(substringLength);
                                 }
-                                else 
-                                {   
+                                else
+                                {
                                     //the new startPosition would be less than 0 so set it to zero
                                     startPosition = 0;
                                     //and read the remainder of the length, which is conveniently the start position
                                     substringLength = Conversions.ToInteger(((Sections)args[1]).sBlock);
                                 }
                             }
-                            
+
                             if (startPosition < 0) startPosition = 0; //prevent negative start or end positions
                             if (substringLength < 0) substringLength = 0; //in the case we got a negative length and negative start position this can be negative here
 
@@ -1127,9 +1139,9 @@ namespace GenieClient.Genie.Script
                         }
                         else if (args.Count == 2)
                         {
-                            int stringLength = ((Sections)args[0]).sBlock.Length;                   
-                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);   
-                            if (startPosition <= stringLength && startPosition >= 0)                                  
+                            int stringLength = ((Sections)args[0]).sBlock.Length;
+                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);
+                            if (startPosition <= stringLength && startPosition >= 0)
                             {
                                 //Will only evalutate if starting position is within supplied string
                                 ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition).ToString();
@@ -1159,7 +1171,8 @@ namespace GenieClient.Genie.Script
                             {
                                 ((Sections)oSections[iStart]).sBlock = "0";
                                 ((Sections)oSections[iStart]).BlockType = ParseType.NumberType;
-                            } ((Sections)oSections[iStart]).bParsed = false; // Result
+                            }
+                            ((Sections)oSections[iStart]).bParsed = false; // Result
                         }
                         else
                         {
@@ -1220,7 +1233,8 @@ namespace GenieClient.Genie.Script
                             if (iIndex < 0)
                             {
                                 iIndex = 0;
-                            } ((Sections)oSections[iStart]).sBlock = oArray[iIndex];
+                            }
+                            ((Sections)oSections[iStart]).sBlock = oArray[iIndex];
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
@@ -1281,9 +1295,9 @@ namespace GenieClient.Genie.Script
                     return false;
                 }
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return false;
             }

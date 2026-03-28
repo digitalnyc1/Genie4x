@@ -206,6 +206,11 @@ namespace GenieClient.Mapper
 
             return true;
         }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Label
@@ -291,6 +296,11 @@ namespace GenieClient.Mapper
             }
 
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -936,6 +946,11 @@ namespace GenieClient.Mapper
             {
                 return -1;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
         }
     }
 

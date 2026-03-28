@@ -57,7 +57,7 @@ namespace GenieClient.Forms
             _TextboxTypeahead.BackColor = textbox.BgColor;
             _TextboxTypeahead.ForeColor = textbox.FgColor;
             _TextboxClass.BackColor = textbox.BgColor;
-            _TextboxClass.ForeColor =  textbox.FgColor;
+            _TextboxClass.ForeColor = textbox.FgColor;
 
             My.MyProject.Forms.DialogDragTarget.Recolor(window, textbox, button);
             My.MyProject.Forms.DialogSetTypeahead.Recolor(window, textbox, button);

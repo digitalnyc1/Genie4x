@@ -16,10 +16,10 @@ namespace GenieClient.Genie.Collections
                 {
                     return false;
                 }
-                
+
                 return m_RWLock.TryEnterWriteLock(500);
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -32,7 +32,7 @@ namespace GenieClient.Genie.Collections
                 if (m_RWLock.IsWriteLockHeld) return false;
                 return m_RWLock.TryEnterReadLock(500);
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -45,7 +45,7 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.ExitWriteLock();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -58,7 +58,7 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.ExitReadLock();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }

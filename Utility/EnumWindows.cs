@@ -35,8 +35,8 @@ namespace GenieClient
     }
 
     /// <summary>
-/// Extended Windows Style flags
-/// </summary>
+    /// Extended Windows Style flags
+    /// </summary>
     [Flags()]
     public enum ExtendedWindowStyleFlags : int
     {
@@ -92,9 +92,9 @@ namespace GenieClient
         private EnumWindowsCollection m_items = null;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         /// <summary>
-    /// Returns the collection of windows returned by
-    /// GetWindows
-    /// </summary>
+        /// Returns the collection of windows returned by
+        /// GetWindows
+        /// </summary>
         public EnumWindowsCollection Items
         {
             get
@@ -104,8 +104,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets all top level windows on the system.
-    /// </summary>
+        /// Gets all top level windows on the system.
+        /// </summary>
         public void GetWindows()
         {
             m_items = new EnumWindowsCollection();
@@ -114,9 +114,9 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets all child windows of the specified window
-    /// </summary>
-    /// <param name="hWndParent">Window Handle to get children for</param>
+        /// Gets all child windows of the specified window
+        /// </summary>
+        /// <param name="hWndParent">Window Handle to get children for</param>
         public void GetWindows(IntPtr hWndParent)
 
         {
@@ -127,11 +127,11 @@ namespace GenieClient
         }
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */    /// <summary>
-    /// The enum Windows callback.
-    /// </summary>
-    /// <param name="hWnd">Window Handle</param>
-    /// <param name="lParam">Application defined value</param>
-    /// <returns>1 to continue enumeration, 0 to stop</returns>
+                                                           /// The enum Windows callback.
+                                                           /// </summary>
+                                                           /// <param name="hWnd">Window Handle</param>
+                                                           /// <param name="lParam">Application defined value</param>
+                                                           /// <returns>1 to continue enumeration, 0 to stop</returns>
         private int WindowEnum(IntPtr hWnd, int lParam)
 
 
@@ -147,15 +147,15 @@ namespace GenieClient
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         /// <summary>
-    /// Called whenever a new window is about to be added
-    /// by the Window enumeration called from GetWindows.
-    /// If overriding this function, return true to continue
-    /// enumeration or false to stop.  If you do not call
-    /// the base implementation the Items collection will
-    /// be empty.
-    /// </summary>
-    /// <param name="hWnd">Window handle to add</param>
-    /// <returns>True to continue enumeration, False to stop</returns>
+        /// Called whenever a new window is about to be added
+        /// by the Window enumeration called from GetWindows.
+        /// If overriding this function, return true to continue
+        /// enumeration or false to stop.  If you do not call
+        /// the base implementation the Items collection will
+        /// be empty.
+        /// </summary>
+        /// <param name="hWnd">Window handle to add</param>
+        /// <returns>True to continue enumeration, False to stop</returns>
         protected virtual bool OnWindowEnum(IntPtr hWnd)
 
         {
@@ -177,10 +177,10 @@ namespace GenieClient
     {
 
         /// <summary>
-    /// Add a new Window to the collection.  Intended for
-    /// internal use by EnumWindows only.
-    /// </summary>
-    /// <param name="hWnd">Window handle to add</param>
+        /// Add a new Window to the collection.  Intended for
+        /// internal use by EnumWindows only.
+        /// </summary>
+        /// <param name="hWnd">Window handle to add</param>
         public void Add(IntPtr hWnd)
         {
             var Item = new EnumWindowsItem(hWnd);
@@ -188,8 +188,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the Window at the specified index
-    /// </summary>
+        /// Gets the Window at the specified index
+        /// </summary>
         public EnumWindowsItem this[int index]
         {
             get
@@ -199,8 +199,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Constructs a new EnumWindowsCollection object.
-    /// </summary>
+        /// Constructs a new EnumWindowsCollection object.
+        /// </summary>
         public EnumWindowsCollection()
         {
             // nothing to do
@@ -281,50 +281,50 @@ namespace GenieClient
             public const int GWL_EXSTYLE = -20;
 
             /// <summary>
-        /// Stop flashing. The system restores the window to its original state.
-        /// </summary>
+            /// Stop flashing. The system restores the window to its original state.
+            /// </summary>
             public const int FLASHW_STOP = 0;
             /// <summary>
-        /// Flash the window caption.
-        /// </summary>
+            /// Flash the window caption.
+            /// </summary>
             public const int FLASHW_CAPTION = 0x1;
             /// <summary>
-        /// Flash the taskbar button.
-        /// </summary>
+            /// Flash the taskbar button.
+            /// </summary>
             public const int FLASHW_TRAY = 0x2;
             /// <summary>
-        /// Flash both the window caption and taskbar button.
-        /// </summary>
+            /// Flash both the window caption and taskbar button.
+            /// </summary>
             public const int FLASHW_ALL = FLASHW_CAPTION | FLASHW_TRAY;
             /// <summary>
-        /// Flash continuously, until the FLASHW_STOP flag is set.
-        /// </summary>
+            /// Flash continuously, until the FLASHW_STOP flag is set.
+            /// </summary>
             public const int FLASHW_TIMER = 0x4;
             /// <summary>
-        /// Flash continuously until the window comes to the foreground.
-        /// </summary>
+            /// Flash continuously until the window comes to the foreground.
+            /// </summary>
             public const int FLASHW_TIMERNOFG = 0xC;
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         /// <summary>
-    /// The window handle.
-    /// </summary>
+        /// The window handle.
+        /// </summary>
         private IntPtr hWnd = IntPtr.Zero;
 
         /// <summary>
-    /// To allow items to be compared, the hash code
-    /// is set to the Window handle, so two EnumWindowsItem
-    /// objects for the same Window will be equal.
-    /// </summary>
-    /// <returns>The Window Handle for this window</returns>
+        /// To allow items to be compared, the hash code
+        /// is set to the Window handle, so two EnumWindowsItem
+        /// objects for the same Window will be equal.
+        /// </summary>
+        /// <returns>The Window Handle for this window</returns>
         public override int GetHashCode()
         {
             return hWnd.ToInt32();
         }
 
         /// <summary>
-    /// Gets the window's handle
-    /// </summary>
+        /// Gets the window's handle
+        /// </summary>
         public IntPtr Handle
         {
             get
@@ -334,8 +334,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the window's title (caption)
-    /// </summary>
+        /// Gets the window's title (caption)
+        /// </summary>
         public string Text
         {
             get
@@ -347,8 +347,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the window's class name.
-    /// </summary>
+        /// Gets the window's class name.
+        /// </summary>
         public string ClassName
         {
             get
@@ -360,8 +360,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets/Sets whether the window is iconic (mimimised) or not.
-    /// </summary>
+        /// Gets/Sets whether the window is iconic (mimimised) or not.
+        /// </summary>
         public bool Iconic
         {
             get
@@ -379,8 +379,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets/Sets whether the window is maximised or not.
-    /// </summary>
+        /// Gets/Sets whether the window is maximised or not.
+        /// </summary>
         public bool Maximised
         {
             get
@@ -398,8 +398,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets whether the window is visible.
-    /// </summary>
+        /// Gets whether the window is visible.
+        /// </summary>
         public bool Visible
         {
             get
@@ -409,8 +409,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the bounding rectangle of the window
-    /// </summary>
+        /// Gets the bounding rectangle of the window
+        /// </summary>
         public Rectangle Rectangle
         {
             get
@@ -425,8 +425,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the location of the window relative to the screen.
-    /// </summary>
+        /// Gets the location of the window relative to the screen.
+        /// </summary>
         public Point Location
         {
             get
@@ -439,8 +439,8 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Gets the size of the window.
-    /// </summary>
+        /// Gets the size of the window.
+        /// </summary>
         public Size Size
         {
             get
@@ -453,9 +453,9 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Restores and Brings the window to the front,
-    /// assuming it is a visible application window.
-    /// </summary>
+        /// Restores and Brings the window to the front,
+        /// assuming it is a visible application window.
+        /// </summary>
         public void Restore()
         {
             if (Iconic)
@@ -487,10 +487,10 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// Constructs a new instance of this class for
-    /// the specified Window Handle.
-    /// </summary>
-    /// <param name="hWnd">The Window Handle</param>
+        /// Constructs a new instance of this class for
+        /// the specified Window Handle.
+        /// </summary>
+        /// <param name="hWnd">The Window Handle</param>
         public EnumWindowsItem(IntPtr hWnd)
         {
             this.hWnd = hWnd;

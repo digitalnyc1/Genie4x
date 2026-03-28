@@ -34,7 +34,7 @@ namespace GenieClient
                 _httpClient.DefaultRequestHeaders.Accept.Clear();
                 _httpClient.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
                 var response = _httpClient.GetAsync(new Uri(downloadURL)).Result;
-                if(response.RequestMessage.RequestUri.AbsolutePath == @"/error.asp") return new MemoryStream();
+                if (response.RequestMessage.RequestUri.AbsolutePath == @"/error.asp") return new MemoryStream();
                 MemoryStream memoryStream = new MemoryStream();
                 await response.Content.CopyToAsync(memoryStream);
                 return memoryStream;
@@ -52,7 +52,7 @@ namespace GenieClient
             string cachedFile = Path.Combine(LocalDirectory.Path, directory, gamecode, filename);
             if (File.Exists(cachedFile)) return true;
             using (MemoryStream imageStream = await FileHandler.DownloadToMemoryStream($@"https://www.play.net/bfe/{gamecode}-art/{filename}"))
-            { 
+            {
                 if (imageStream.Length > 0)
                 {
                     LocalDirectory.ValidateDirectory(Path.GetDirectoryName(cachedFile));
@@ -69,7 +69,7 @@ namespace GenieClient
         public static async Task<Image> GetImage(string filename, int width, int height)
         {
             if (!File.Exists(filename)) return null;
-            
+
             System.Drawing.Image image = Image.FromFile(filename);
             int h = height > 0 ? height : image.Height;
             int w = width > 0 ? width : image.Width;

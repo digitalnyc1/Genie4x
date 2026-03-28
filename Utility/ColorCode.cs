@@ -39,9 +39,9 @@ namespace GenieClient.Genie
                     return (Color)new ColorConverter().ConvertFromString(sColor);
                 }
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex) // Unfortunately there is no specific error for convert errors.
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return default;
             }
@@ -101,9 +101,9 @@ namespace GenieClient.Genie
             {
                 return ColorTranslator.FromHtml(sColor);
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex)
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
             {
                 return default;
             }

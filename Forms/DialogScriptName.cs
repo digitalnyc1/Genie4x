@@ -26,7 +26,7 @@ namespace GenieClient
         {
             get
             {
-                    return TextBoxName.Text;
+                return TextBoxName.Text;
             }
 
             set

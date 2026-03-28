@@ -142,7 +142,7 @@ namespace GenieClient
         private bool m_bNameListOnly = false;
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
-       
+
         public bool IsMainWindow
         {
             get
@@ -357,7 +357,7 @@ namespace GenieClient
             else
             {
                 InvokeAddImage(image);
-            }   
+            }
         }
 
         private void InvokeAddImage(Image image)
@@ -380,7 +380,7 @@ namespace GenieClient
             {
                 Rectangle rc = new Rectangle(this.Location.X, this.Location.Y, this.Margin.Left * 3, this.Height);
                 Invalidate(rc, true);
-                
+
             }
         }
         public void AddText(string sText, Color oColor, Color oBgColor, bool bNoCache = true, bool bMono = false)
@@ -485,7 +485,7 @@ namespace GenieClient
                 {
                     foreach (Group oGroup in oMatch.Groups)
                     {
-                        
+
                         m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index - iDiff;
                         m_oRichTextBuffer.SelectionLength = oGroup.Length;
                         if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
@@ -539,7 +539,7 @@ namespace GenieClient
                     {
                         m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
                     }
-    
+
                     if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                     {
                         m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
@@ -680,7 +680,7 @@ namespace GenieClient
                     }
                 }
             }
-            
+
         }
 
         public FormSkin FormParent
@@ -781,7 +781,7 @@ namespace GenieClient
                 SelectionLength = iRemoveSize;
                 SelectedText = " ";
             }
-            
+
             SelectionStart = int.MaxValue;
             SelectionLength = 0;
 
@@ -966,7 +966,7 @@ namespace GenieClient
             {
                 throw new ArgumentOutOfRangeException("position");
             }
-            
+
             SelectionStart = position;
             SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"!#\v0}";
             Select(position, text.Length + hyperlink.Length + 1);
@@ -989,7 +989,7 @@ namespace GenieClient
                 SelectedRtf = @"{\rtf1\ansi " + SelectedText + @"\v #" + hyperlink + @"\v0}";
                 Select(position, length + hyperlink.Length + 1);
                 SetSelectionLink(Handle, true);
-                Select(Text.Length, 0); 
+                Select(Text.Length, 0);
             }
         }
 

@@ -30,7 +30,7 @@ namespace GenieClient
 
                 // Get byte[] from the file from embedded resource
                 ba = new byte[(int)stm.Length];
-                stm.Read(ba, 0, (int)stm.Length);
+                stm.ReadExactly(ba, 0, (int)stm.Length);
                 try
                 {
                     asm = Assembly.Load(ba);
