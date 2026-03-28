@@ -357,7 +357,7 @@ namespace GenieClient
             else
             {
                 InvokeAddImage(image);
-            }
+            }   
         }
 
         private void InvokeAddImage(Image image)
@@ -366,8 +366,10 @@ namespace GenieClient
             Clipboard.Clear();
             Clipboard.SetDataObject(image);
             this.ReadOnly = false;
-            this.Select(this.TextLength,0);
+            this.Select(this.TextLength, 0);
             this.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
+            this.Select(this.TextLength, 0);
+            this.SelectedText = Environment.NewLine;
             this.ReadOnly = true;
             Clipboard.Clear();
             Clipboard.SetDataObject(obj);
