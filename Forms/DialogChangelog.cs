@@ -1,8 +1,8 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace GenieClient
 {
@@ -16,16 +16,11 @@ namespace GenieClient
 
         public DialogChangelog()
         {
-
             // This call is required by the Windows Form Designer.
             InitializeComponent();
 
             // Add any initialization after the InitializeComponent() call.
             TextBoxInfo.Text = My.MyProject.Application.Info.ProductName + System.Environment.NewLine + string.Format("Version {0}", My.MyProject.Application.Info.Version.ToString()) + System.Environment.NewLine + string.Format("Build Date {0}", Utility.AssemblyBuildDate(Assembly.GetExecutingAssembly())) + System.Environment.NewLine + My.MyProject.Application.Info.Copyright + System.Environment.NewLine + My.MyProject.Application.Info.CompanyName + System.Environment.NewLine + My.MyProject.Application.Info.Description + System.Environment.NewLine;
-
-
-
-
 
             var o = Assembly.GetExecutingAssembly().GetManifestResourceStream("GenieClient.Changelog.txt");
             if (!Information.IsNothing(o))
@@ -36,10 +31,6 @@ namespace GenieClient
                     TextBoxInfo.AppendText(s.ReadToEnd());
                 }
             }
-
-            // For Each sText As String In GetListOfEmbeddedResources()
-            // Me.TextBoxInfo.AppendText(sText & vbNewLine)
-            // Next
         }
 
         public Array GetListOfEmbeddedResources()

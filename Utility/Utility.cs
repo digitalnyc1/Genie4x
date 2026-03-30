@@ -1,19 +1,15 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-
-
-
 
 namespace GenieClient
 {
@@ -32,7 +28,7 @@ namespace GenieClient
             }
             catch
             {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                // Hack because of this: https://github.com/dotnet/corefx/issues/10361
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     url = url.Replace("&", "^&");
@@ -78,8 +74,8 @@ namespace GenieClient
                 GenieError.Error("Utility", $"Error Starting {sFileName}", ex.Message);
                 return false;
             }
-            // var myStreamReader = myProcess.StandardOutput;
-            // Read the standard output of the spawned process.
+
+            // Read the standard output of the spawned process
             if (closeProcess)
             {
                 while (myProcess.HasExited == false)
@@ -100,14 +96,12 @@ namespace GenieClient
             }
             catch (IOException)
             {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
+                // The file is unavailable because it is still being written to or being
+                // processed by another thread or does not exist (has already been processed)
                 return true;
             }
 
-            //file is not locked
+            // File is not locked
             return false;
         }
 
@@ -118,9 +112,7 @@ namespace GenieClient
                 var re = new Regex(sRegExp);
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -148,21 +140,22 @@ namespace GenieClient
 
         public static bool ValidateServerCertificate(object sender, X509Certificate server_certificate, X509Chain chain, SslPolicyErrors reportedSSLPolicyErrors)
         {
-            X509Certificate auth_cert = new X509Certificate(Encoding.Default.GetBytes("-----BEGIN CERTIFICATE-----\nMIIFUDCCAzigAwIBAgIJAP1LKTzYRs74MA0GCSqGSIb3DQEBCwUAMDwxCzAJBgNV\nBAYTAlVTMREwDwYDVQQIDAhNaXNzb3VyaTEaMBgGA1UECgwRU2ltdXRyb25pY3Mg\nQ29ycC4wIBcNMTgwNzE2MjIzNjMyWhgPMzAxNzExMTYyMjM2MzJaMDwxCzAJBgNV\nBAYTAlVTMREwDwYDVQQIDAhNaXNzb3VyaTEaMBgGA1UECgwRU2ltdXRyb25pY3Mg\nQ29ycC4wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQD3IDOqTKtc+RmW\nZkv3isBPtqKD8rcTyjWFLzIazYnN7ZGmRMGtBTFATx4ugy1WiLih9pUOo84W5M7i\nMwZlbzxQAUPiRfX3U7xowe5LuzDHSxqWzylkkgmkdCX9K8JoN4FnuIWUMuMji7f/\ncY7eL/Flob6pFMD9U7NZDvVpYH05Fnn0LAsaK0DKtPcms5+EWNh+uYgTjZbaVMyY\nAPTEN8Rh0NpR8CWNqErM6kbt+4NBqzKMIrJEfSSgQHhkXK+r37O+d3rpmgyFFJPl\nfFHlwxEKutdhd5z0MWV/Fj+hc2p0pExy6yDJNYDgI+iMas5aYowtOgHx2sX+pGkc\nCYgBkAyhAmhCja0Nl/TEbOgksnSvwGLWufc+TF89CZMGI7UmRdez/YKc0DR/zhjF\nAPsMur8wJOtps9ZueYqTqJ9SvwRoRT8Nlz0q/891t7P97rZ/+9C1AVJFtuIp3zM4\nGusqdxRqAsgVrgZmsY7FPti8dNTDcv1ZUiFt/FfHGEyJXbt7oYDr1CDAX17KRcc3\nFK9XaChz4VNlLGCYbCjMdPIqTP4M4xdma2bBMza4Nmr1qioDO27wa9zBiSe3Mskg\ntUm1cBmZ7eDfGprmMzg4FKY3WEBHQQINyuh9UNfqIijgAiPw4GN7jCpV3YH3mPRP\nHKlRSkfq8DxD5SXVV0+DyRslzLuDEQIDAQABo1MwUTAdBgNVHQ4EFgQUFNOI3jnn\nfZpGE12nVsE9QTgX2IQwHwYDVR0jBBgwFoAUFNOI3jnnfZpGE12nVsE9QTgX2IQw\nDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAPh0dOcZ4F2hQzwwr\nigLaY1p3fnjuGxnESwCPxJ3X+HVNclBh4Z3ndoonKunA+7CSxR9R4+ls/8RMmmr2\nQymzWYHTNbpe1dX+NgZGRTKiZEjqr8O0P02YEiLEUwG3YoWBSuka83LEDb+cB9AT\nUz90i1FMhGy9h+nBtP0r+mToQOnoKREmSoN03ucPVauionxAb7EqGlKciIyu4UE5\nuFY0kr5FqCIINtVIozyN2Xn/ATu6W5BlqET/PWapRa0230Pa6e3EKXVvjLxcMa2x\nyv+Pi/UQmMtpZXBu5qeYOPdppJs5WM33Q9PsCH7zGHziTbX85bhXIy1Y5TaGGjGK\nZZ/Je3zBn1JbyP+lC/DhRBpVwAbHqFCudxdSG4qcLR4r2hmTO8+LShXONmoH6XbR\nYwlb9aBrEYSr1cTrBnsFm07Bw3Ou9qXLfcF2nyT37U+DU8B9dcTll+Q1OPgYVbqG\nVfW7ZYQvvxb7EbXPcYedjGn1ZTGwJ5HRhJB0wNcH6wJIqw3y85hsqGFyw4zPOnDV\nZx2fEiycV6+6T8OIk2cwhZDcI0BI1iqKkRUdMLnVV/e3M9jERis1ValbeDVV+/8b\nLk71vz0A0lktJcULiMHWrym3IL7NTjuoZBJD8jgHETi4UEa0IB+Z7/Qr8F+UIygn\nAfksN019Wv0yPmHgubaJB2AT4ic=\n-----END CERTIFICATE-----"));
+            X509Certificate auth_cert = X509Certificate2.CreateFromPem("-----BEGIN CERTIFICATE-----\nMIIFUDCCAzigAwIBAgIJAP1LKTzYRs74MA0GCSqGSIb3DQEBCwUAMDwxCzAJBgNV\nBAYTAlVTMREwDwYDVQQIDAhNaXNzb3VyaTEaMBgGA1UECgwRU2ltdXRyb25pY3Mg\nQ29ycC4wIBcNMTgwNzE2MjIzNjMyWhgPMzAxNzExMTYyMjM2MzJaMDwxCzAJBgNV\nBAYTAlVTMREwDwYDVQQIDAhNaXNzb3VyaTEaMBgGA1UECgwRU2ltdXRyb25pY3Mg\nQ29ycC4wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQD3IDOqTKtc+RmW\nZkv3isBPtqKD8rcTyjWFLzIazYnN7ZGmRMGtBTFATx4ugy1WiLih9pUOo84W5M7i\nMwZlbzxQAUPiRfX3U7xowe5LuzDHSxqWzylkkgmkdCX9K8JoN4FnuIWUMuMji7f/\ncY7eL/Flob6pFMD9U7NZDvVpYH05Fnn0LAsaK0DKtPcms5+EWNh+uYgTjZbaVMyY\nAPTEN8Rh0NpR8CWNqErM6kbt+4NBqzKMIrJEfSSgQHhkXK+r37O+d3rpmgyFFJPl\nfFHlwxEKutdhd5z0MWV/Fj+hc2p0pExy6yDJNYDgI+iMas5aYowtOgHx2sX+pGkc\nCYgBkAyhAmhCja0Nl/TEbOgksnSvwGLWufc+TF89CZMGI7UmRdez/YKc0DR/zhjF\nAPsMur8wJOtps9ZueYqTqJ9SvwRoRT8Nlz0q/891t7P97rZ/+9C1AVJFtuIp3zM4\nGusqdxRqAsgVrgZmsY7FPti8dNTDcv1ZUiFt/FfHGEyJXbt7oYDr1CDAX17KRcc3\nFK9XaChz4VNlLGCYbCjMdPIqTP4M4xdma2bBMza4Nmr1qioDO27wa9zBiSe3Mskg\ntUm1cBmZ7eDfGprmMzg4FKY3WEBHQQINyuh9UNfqIijgAiPw4GN7jCpV3YH3mPRP\nHKlRSkfq8DxD5SXVV0+DyRslzLuDEQIDAQABo1MwUTAdBgNVHQ4EFgQUFNOI3jnn\nfZpGE12nVsE9QTgX2IQwHwYDVR0jBBgwFoAUFNOI3jnnfZpGE12nVsE9QTgX2IQw\nDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAPh0dOcZ4F2hQzwwr\nigLaY1p3fnjuGxnESwCPxJ3X+HVNclBh4Z3ndoonKunA+7CSxR9R4+ls/8RMmmr2\nQymzWYHTNbpe1dX+NgZGRTKiZEjqr8O0P02YEiLEUwG3YoWBSuka83LEDb+cB9AT\nUz90i1FMhGy9h+nBtP0r+mToQOnoKREmSoN03ucPVauionxAb7EqGlKciIyu4UE5\nuFY0kr5FqCIINtVIozyN2Xn/ATu6W5BlqET/PWapRa0230Pa6e3EKXVvjLxcMa2x\nyv+Pi/UQmMtpZXBu5qeYOPdppJs5WM33Q9PsCH7zGHziTbX85bhXIy1Y5TaGGjGK\nZZ/Je3zBn1JbyP+lC/DhRBpVwAbHqFCudxdSG4qcLR4r2hmTO8+LShXONmoH6XbR\nYwlb9aBrEYSr1cTrBnsFm07Bw3Ou9qXLfcF2nyT37U+DU8B9dcTll+Q1OPgYVbqG\nVfW7ZYQvvxb7EbXPcYedjGn1ZTGwJ5HRhJB0wNcH6wJIqw3y85hsqGFyw4zPOnDV\nZx2fEiycV6+6T8OIk2cwhZDcI0BI1iqKkRUdMLnVV/e3M9jERis1ValbeDVV+/8b\nLk71vz0A0lktJcULiMHWrym3IL7NTjuoZBJD8jgHETi4UEa0IB+Z7/Qr8F+UIygn\nAfksN019Wv0yPmHgubaJB2AT4ic=\n-----END CERTIFICATE-----");
 
-            //SIMU uses self signed cert, if these are equal, OK.
+            // SIMU uses self signed cert, if these are equal, OK
             if (auth_cert.Equals(server_certificate))
                 return true;
 
             // Assuming they switch at some point to CA Signed this code should be used
-            //if (reportedSSLPolicyErrors == SslPolicyErrors.None)
-            //    return true;
+            // if (reportedSSLPolicyErrors == SslPolicyErrors.None)
+            //     return true;
 
             Console.WriteLine("Certificate error: {0}", reportedSSLPolicyErrors);
 
             // Do not allow this client to communicate with unauthenticated servers.
             return false;
         }
+
         public static string GenerateAccountHash(string sText)
         {
             string argsText = GenerateHashSHA256(sText);
@@ -189,7 +182,6 @@ namespace GenieClient
             {
                 throw new Exception(Crypto.CryptoException.Message);
             }
-            // Crypto.Clear();
         }
 
         public static string GenerateHashSHA256(string sText)
@@ -206,15 +198,13 @@ namespace GenieClient
             {
                 throw new Exception(Crypto.CryptoException.Message);
             }
-
-            // Crypto.Clear();
         }
 
         public static string EncryptString(string sPassword, string sText)
         {
             if (sText.Length == 0)
                 return string.Empty;
-            Crypto.EncryptionAlgorithm = Crypto.Algorithm.Rijndael;
+            Crypto.EncryptionAlgorithm = Crypto.Algorithm.AES;
             Crypto.Encoding = Crypto.EncodingType.HEX;
             Crypto.Key = sPassword;
             if (Crypto.EncryptString(sText))
@@ -225,15 +215,13 @@ namespace GenieClient
             {
                 throw new Exception(Crypto.CryptoException.Message);
             }
-
-            // Crypto.Clear();
         }
 
         public static string DecryptString(string sPassword, string sText)
         {
             if (sText.Length == 0)
                 return string.Empty;
-            Crypto.EncryptionAlgorithm = Crypto.Algorithm.Rijndael;
+            Crypto.EncryptionAlgorithm = Crypto.Algorithm.AES;
             Crypto.Encoding = Crypto.EncodingType.HEX;
             Crypto.Key = sPassword;
             Crypto.Content = sText;
@@ -245,8 +233,6 @@ namespace GenieClient
             {
                 throw new Exception(Crypto.CryptoException.Message);
             }
-
-            // Crypto.Clear();
         }
 
         public static int RandomNumber(int min, int max)
@@ -314,53 +300,6 @@ namespace GenieClient
             return span.TotalMilliseconds;
         }
 
-        // Public Shared Function SafeSplit(BysInput As String, BycSplitChar As Char) As ArrayList
-        // Dim oList As New ArrayList()
-
-        // Dim bInsideString As Boolean = False
-        // Dim cInsideStringChar As Char
-        // Dim iBracketDepth As Integer = 0
-        // Dim bPreviousWasEscapeChar As Boolean = False
-
-        // Dim ch As Char
-        // Dim l As Integer = 0
-        // Dim sp As Integer = 0
-
-        // For cp As Integer = 0 To sInput.Length - 1
-        // ch = sInput.Chars(cp)
-
-        // If bInsideString = True Then
-        // If ch = cInsideStringChar Then
-        // bInsideString = False
-        // End If
-        // ElseIf (ch = """"c) And bPreviousWasEscapeChar = False Then '  Or ch = "'"c
-        // bInsideString = True
-        // cInsideStringChar = ch
-        // ElseIf ch = cSplitChar And bPreviousWasEscapeChar = False Then
-        // If iBracketDepth = 0 Then
-        // l = (cp - sp)
-        // If l > 0 Then
-        // oList.Add(sInput.Substring(sp, l))
-        // End If
-        // sp = cp + 1 ' +1 So we don't get the split char
-        // End If
-        // End If
-
-        // If ch = "\"c Then
-        // bPreviousWasEscapeChar = Not bPreviousWasEscapeChar
-        // Else
-        // bPreviousWasEscapeChar = False
-        // End If
-        // Next
-
-        // l = (sInput.Length - sp)
-        // If l > 0 Then
-        // oList.Add(sInput.Substring(sp))
-        // End If
-
-        // Return oList
-        // End Function
-
         public static string ArrayToString(ArrayList oList)
         {
             string sReturnText = string.Empty;
@@ -381,7 +320,6 @@ namespace GenieClient
             }
         }
 
-        // Copy of the above to confuse hackers
         public static string GenerateAccountHashSecond(string sText)
         {
             string argsText = GenerateHashSHA256(sText);
@@ -414,7 +352,7 @@ namespace GenieClient
                             bInsideString = false;
                         }
                     }
-                    else if (ch == '"') // Or ch = "'"c
+                    else if (ch == '"')
                     {
                         bInsideString = true;
                         cInsideStringChar = ch;
@@ -482,9 +420,7 @@ namespace GenieClient
                     AddArrayItem(oList, argsText3, Conversions.ToBoolean(Interaction.IIf(oList.Count > 0, bTreatUnderscoreAsSpace, false)));
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 throw new Exception("Invalid string in Parse Arguments: " + sText);
             }
@@ -524,18 +460,14 @@ namespace GenieClient
             {
                 File.Move(sSourceFileName, sDestFileName);
             }
-#pragma warning disable CS0168
-            catch (IOException ex)
-#pragma warning restore CS0168
+            catch (IOException)
             {
-                // The destination file already exists.
+                // The destination file already exists
                 return false;
             }
-#pragma warning disable CS0168
-            catch (UnauthorizedAccessException ex)
-#pragma warning restore CS0168
+            catch (UnauthorizedAccessException)
             {
-                // The caller does not have the required permission. 
+                // The caller does not have the required permission
                 return false;
             }
 
@@ -548,17 +480,13 @@ namespace GenieClient
             {
                 File.Delete(sourceFileName);
             }
-#pragma warning disable CS0168
-            catch (IOException ex)
-#pragma warning restore CS0168
+            catch (IOException)
             {
                 return false;
             }
-#pragma warning disable CS0168
-            catch (UnauthorizedAccessException ex)
-#pragma warning restore CS0168
+            catch (UnauthorizedAccessException)
             {
-                // The caller does not have the required permission. 
+                // The caller does not have the required permission
                 return false;
             }
 
@@ -574,17 +502,13 @@ namespace GenieClient
                     Directory.CreateDirectory(sourceDirectoryName);
                 }
             }
-#pragma warning disable CS0168
-            catch (IOException ex)
-#pragma warning restore CS0168
+            catch (IOException)
             {
                 return false;
             }
-#pragma warning disable CS0168
-            catch (UnauthorizedAccessException ex)
-#pragma warning restore CS0168
+            catch (UnauthorizedAccessException)
             {
-                // The caller does not have the required permission. 
+                // The caller does not have the required permission
                 return false;
             }
 
@@ -670,31 +594,13 @@ namespace GenieClient
             }
         }
 
-        /// <summary>
-        /// exception-safe retrieval of LastWriteTime for this assembly.
-        /// </summary>
-        /// <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
-        private static DateTime AssemblyLastWriteTime(System.Reflection.Assembly a)
-        {
-            try
-            {
-                return File.GetLastWriteTime(a.Location);
-            }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
-            {
-                return DateTime.MaxValue;
-            }
-        }
-
         public static DateTime AssemblyBuildDate(System.Reflection.Assembly a)
         {
             var AssemblyVersion = a.GetName().Version;
             DateTime dt;
             dt = Conversions.ToDate("01/01/2000").AddDays(AssemblyVersion.Build).AddSeconds(AssemblyVersion.Revision * 2);
 
-            if (TimeZone.IsDaylightSavingTime(dt, TimeZone.CurrentTimeZone.GetDaylightChanges(dt.Year)))
+            if (TimeZoneInfo.Local.IsDaylightSavingTime(dt))
             {
                 dt = dt.AddHours(1);
             }
@@ -745,7 +651,7 @@ namespace GenieClient
                         bInsideString = false;
                     }
                 }
-                else if (ch == '"' & bPreviousWasEscapeChar == false) // (ch = """"c Or ch = "'"c)
+                else if (ch == '"' & bPreviousWasEscapeChar == false)
                 {
                     bInsideString = true;
                     cInsideStringChar = ch;
@@ -806,7 +712,7 @@ namespace GenieClient
             return TrimStart(argline);
         }
 
-        // Temporary for moving over from old dir structure...
+        // Temporary for moving over from old dir structure
         public static void MoveLayoutFiles()
         {
             try
@@ -819,10 +725,9 @@ namespace GenieClient
                     sFile = FileSystem.Dir();
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
+                // Ignore
             }
         }
 

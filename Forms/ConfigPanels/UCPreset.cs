@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -164,7 +164,6 @@ namespace GenieClient
                     li.SubItems.Add(oPreset.sColorName);
                     li.SubItems.Add(oPreset.bHighlightLine.ToString());
                     li.ForeColor = oPreset.FgColor;
-                    // MsgBox(li.BackColor.ToString)
                     if (oPreset.BgColor != Color.Transparent)
                     {
                         li.BackColor = oPreset.BgColor;
@@ -333,14 +332,10 @@ namespace GenieClient
             {
                 foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
                 {
-                    if (TextBoxPreset.Enabled == true) // Single edit
+                    if (TextBoxPreset.Enabled == true)
                     {
                         li.Text = TextBoxPreset.Text;
                     }
-                    // m_PresetList.Remove(li.Tag) ' Remove old
-                    else
-                    {
-                    } // Multi edit
 
                     if (TextBoxColor.Enabled == true)
                     {

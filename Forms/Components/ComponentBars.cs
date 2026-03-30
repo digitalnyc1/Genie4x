@@ -1,8 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -20,12 +20,8 @@ namespace GenieClient
         private Pen m_BorderColor = Pens.Gray;
         private Pen m_BorderColorGrayScale = Pens.Gray;
 
-        // Private myImage As Image = Image.FromFile("RT.bmp")
-
         private void PanelBar_Paint(object sender, PaintEventArgs e)
         {
-            // Dim myTextureBrush As New TextureBrush(myImage)
-
             if (m_CurrentValue > 0)
             {
                 var myTextureBrush = new SolidBrush((Color)Interaction.IIf(m_IsConnected, m_ForegroundColor, Genie.ColorCode.ColorToGrayscale(m_ForegroundColor)));

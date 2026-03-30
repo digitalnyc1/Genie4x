@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -114,7 +114,6 @@ namespace GenieClient
                 {
                     CheckBoxHideArc.Checked = false;
                 }
-                // ButtonApply.Enabled = True
                 ButtonApply.Text = "Apply";
             }
             else
@@ -129,7 +128,6 @@ namespace GenieClient
             TextBoxToNodeID.Text = "0";
             TextBoxName.Text = "";
             CheckBoxHideArc.Checked = false;
-            // ButtonApply.Enabled = False
             ButtonApply.Text = "Create";
         }
 

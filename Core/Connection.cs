@@ -1,54 +1,43 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Security.Authentication;
-using System.Text.RegularExpressions;
 using System.Text;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
     public class Connection
     {
-
         public event EventConnectedEventHandler EventConnected;
-
         public delegate void EventConnectedEventHandler();
 
         public event EventDisconnectedEventHandler EventDisconnected;
-
         public delegate void EventDisconnectedEventHandler();
 
         public event EventDataSentEventHandler EventDataSent;
-
         public delegate void EventDataSentEventHandler();
 
         public event EventDataRecieveEndEventHandler EventDataRecieveEnd;
-
         public delegate void EventDataRecieveEndEventHandler();
 
         public event EventParseRowEventHandler EventParseRow;
-
         public delegate void EventParseRowEventHandler(StringBuilder row);
 
         public event EventParsePartialRowEventHandler EventParsePartialRow;
-
         public delegate void EventParsePartialRowEventHandler(string row);
 
         public event EventPrintTextEventHandler EventPrintText;
-
         public delegate void EventPrintTextEventHandler(string text);
 
         public event EventPrintErrorEventHandler EventPrintError;
-
         public delegate void EventPrintErrorEventHandler(string text);
 
         public event EventConnectionLostEventHandler EventConnectionLost;
-
         public delegate void EventConnectionLostEventHandler();
 
         public enum SocketErrorCodes
@@ -101,7 +90,6 @@ namespace GenieClient.Genie
         private TcpClient _client;
         private const int MAX_PACKET_SIZE = 2048;
         private SslStream sslStream;
-
         private Socket m_SocketClient;
         private IPEndPoint m_IPEndPoint;
         private StringBuilder m_ParseBuffer = new StringBuilder();
@@ -202,8 +190,8 @@ namespace GenieClient.Genie
                         PrintError("Unable to Authenticate: " + e.Message);
                         _client.Close();
                     }
-                    // Complete the connection
 
+                    // Complete the connection
                     PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
 
                     EventConnected?.Invoke();
@@ -220,6 +208,7 @@ namespace GenieClient.Genie
                 EventConnectionLost?.Invoke();
             }
         }
+
         public enum AuthState
         {
             Disconnected,
@@ -230,18 +219,20 @@ namespace GenieClient.Genie
             AuthenticationFailed,
             InvalidResponse
         }
+
         private AuthState CurrentAuthState = AuthState.Unauthenticated;
+
         public AuthState Authenticate(string account, string password)
         {
             if (!_client.Connected || sslStream == null)
             {
                 CurrentAuthState = AuthState.Disconnected;
-                return CurrentAuthState; //not connected
+                return CurrentAuthState; // Not connected
             }
             else if (account == null || password == null)
             {
                 CurrentAuthState = AuthState.Unauthenticated;
-                return CurrentAuthState; //No credentials provided.
+                return CurrentAuthState; // No credentials provided
             }
             else
             {
@@ -251,6 +242,7 @@ namespace GenieClient.Genie
                 sslStream.Flush();
 
                 CurrentAuthState = AuthState.ListeningForKey;
+
                 // Read Key response: should be 32 bytes
                 byte[] buffer = new byte[MAX_PACKET_SIZE];
                 int bytes = sslStream.Read(buffer, 0, buffer.Length);
@@ -261,7 +253,7 @@ namespace GenieClient.Genie
                 }
 
                 // SslStreams require a byte array to write
-                // BlockCopy is used to allow concacatantion, and avoid encoding issues from cyte array -> string -> byte array.
+                // BlockCopy is used to allow concacatantion, and avoid encoding issues from cyte array -> string -> byte array
                 message = new byte[account.Length + password.Length + 3];
                 Buffer.BlockCopy(Encoding.Default.GetBytes("A\t" + account.ToUpper() + "\t"), 0, message, 0, account.Length + 3);
                 Buffer.BlockCopy(Utility.EncryptText(buffer, password), 0, message, account.Length + 3, password.Length);
@@ -284,10 +276,8 @@ namespace GenieClient.Genie
                     CurrentAuthState = AuthState.AuthenticationFailed;
                 }
             }
+
             return CurrentAuthState;
-
-
-
         }
 
         public string GetLoginKey(string instance, string character)
@@ -317,14 +307,14 @@ namespace GenieClient.Genie
             byte[] buffer = new byte[MAX_PACKET_SIZE];
             _ = sslStream.Read(buffer, 0, buffer.Length);
 
-            //Validate Access - list of status responses:
+            // Validate Access - list of status responses:
             // Known good status:
             //  "FREE_TO_PLAY" "PAYING" "PREMIUM" "NORMAL"
             // Known bad status:
             //  "NEW_TO_GAME" "EXPIRED"
             // Unknown status:
             //  "BETA" "FREE" "INTERNAL" "NEED_BILL" "NO_ACCESS" "SHAREWARE" "TRIAL" "UNKNOWN"
-            //Check for  match of known good status, and if no match, no access to requested instance
+            // Check for  match of known good status, and if no match, no access to requested instance
             if (Encoding.Default.GetString(buffer).TrimEnd('\0').ToUpper() == "PROBLEM")
             {
                 sslStream.Close();
@@ -332,7 +322,7 @@ namespace GenieClient.Genie
                 return "E\tThere is a problem with your account. Please log in to the play.net website for more information.";
             }
 
-            // send C - Character Slot Request
+            // Send C - Character Slot Request
             message = Encoding.Default.GetBytes("C");
             sslStream.Write(message);
             sslStream.Flush();
@@ -374,12 +364,12 @@ namespace GenieClient.Genie
                 return "E\tThe specified character was not found: " + character + ".";
             }
 
-            //send L - Login Key Request
+            // Send L - Login Key Request
             message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM");
             sslStream.Write(message);
             sslStream.Flush();
 
-            //Read response: 
+            // Read response 
             buffer = new byte[MAX_PACKET_SIZE];
             CurrentAuthState = AuthState.Authenticated;
             _ = sslStream.Read(buffer, 0, buffer.Length);
@@ -413,8 +403,6 @@ namespace GenieClient.Genie
 
             if (ConnectedSocket.Connected == true)
             {
-                // PrintText("Disconnecting from: " & s.RemoteEndPoint.ToString())
-
                 ConnectedSocket.BeginDisconnect(false, new AsyncCallback(DisconnectCallback), new object[] { ConnectedSocket, ExitOnDisconnect });
             }
 
@@ -428,6 +416,7 @@ namespace GenieClient.Genie
                 // Retrieve the socket from the state object
                 Socket s = (Socket)(ar.AsyncState as object[])[0];
                 bool ExitOnDisconnect = (bool)(ar.AsyncState as object[])[1];
+
                 // Complete the connection
                 s.EndDisconnect(ar);
                 ParseData(System.Environment.NewLine); // Show lines not yet sent out
@@ -556,7 +545,7 @@ namespace GenieClient.Genie
                         // Event to update Output
                         DataRecieveEnd();
 
-                        // Get the rest of the data.
+                        // Get the rest of the data
                         s.Client.BeginReceive(oState.oBuffer, 0, StateObject.iBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), oState);
                     }
                     else
@@ -598,7 +587,7 @@ namespace GenieClient.Genie
             if (m_ParseBuffer.Length > 0)
             {
                 var buffer = m_ParseBuffer.ToString();
-                ParsePartialRow(buffer);	// Event for partial parse row
+                ParsePartialRow(buffer); // Event for partial parse row
                 m_RowBuffer.Append(m_ParseBuffer);
                 m_ParseBuffer.Clear();
             }

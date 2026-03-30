@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Forms.Components;
 
 namespace GenieClient
 {
@@ -34,7 +35,7 @@ namespace GenieClient
         {
             this.components = new System.ComponentModel.Container();
             this._PanelContents = new System.Windows.Forms.Panel();
-            this._RichTextBoxOutput = new GenieClient.ComponentRichTextBox();
+            this._RichTextBoxOutput = new ComponentRichTextBox();
             this._ContextMenuStripOutput = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._ClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._TimeStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,8 +85,8 @@ namespace GenieClient
             this._RichTextBoxOutput.Text = "";
             this._RichTextBoxOutput.TimeStamp = false;
             this._RichTextBoxOutput.Visible = false;
-            this._RichTextBoxOutput.EventKeyDown += new GenieClient.ComponentRichTextBox.EventKeyDownEventHandler(this.MyKeyDown);
-            this._RichTextBoxOutput.EventKeyPress += new GenieClient.ComponentRichTextBox.EventKeyPressEventHandler(this.MyKeyPress);
+            this._RichTextBoxOutput.EventKeyDown += new ComponentRichTextBox.EventKeyDownEventHandler(this.MyKeyDown);
+            this._RichTextBoxOutput.EventKeyPress += new ComponentRichTextBox.EventKeyPressEventHandler(this.MyKeyPress);
             this._RichTextBoxOutput.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.RichTextBoxOutput_LinkClicked);
             this._RichTextBoxOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this._RichTextBoxOutput_KeyDown);
             this._RichTextBoxOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._RichTextBoxOutput_KeyPress);

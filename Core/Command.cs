@@ -1,209 +1,157 @@
-﻿using System;
-using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-// Imports Jint
 
 namespace GenieClient.Genie
 {
     public class Command
     {
         public event EventReconnectEventHandler EventReconnect;
-
         public delegate void EventReconnectEventHandler();
 
         public event EventConnectEventHandler EventConnect;
-
         public delegate void EventConnectEventHandler(string sAccountName, string sPassword, string sCharacter, string sGame, bool isLich);
 
         public event EventDisconnectEventHandler EventDisconnect;
-
         public delegate void EventDisconnectEventHandler();
 
         public event EventExitEventHandler EventExit;
-
         public delegate void EventExitEventHandler();
 
         public event EventAddImageHandler EventAddImage;
-
         public delegate void EventAddImageHandler(string filename, string window, int width, int height);
 
         public event EventEchoTextEventHandler EventEchoText;
-
         public delegate void EventEchoTextEventHandler(string sText, string sWindow);
 
         public event EventLinkTextEventHandler EventLinkText;
-
         public delegate void EventLinkTextEventHandler(string sText, string sLink, string sWindow);
 
         public event EventEchoColorTextEventHandler EventEchoColorText;
-
         public delegate void EventEchoColorTextEventHandler(string sText, Color oColor, Color oBgColor, string sWindow);
 
         public event EventSendTextEventHandler EventSendText;
-
         public delegate void EventSendTextEventHandler(string sText, bool bUserInput, string sOrigin);
 
         public event EventRunScriptEventHandler EventRunScript;
-
         public delegate void EventRunScriptEventHandler(string sText);
 
         public event EventClearWindowEventHandler EventClearWindow;
-
         public delegate void EventClearWindowEventHandler(string sWindow);
 
         public event EventVariableChangedEventHandler EventVariableChanged;
-
         public delegate void EventVariableChangedEventHandler(string sVariable);
 
         public event EventParseLineEventHandler EventParseLine;
-
         public delegate void EventParseLineEventHandler(string sText);
 
         public event EventStatusBarEventHandler EventStatusBar;
-
         public delegate void EventStatusBarEventHandler(string sText, int iIndex);
 
-        public event EventCopyDataEventHandler EventCopyData;
-
-        public delegate void EventCopyDataEventHandler(string sDestination, string sData);
-
         public event EventListScriptsEventHandler EventListScripts;
-
         public delegate void EventListScriptsEventHandler(string sFilter);
 
         public event EventScriptTraceEventHandler EventScriptTrace;
-
         public delegate void EventScriptTraceEventHandler(string sScript);
 
         public event EventScriptAbortEventHandler EventScriptAbort;
-
         public delegate void EventScriptAbortEventHandler(string sScript);
 
         public event EventScriptPauseEventHandler EventScriptPause;
-
         public delegate void EventScriptPauseEventHandler(string sScript);
 
         public event EventScriptPauseOrResumeEventHandler EventScriptPauseOrResume;
-
         public delegate void EventScriptPauseOrResumeEventHandler(string sScript);
 
         public event EventScriptResumeEventHandler EventScriptReload;
-
         public delegate void EventScriptReloadEventHandler(string sScript);
 
         public event EventScriptResumeEventHandler EventScriptResume;
-
         public delegate void EventScriptResumeEventHandler(string sScript);
 
         public event EventScriptDebugEventHandler EventScriptDebug;
-
         public delegate void EventScriptDebugEventHandler(int iDebugLevel, string sScript);
 
         public event EventScriptVariablesEventHandler EventScriptVariables;
-
         public delegate void EventScriptVariablesEventHandler(string sScript, string sFilter);
 
         public event EventPresetChangedEventHandler EventPresetChanged;
-
         public delegate void EventPresetChangedEventHandler(string sPreset);
 
         public event EventShowScriptExplorerEventHandler EventShowScriptExplorer;
-
         public delegate void EventShowScriptExplorerEventHandler();
 
         public event EventLoadLayoutEventHandler EventLoadLayout;
-
         public delegate void EventLoadLayoutEventHandler(string sFile);
 
         public event EventSaveLayoutEventHandler EventSaveLayout;
-
         public delegate void EventSaveLayoutEventHandler(string sFile);
 
         public event EventLoadProfileEventHandler EventLoadProfile;
-
         public delegate void EventLoadProfileEventHandler();
 
         public event EventSaveProfileEventHandler EventSaveProfile;
-
         public delegate void EventSaveProfileEventHandler();
 
         public event EventFlashWindowEventHandler EventFlashWindow;
-
         public delegate void EventFlashWindowEventHandler();
 
         public event EventClassChangeEventHandler EventClassChange;
-
         public delegate void EventClassChangeEventHandler();
 
         public event EventMapperCommandEventHandler EventMapperCommand;
-
         public delegate void EventMapperCommandEventHandler(string cmd);
 
         public event EventAddWindowEventHandler EventAddWindow;
-
         public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int? sTop, int? sLeft);
 
         public event EventPositionWindowEventHandler EventPositionWindow;
-
         public delegate void EventPositionWindowEventHandler(string sWindow, int? sWidth, int? sHeight, int? sTop, int? sLeft);
 
         public event EventRemoveWindowEventHandler EventRemoveWindow;
-
         public delegate void EventRemoveWindowEventHandler(string sWindow);
 
         public event EventCloseWindowEventHandler EventCloseWindow;
-
         public delegate void EventCloseWindowEventHandler(string sWindow);
 
         public event EventChangeWindowTitleEventHandler EventChangeWindowTitle;
-
         public delegate void EventChangeWindowTitleEventHandler(string sWindow, string sComment);
 
         public event EventRawToggleEventHandler EventRawToggle;
-
         public delegate void EventRawToggleEventHandler(string sToggle);
 
         public event EventSendRawEventHandler EventSendRaw;
-
         public delegate void EventSendRawEventHandler(string sText);
 
         public event EventChangeIconEventHandler EventChangeIcon;
-
         public delegate void EventChangeIconEventHandler(string sPath);
 
         public event LoadPluginEventHandler LoadPlugin;
-
         public delegate void LoadPluginEventHandler(string filename);
 
         public event UnloadPluginEventHandler UnloadPlugin;
-
         public delegate void UnloadPluginEventHandler(string filename);
 
         public event EnablePluginEventHandler EnablePlugin;
-
         public delegate void EnablePluginEventHandler(string filename);
 
         public event DisablePluginEventHandler DisablePlugin;
-
         public delegate void DisablePluginEventHandler(string filename);
 
         public event LaunchBrowserEventHandler LaunchBrowser;
         public delegate void LaunchBrowserEventHandler(string url);
 
         public event ReloadPluginsEventHandler ReloadPlugins;
-
         public delegate void ReloadPluginsEventHandler();
 
         public event ListPluginsEventHandler ListPlugins;
-
         public delegate void ListPluginsEventHandler();
 
         private Script.Eval m_oEval = new Script.Eval();
@@ -217,7 +165,6 @@ namespace GenieClient.Genie
 
         public async Task<string> ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
         {
-            /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             string sResult = string.Empty;
             if (sText.ToLower().StartsWith("bug ") | sText.ToLower().StartsWith("sing ") | sText.ToLower().StartsWith(";"))
             {
@@ -326,6 +273,7 @@ namespace GenieClient.Genie
                                             sResult = "";
                                             break;
                                         }
+
                                     case "link":
                                         {
                                             string sWindow = string.Empty;
@@ -388,6 +336,7 @@ namespace GenieClient.Genie
                                             Connect(oArgs);
                                             break;
                                         }
+
                                     case "img":
                                     case "image":
                                         {
@@ -463,11 +412,13 @@ namespace GenieClient.Genie
                                             EventDisconnect?.Invoke();
                                             break;
                                         }
+
                                     case "exit":
                                         {
                                             EventExit?.Invoke();
                                             break;
                                         }
+
                                     case "browser":
                                         {
                                             string url = oGlobals.ParseGlobalVars(oArgs[1].ToString());
@@ -475,6 +426,7 @@ namespace GenieClient.Genie
                                             LaunchBrowser?.Invoke(url);
                                             break;
                                         }
+
                                     case "clear":
                                         {
                                             ClearWindow(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 1)));
@@ -844,6 +796,7 @@ namespace GenieClient.Genie
                                             sResult = "";
                                             break;
                                         }
+
                                     case "put":
                                         {
                                             if (oArgs.Count > 1)
@@ -860,9 +813,6 @@ namespace GenieClient.Genie
 
                                     case "push":
                                         {
-                                            // If oArgs.Count > 2 Then
-                                            // RaiseEvent EventCopyData(oGlobals.ParseGlobalVars(oArgs.Item(1).ToString).ToLower, oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)))
-                                            // End If
                                             sResult = "";
                                             break;
                                         }
@@ -979,7 +929,6 @@ namespace GenieClient.Genie
                                                 oGlobals.VariableList.Add(sName, sValue, Globals.Variables.VariableType.Server);
                                                 string argsVariable2 = "$" + oArgs[1].ToString();
                                                 VariableChanged(argsVariable2);
-                                                /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                                                 EventSendRaw?.Invoke(sCmdRaw + Constants.vbLf);
                                             }
 
@@ -999,7 +948,6 @@ namespace GenieClient.Genie
                                                     if (oGlobals.VariableList.get_GetVariable(sName).oType == Globals.Variables.VariableType.Server)
                                                     {
                                                         string sCmdRaw = Conversions.ToString("<stgupd><vars><<d><k name=\"" + sName + "\" value=\"" + oGlobals.VariableList[sName] + "\"/></<d></vars>");
-                                                        /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                                                         EventSendRaw?.Invoke(sCmdRaw + Constants.vbLf);
                                                     }
 
@@ -1016,7 +964,6 @@ namespace GenieClient.Genie
                                             {
                                                 string argsText3 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
                                                 sResult = Eval(argsText3);
-                                                // EchoText("Eval Result: " & sResult & vbNewLine)
                                             }
 
                                             break;
@@ -1037,9 +984,7 @@ namespace GenieClient.Genie
                                                     string argsVariable3 = "$" + oArgs[1].ToString();
                                                     VariableChanged(argsVariable3);
                                                 }
-#pragma warning disable CS0168
-                                                catch (Exception ex)
-#pragma warning restore CS0168
+                                                catch (Exception)
                                                 {
                                                     EchoText("Invalid #math expression: " + Utility.ArrayToString(oArgs, 1));
                                                 }
@@ -1054,7 +999,6 @@ namespace GenieClient.Genie
                                             {
                                                 string argsText4 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
                                                 sResult = EvalMath(argsText4);
-                                                // EchoText("Math Result: " & sResult & vbNewLine)
                                             }
 
                                             break;
@@ -1143,7 +1087,6 @@ namespace GenieClient.Genie
                                             {
                                                 if ((oArgs[1].ToString().ToLower() ?? "") == "clear")
                                                 {
-                                                    // EchoText("Queue Cleared" & vbNewLine)
                                                     oGlobals.CommandQueue.Clear();
                                                 }
                                                 else
@@ -1234,7 +1177,7 @@ namespace GenieClient.Genie
                                             {
                                                 ListClasses("");
                                             }
-                                            else if (oArgs.Count > 1)	// 2 Arguments or more
+                                            else if (oArgs.Count > 1) // 2 Arguments or more
                                             {
                                                 if (oArgs[1].ToString().StartsWith("+") | oArgs[1].ToString().StartsWith("-"))
                                                 {
@@ -1368,7 +1311,7 @@ namespace GenieClient.Genie
                                             {
                                                 ListTriggers("");
                                             }
-                                            else if (oArgs.Count == 2)	// 2 Arguments
+                                            else if (oArgs.Count == 2) // 2 Arguments
                                             {
                                                 var switchExpr7 = oArgs[1].ToString().ToLower();
                                                 switch (switchExpr7)
@@ -1747,7 +1690,7 @@ namespace GenieClient.Genie
                                             {
                                                 ListGags("");
                                             }
-                                            else // 1 Arguments
+                                            else // 1 Argument
                                             {
                                                 var switchExpr11 = oArgs[1].ToString().ToLower();
                                                 switch (switchExpr11)
@@ -1886,7 +1829,7 @@ namespace GenieClient.Genie
                                             {
                                                 ListHighlights("");
                                             }
-                                            else // 1 Arguments
+                                            else // 1 Argument
                                             {
                                                 var switchExpr13 = oArgs[1].ToString().ToLower();
                                                 switch (switchExpr13)
@@ -2121,7 +2064,7 @@ namespace GenieClient.Genie
                                         {
                                             if (oArgs.Count > 1)
                                             {
-                                                if ((oArgs[1].ToString().ToLower() ?? "") == "edit")	// New topic
+                                                if ((oArgs[1].ToString().ToLower() ?? "") == "edit") // New topic
                                                 {
                                                     string sTemp = "index.txt";
                                                     if (oArgs.Count > 2)
@@ -2251,14 +2194,6 @@ namespace GenieClient.Genie
                                                 EventListScripts?.Invoke("");
                                             }
 
-                                            if (oArgs.Count < 2)
-                                            {
-                                            }
-                                            // ListScripts("")
-                                            else
-                                            {
-                                            } // 2 Arguments
-
                                             break;
                                         }
 
@@ -2341,6 +2276,7 @@ namespace GenieClient.Genie
                                                             EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2)), sWidth, sHeight, sTop, sLeft);
                                                             break;
                                                         }
+
                                                     case "position":
                                                         {
                                                             try
@@ -2550,7 +2486,6 @@ namespace GenieClient.Genie
                 }
             }
 
-            /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
         }
 
@@ -2636,12 +2571,10 @@ namespace GenieClient.Genie
         {
             if (args.Count == 1)
             {
-                // EchoText("Reconnect Command Received" & vbNewLine)
                 EventReconnect?.Invoke();
             }
             else if (args.Count == 5)
             {
-                // EchoText("Connect Command Received" & vbNewLine);
                 var arg1 = oGlobals.ParseGlobalVars(args[1].ToString());
                 var arg2 = oGlobals.ParseGlobalVars(args[2].ToString());
                 var arg3 = oGlobals.ParseGlobalVars(args[3].ToString());
@@ -2657,7 +2590,7 @@ namespace GenieClient.Genie
             }
             else
             {
-                EchoText("Invalid number of arguments in #connect command. Syntax: #connect account password character game" + Constants.vbNewLine);
+                EchoText("Invalid number of arguments in #connect command. Syntax: #connect account password character game" + Constants.vbCrLf);
             }
 
         }
@@ -2807,9 +2740,7 @@ namespace GenieClient.Genie
                     objFile.Close();
                 }
             }
-#pragma warning disable CS0168
-            catch (FileNotFoundException ex)
-#pragma warning restore CS0168
+            catch (FileNotFoundException)
             {
                 EchoText("Topic does not exist.");
             }
@@ -2830,25 +2761,8 @@ namespace GenieClient.Genie
                 sText = sText.Replace("¤", @"\");
             }
 
-            // EchoText("Send: " & sText & vbNewLine)
             SendText(sText, bUserInput, sOrigin);
         }
-
-        // Private Function ParseAllArgs(ByoList As ArrayList, Optional ByVal iStartIndex As Integer = 1) As String
-        // Dim sResult As String = String.Empty
-
-        // For i As Integer = iStartIndex To oList.Count - 1
-        // If Not IsNothing(oList.Item(i)) Then
-        // sResult &= " " & ParseCommand(oList.Item(i).ToString)
-        // End If
-        // Next
-
-        // If sResult.Length > 0 Then
-        // sResult = sResult.Substring(1) ' Remove first space
-        // End If
-
-        // Return sResult
-        // End Function
 
         private string ParseAllArgs(ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
         {
@@ -2870,8 +2784,8 @@ namespace GenieClient.Genie
                 }
                 else
                 {
-                    sResult = sCommand.Substring(1);
-                }	// Remove first space
+                    sResult = sCommand.Substring(1); // Remove first space
+                }
             }
 
             return sResult;
@@ -3059,10 +2973,8 @@ namespace GenieClient.Genie
         private void ListSubstitutes(string sPattern)
         {
             EchoText(System.Environment.NewLine + "Active substitutes: " + System.Environment.NewLine);
-            // bool bUsePattern = false;
             if (sPattern.Length > 0)
             {
-                // bUsePattern = true;
                 EchoText("Filter: " + sPattern + System.Environment.NewLine);
             }
 
@@ -3098,10 +3010,8 @@ namespace GenieClient.Genie
         private void ListGags(string sPattern)
         {
             EchoText(System.Environment.NewLine + "Active gags: " + System.Environment.NewLine);
-            // bool bUsePattern = false;
             if (sPattern.Length > 0)
             {
-                // bUsePattern = true;
                 EchoText("Filter: " + sPattern + System.Environment.NewLine);
             }
 
@@ -3231,7 +3141,6 @@ namespace GenieClient.Genie
                 try
                 {
                     EchoText("Highlight Strings: " + System.Environment.NewLine);
-                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     int I = 0;
                     foreach (DictionaryEntry de in oGlobals.HighlightList)
                     {
@@ -3268,7 +3177,6 @@ namespace GenieClient.Genie
                 {
                     int I = 0;
                     EchoText("Highlight Lines: " + System.Environment.NewLine);
-                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     foreach (DictionaryEntry de in oGlobals.HighlightList)
                     {
                         if (bUsePattern == false | de.Value.ToString().Contains(sPattern))

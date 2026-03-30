@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+using GeniePlugin.Interfaces;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using GeniePlugin.Interfaces;
 
 namespace GenieClient
 {
@@ -15,34 +14,40 @@ namespace GenieClient
 
         public FormPlugins(ref Genie.Collections.ArrayList pluginList)
         {
-            // This call is required by the designer.
+            // This call is required by the designer
             InitializeComponent();
 
-            // Add any initialization after the InitializeComponent() call.
+            // Add any initialization after the InitializeComponent() call
             m_PluginList = pluginList;
         }
 
         public event LoadPluginEventHandler LoadPlugin;
-
         public delegate void LoadPluginEventHandler(string filename);
 
         public event ReloadPluginByNameEventHandler ReloadPluginByName;
-
         public delegate void ReloadPluginByNameEventHandler(string name);
 
         public event UnloadPluginByNameEventHandler UnloadPluginByName;
-
         public delegate void UnloadPluginByNameEventHandler(string name);
 
         public event ReloadPluginsEventHandler ReloadPlugins;
-
         public delegate void ReloadPluginsEventHandler();
 
         private Collection<ComponentPluginItem> m_PluginListItems = new Collection<ComponentPluginItem>();
 
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
+            ReloadPlugins?.Invoke();
             ReloadList();
+        }
+
+        private void ToolStripButtonLoad_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                LoadPlugin?.Invoke(OpenFileDialog1.FileName.Trim());
+                ReloadList();
+            }
         }
 
         public void ReloadList()
@@ -93,12 +98,6 @@ namespace GenieClient
         {
             sender.Plugin.Enabled = false;
         }
-
-        // Private Sub ToolStripButton2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButtonLoad.Click
-        // If OpenFileDialog1.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-        // RaiseEvent LoadPlugin(OpenFileDialog1.FileName)
-        // End If
-        // End Sub
 
         private void FormPlugins_FormClosing(object sender, FormClosingEventArgs e)
         {

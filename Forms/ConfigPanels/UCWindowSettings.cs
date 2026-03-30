@@ -1,7 +1,7 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace GenieClient
 {
@@ -63,9 +63,7 @@ namespace GenieClient
                     m_ItemChanged = true;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 TextBoxMonoFont.Text = "";
                 TextBoxMonoFont.Tag = null;
@@ -89,9 +87,7 @@ namespace GenieClient
                     m_ItemChanged = true;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 TextBoxInputFont.Text = "";
                 TextBoxInputFont.Tag = null;

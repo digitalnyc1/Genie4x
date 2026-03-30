@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -44,9 +44,7 @@ namespace GenieClient
                     objDLL = Assembly.Load(readAllBytes);
                     ExamineAssembly(objDLL, strDLLs[intIndex], Conversions.ToString(strKey), Plugins);
                 }
-#pragma warning disable CS0168
-                catch (Exception e)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     // Error loading DLL, we don't need to do anything special
                 }
@@ -92,7 +90,7 @@ namespace GenieClient
         public static string GetMD5HashFromFile(string fileName)
         {
             var file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            MD5 md5 = new MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
             var retVal = md5.ComputeHash(file);
             file.Close();
             var sb = new StringBuilder();
@@ -117,7 +115,6 @@ namespace GenieClient
                     {
 
                         // See if this type implements our legacy interface
-
                         objInterface = objType.GetInterface(Interfaces.Legacy, true);
                         if (objInterface is null)
                         {
@@ -127,7 +124,6 @@ namespace GenieClient
                         {
                             // It does
                             Plugin = new AvailablePlugin();
-                            // Plugin.AssemblyPath = objDLL.Location
                             Plugin.AssemblyPath = AssemblyPath;
                             Plugin.ClassName = objType.FullName;
                             Plugin.Key = strKey;
@@ -152,9 +148,7 @@ namespace GenieClient
                 // Create and return class instance
                 objPlugin = objDLL.CreateInstance(Plugin.ClassName);
             }
-#pragma warning disable CS0168
-            catch (Exception e)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return null;
             }

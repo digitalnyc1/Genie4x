@@ -1,70 +1,58 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using static GenieClient.My.MyProject;
 
 namespace GenieClient.Mapper
 {
     public partial class MapForm : Form
     {
         public event ListResetEventHandler ListReset;
-
         public delegate void ListResetEventHandler();
 
         public event ToggleRecordEventHandler ToggleRecord;
-
         public delegate void ToggleRecordEventHandler(bool toggle);
 
         public event EchoMapPathEventHandler EchoMapPath;
-
         public delegate void EchoMapPathEventHandler();
 
         public event MoveMapPathEventHandler MoveMapPath;
-
         public delegate void MoveMapPathEventHandler();
 
         public event ToggleAllowDuplicatesEventHandler ToggleAllowDuplicates;
-
         public delegate void ToggleAllowDuplicatesEventHandler(bool toggle);
 
         public event MapLoadedEventHandler MapLoaded;
-
         public delegate void MapLoadedEventHandler();
 
         public event ZoneIDChangeEventHandler ZoneIDChange;
-
         public delegate void ZoneIDChangeEventHandler(string zoneid);
 
         public event ZoneNameChangeEventHandler ZoneNameChange;
-
         public delegate void ZoneNameChangeEventHandler(string zonename);
 
         public event ClickNodeEventHandler ClickNode;
-
         public delegate void ClickNodeEventHandler(string zoneid, int nodeid);
+
         private Genie.Globals m_oGlobals = null;
         private NodeList m_NodeList = null;
         private Node m_CurrentNode = null;
         private Node m_PathDestination = null;
         private string m_CurrentMapFile = string.Empty;
 
-        // Private WithEvents PanelNodeDetails As New NodeDetails()
-        // Private WithEvents PanelLabelDetails As New LabelDetails()
-
         private static int m_Scale = 1;
 
         public MapForm(Genie.Globals Globals)
         {
-            // This call is required by the Windows Form Designer.
+            // This call is required by the Windows Form Designer
             m_oGlobals = Globals;
             InitializeComponent();
             UpdatePanelColor();
-            // Add any initialization after the InitializeComponent() call.
+            // Add any initialization after the InitializeComponent() call
         }
 
         public string MapFile
@@ -108,19 +96,19 @@ namespace GenieClient.Mapper
                 return m_NodeList;
             }
         }
+
         public void UpdatePanelColor()
         {
             PanelBase.BackColor = m_oGlobals.PresetList["automapper.panel"].BgColor;
             PanelMap.BackColor = m_oGlobals.PresetList["automapper.panel"].BgColor;
             PanelMap.Invalidate();
         }
+
         public void UpdateGraph(Node n, NodeList nl, Direction dir)
         {
             m_AllowRecord = false;
             m_CurrentNode = n;
             m_NodeList = nl;
-            // m_NodeList.ResetArranged()
-            // m_NodeList.Arrange(n)
 
             if (!Information.IsNothing(n))
             {
@@ -154,10 +142,11 @@ namespace GenieClient.Mapper
 
         private int _mapOffsetX;
         private int _mapOffsetY;
+
         private Point3D GetOffset()
         {
             if (m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
-            return new Point3D((int)(this.Width / 2 * m_Scale), (int)(this.Height / 2 * m_Scale));
+            return new Point3D(this.Width / 2 * m_Scale, this.Height / 2 * m_Scale);
         }
 
         public Point ConvertPoint(Point3D oPoint, int iOffset = 0)
@@ -193,54 +182,6 @@ namespace GenieClient.Mapper
             {
                 m_ControlPress = true;
             }
-
-            // Dim dir As Direction = Direction.None
-
-            // Select Case e.KeyCode
-            // Case Keys.NumPad0
-            // dir = Direction.Go
-            // Case Keys.NumPad1
-            // dir = Direction.SouthWest
-            // Case Keys.NumPad2
-            // dir = Direction.South
-            // Case Keys.NumPad3
-            // dir = Direction.SouthEast
-            // Case Keys.NumPad4
-            // dir = Direction.West
-            // Case Keys.NumPad5
-            // dir = Direction.Out
-            // Case Keys.NumPad6
-            // dir = Direction.East
-            // Case Keys.NumPad7
-            // dir = Direction.NorthWest
-            // Case Keys.NumPad8
-            // dir = Direction.North
-            // Case Keys.NumPad9
-            // dir = Direction.NorthEast
-            // Case Keys.Add
-            // dir = Direction.Up
-            // Case Keys.Subtract
-            // dir = Direction.Down
-            // End Select
-
-            // If m_ToggleNumpadMap = True And dir <> Direction.None Then
-            // If Not IsNothing(m_SelectedNodes) AndAlso m_SelectedNodes.Count > 0 Then
-            // Dim n As Node = m_SelectedNodes.Item(0)
-            // Dim oNode As New Node()
-            // oNode.ID = m_NodeList.NextID
-            // oNode.Name = oNode.ID
-            // oNode.Position = New Point3D(n.Position)
-            // oNode.Position.Offset(dir)
-            // n.AddArc(dir, dir.ToString, oNode)
-            // oNode.AddArc(Arc.ReverseDirection(dir), Arc.ReverseDirection(dir).ToString, n)
-            // m_NodeList.Add(oNode)
-            // m_NodeList.ArrangeSingle(oNode, dir)
-            // PanelMap.Invalidate()
-
-            // m_SelectedNodes.Clear()
-            // m_SelectedNodes.Add(oNode)
-            // End If
-            // End If
         }
 
         private void GraphForm_KeyUp(object sender, KeyEventArgs e)
@@ -318,9 +259,7 @@ namespace GenieClient.Mapper
 
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -342,10 +281,6 @@ namespace GenieClient.Mapper
         private void GraphForm_Resize(object sender, EventArgs e)
         {
             PanelMap.Invalidate();
-
-            // If Not IsNothing(m_CurrentNode) Then
-            // CheckScrollTo(m_CurrentNode.Position.X, m_CurrentNode.Position.Y)
-            // End If
         }
 
         private string GetValue(XmlNode xn, string key, string def = "")
@@ -363,23 +298,6 @@ namespace GenieClient.Mapper
 
             return def;
         }
-
-        // Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        // Dim rs As New XmlReaderSettings()
-        // rs.CloseInput = True
-        // rs.IgnoreComments = True
-        // Dim xr As XmlReader = XmlReader.Create("test.xml", rs)
-
-        // Dim sName As String = String.Empty
-        // While xr.Read()
-        // If xr.Name.Length > 0 Then
-        // sName = xr.Name
-        // ElseIf xr.Value.Trim.Length > 0 Then
-        // MsgBox(sName&& ": "&& xr.Value)
-        // End If
-        // End While
-        // xr.Close()
-        // End Sub
 
         private void ToolStripButtonClear_Click(object sender, EventArgs e)
         {
@@ -583,32 +501,11 @@ namespace GenieClient.Mapper
 
                 return sReturn;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return string.Empty;
             }
         }
-
-        // Private Function FixZoneID(ByVal id As String) As String
-        // Dim rex As New Regex("^(\d*)(.*)$", MyRegexOptions.options)
-        // Dim m As Match = rex.Match(id)
-        // Dim sReturn As String = String.Empty
-
-        // If m.Groups.Count > 0 Then
-        // If m.Groups.Item(1).Value.Length > 0 Then
-        // sReturn &= m.Groups.Item(1).Value.PadLeft(3, "0")
-        // End If
-        // If m.Groups.Count > 1 Then
-        // sReturn &= m.Groups.Item(2).Value
-        // End If
-        // Else
-        // sReturn = id
-        // End If
-
-        // Return sReturn
-        // End Function
 
         public bool LoadXML(string sPath)
         {
@@ -643,14 +540,6 @@ namespace GenieClient.Mapper
                     {
                         ToolStripDropDownButtonMaps.Text = "Untitled Map";
                     }
-
-                    // Dim sOffset As String = GetValue(xZone, "offset")
-                    // If sOffset.Contains(", ") Then
-                    // Dim iX As Integer = Integer.Parse(sOffset.Substring(0, sOffset.IndexOf(", ")).Trim)
-                    // Dim iY As Integer = Integer.Parse(sOffset.Substring(sOffset.IndexOf(", ") + 2).Trim)
-                    // m_Offset.X = iX
-                    // m_Offset.Y = iY
-                    // End If
                 }
 
                 xnlist = xdoc.SelectNodes("zone/node");
@@ -714,7 +603,7 @@ namespace GenieClient.Mapper
                         string sExit = GetValue(xarc, "exit", "").ToLower();
                         a.Move = GetValue(xarc, "move", "").ToLower();
 
-                        // "name" is previous xml format. it's only left for compability
+                        // "name" is previous xml format, left for compability
                         if (sExit.Length == 0)
                         {
                             sExit = GetValue(xarc, "name").ToLower();
@@ -859,9 +748,7 @@ namespace GenieClient.Mapper
 
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -922,7 +809,6 @@ namespace GenieClient.Mapper
                 xw.WriteStartElement("zone");
                 xw.WriteAttributeString("name", ZoneName);
                 xw.WriteAttributeString("id", ZoneID);
-                // xw.WriteAttributeString("offset", m_Offset.X.ToString&& ", "&& m_Offset.Y.ToString)
 
                 foreach (Node n in m_NodeList)
                 {
@@ -966,7 +852,7 @@ namespace GenieClient.Mapper
                             xw.WriteEndElement();
                         }
 
-                        xw.WriteEndElement(); // end "node"
+                        xw.WriteEndElement(); // End "node"
                     }
                 }
 
@@ -979,18 +865,16 @@ namespace GenieClient.Mapper
                     xw.WriteAttributeString("y", l.Position.Y.ToString());
                     xw.WriteAttributeString("z", l.Position.Z.ToString());
                     xw.WriteEndElement();
-                    xw.WriteEndElement(); // end "label"
+                    xw.WriteEndElement(); // End "label"
                 }
 
-                xw.WriteEndElement(); // end "zone"
+                xw.WriteEndElement(); // End "zone"
                 xw.WriteEndDocument();
                 xw.Flush();
                 xw.Close();
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -1050,7 +934,6 @@ namespace GenieClient.Mapper
         private Node m_MovingNode = null;
         private Label m_MovingLabel = null;
         private Node m_ToolTipNode = null;
-        // Private m_MoveOriginalOffset As Point3D = Nothing
         private Point3D m_MoveMap = null;
         private Point3D m_LassoStart = null;
         private Rectangle m_Lasso;
@@ -1121,7 +1004,7 @@ namespace GenieClient.Mapper
 
                         m_SelectedNodes.Add(m_MovingNode);
                     }
-                    else if (m_ControlPress == true) // Node already selected. Unselect if we have control pressed.
+                    else if (m_ControlPress == true) // Node already selected. Unselect if we have control pressed
                     {
                         m_SelectedNodes.Remove(m_MovingNode);
                         m_MovingNode = null;
@@ -1152,13 +1035,6 @@ namespace GenieClient.Mapper
                 {
                     ClickNode?.Invoke(m_CurrentZoneID, m_PathDestination.ID);
                 }
-
-                // If m_ToggleMoveNodes = True Then
-                // 'm_MoveOriginalOffset = New Point3D(m_Offset)
-                // Else
-                // m_NodeList.ResetPathStates()
-                // m_PathDestination = FindNode(e.X, e.Y, m_CurrentLevelZ)
-                // End If
             }
 
             m_ToolTipNode = null;
@@ -1185,7 +1061,7 @@ namespace GenieClient.Mapper
             var m_Offset = GetOffset();
             X = X - m_Offset.X;
             Y = Y - m_Offset.Y;
-            Node oNode = null; // Find LAST in list so the highest room get selected when you click on a location that has two.
+            Node oNode = null; // Find LAST in list so the highest room get selected when you click on a location that has two
             foreach (Node n in m_NodeList)
             {
                 if (!Information.IsNothing(n.Position))
@@ -1210,7 +1086,7 @@ namespace GenieClient.Mapper
 
         private Label FindLabel(int X, int Y, int Z = 0)
         {
-            Label oLabel = null; // Find LAST in list so the highest label get selected when you click on a location that has two.
+            Label oLabel = null; // Find LAST in list so the highest label get selected when you click on a location that has two
             foreach (Label l in m_NodeList.Labels)
             {
                 if (!Information.IsNothing(l.Position))
@@ -1291,8 +1167,6 @@ namespace GenieClient.Mapper
                 {
                     ToolStripStatusText.Text = "Ready.";
                 }
-
-                // FlickerFreePanel1.Invalidate()
             }
         }
 
@@ -1316,7 +1190,7 @@ namespace GenieClient.Mapper
                     m_SelectedLabels.Clear();
                 }
 
-                // nodes
+                // Nodes
                 foreach (Node n in m_NodeList)
                 {
                     if (!Information.IsNothing(n.Position))
@@ -1344,7 +1218,7 @@ namespace GenieClient.Mapper
                     }
                 }
 
-                // labels
+                // Labels
                 foreach (Label l in m_NodeList.Labels)
                 {
                     if (!Information.IsNothing(l.Position))
@@ -1475,10 +1349,6 @@ namespace GenieClient.Mapper
                 PanelNodeDetails.ToolStripButtonRemove.Enabled = true;
                 PanelNodeDetails.ToolStripButtonArcs.Enabled = true;
             }
-
-            // PanelNodeDetails.ToolStripButtonArcs.Checked = False
-            // PanelNodeDetails.PanelProperties.Visible = True
-            // PanelNodeDetails.ArcDetails.Visible = False
             else
             {
                 PanelNodeDetails.Node = null;
@@ -1507,11 +1377,6 @@ namespace GenieClient.Mapper
             {
                 PanelLabelDetails.Label = m_SelectedLabels[0];
             }
-            // PanelNodeDetails.Label = m_SelectedLabels.Item(0)
-            else
-            {
-                // PanelNodeDetails.Label = Nothing
-            }
         }
 
         private NodeList m_SelectedNodes = new NodeList();
@@ -1537,7 +1402,6 @@ namespace GenieClient.Mapper
             if (Information.IsNothing(m_NodeList))
                 return;
 
-            // Debug.WriteLine("Painting...")
             // First draw all lines
             foreach (Node n in m_NodeList)
             {
@@ -1598,15 +1462,11 @@ namespace GenieClient.Mapper
                                         }
 
                                         var oLinePen = new Pen(oColorLine);
-                                        // oLinePen.StartCap = Drawing2D.LineCap.ArrowAnchor
-                                        // oLinePen.EndCap = Drawing2D.LineCap.ArrowAnchor
                                         if (a.Direction == Direction.Climb)
                                             oLinePen.Color = oColorLineClimb;
                                         if (a.Direction == Direction.Go || a.Direction == Direction.Up || a.Direction == Direction.Down || a.Direction == Direction.Out)
                                             oLinePen.Color = oColorLineGo;
                                         e.Graphics.DrawLine(oLinePen, ConvertPoint(pt1), ConvertPoint(pt2));
-
-                                        // Debug.WriteLine("Drawing line from "&& n.Position.ToString&& " to "&& a.Destination.Position.ToString)
                                     }
                                 }
                             }
@@ -1702,7 +1562,6 @@ namespace GenieClient.Mapper
                         }
                         else
                         {
-                            // Debug.WriteLine("Drawing node at "&& n.Position.ToString())
                             var oWhere = ConvertPoint(n.Position, 4 * m_Scale);
                             e.Graphics.FillRectangle(new SolidBrush(oColorRoom), oWhere.X + 1, oWhere.Y + 1, 8 * m_Scale, 8 * m_Scale);
                             e.Graphics.DrawRectangle(new Pen(oColorRoomBorder), oWhere.X, oWhere.Y, 8 * m_Scale, 8 * m_Scale);
@@ -1740,7 +1599,6 @@ namespace GenieClient.Mapper
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
                             oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor;
-                            //oColorRoom = Color.FromArgb(255, 255, 192); // Base BG
                             oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].BgColor;
                         }
 
@@ -1791,31 +1649,6 @@ namespace GenieClient.Mapper
                 }
             }
 
-            // Draw room id
-            // If m_LayoutEdit = True Then
-            // For Each n As Node In m_NodeList
-            // If Not IsNothing(n.Position) Then
-            // e.Graphics.DrawString(n.ID.ToString, m_Font, Brushes.Black, ConvertPoint(n.Position))
-            // End If
-            // Next
-            // End If
-
-            // If m_ToggleRecording = True Or m_ToggleMoveNodes = True Then
-            // ' Draw text for exits
-            // For Each n As Node In m_NodeList
-            // If Not IsNothing(n.Position) Then
-            // For Each a As Arc In n.Arcs
-            // If a.Direction = Direction.Go Or a.Direction = Direction.Climb Then
-            // Dim b As Brush = Brushes.Black
-            // If a.Direction = Direction.Climb Then b = Brushes.Red
-            // If a.Direction = Direction.Go Then b = Brushes.Blue
-            // e.Graphics.DrawString(a.Name, m_Font, b, ConvertPoint(n.Position))
-            // End If
-            // Next
-            // End If
-            // Next
-            // End If
-
             // Draw labels
             Font LabelText = new Font(m_Font.Name, (m_Font.Size * m_Scale));
 
@@ -1825,7 +1658,6 @@ namespace GenieClient.Mapper
                 {
                     if (l.Position.Z == m_CurrentLevelZ)
                     {
-                        // If l.Rectangle.Width = 0 Then // SCALE AND EVERYTHING CHANGES. SET THIS FUCKER ON EACH REDRAW
                         var r = new RectangleF();
                         r.Height = 15;
 
@@ -1835,11 +1667,6 @@ namespace GenieClient.Mapper
                         var size = e.Graphics.MeasureString(l.Text, LabelText);
                         r.Width = size.Width;
                         l.Rectangle = r;
-                        // End If
-
-                        // If r.X + r.Width >= PanelMap.Width Then
-                        // r.X = PanelMap.Width - r.Width
-                        // End If
 
                         var b = Brushes.White;
                         var bt = new SolidBrush(m_oGlobals.PresetList["automapper.panel"].FgColor);
@@ -1856,35 +1683,6 @@ namespace GenieClient.Mapper
                 }
             }
 
-            // ' Draw tooltip
-            // If Not IsNothing(m_ToolTipNode) Then
-            // Dim pt As Point = ConvertPoint(m_ToolTipNode.Position)
-            // pt.Offset(-4, -19)
-            // Dim r As New RectangleF
-            // r.Width = 250
-            // r.Height = 15
-            // r.X = pt.X
-            // r.Y = pt.Y
-
-            // Dim sText As String = "#"&& m_ToolTipNode.ID&& " "&& m_ToolTipNode.Name
-            // Dim size As SizeF = e.Graphics.MeasureString(sText, m_Font)
-
-            // If r.Width > size.Width Then
-            // r.Width = size.Width + 2
-            // End If
-
-            // If r.X + r.Width >= FlickerFreePanel1.Width Then
-            // r.X = FlickerFreePanel1.Width - r.Width
-            // End If
-
-            // e.Graphics.FillRectangle(Brushes.White, r.X, r.Y, r.Width - 8, r.Height)
-            // e.Graphics.DrawRectangle(Pens.Black, r.X, r.Y, r.Width - 8, r.Height)
-
-            // r.X += 1
-            // r.Y += 1
-            // e.Graphics.DrawString(sText, m_Font, Brushes.Black, r)
-            // End If
-
             // Draw lasso
             if (!Information.IsNothing(m_LassoStart))
             {
@@ -1892,17 +1690,11 @@ namespace GenieClient.Mapper
                 p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                 e.Graphics.DrawRectangle(p, m_Lasso);
             }
-
-            // Draw start point dot
-            // Dim oWhere2 As Point = ConvertPoint(New Point3D(), 4)
-            // e.Graphics.FillRectangle(Brushes.Red, oWhere2.X + 3, oWhere2.Y + 3, 3, 3)
-            //UpdatePanelColor();
         }
 
         private void CheckScrollTo(int NodeX, int NodeY)
         {
             // Do not scroll if current possition is inside visible area
-
             int iScrollX = 0;
             int iScrollY = 0;
             var m_Offset = GetOffset();
@@ -1912,35 +1704,24 @@ namespace GenieClient.Mapper
             NodeY += m_Offset.Y;
 
             var withBlock = PanelBase.AutoScrollPosition;
-            // Debug.WriteLine("===============")
 
             if (NodeX < -withBlock.X)
             {
                 iScrollX = (int)(NodeX - (PanelBase.Width - SystemInformation.VerticalScrollBarWidth - 10 * m_Scale) / (double)2);
             }
-            // Debug.WriteLine("Outside on LEFT side")
             else if (NodeX > -withBlock.X + (PanelBase.Width - SystemInformation.VerticalScrollBarWidth - 10 * m_Scale))
             {
                 iScrollX = (int)(NodeX - (PanelBase.Width - SystemInformation.VerticalScrollBarWidth - 10 * m_Scale) / (double)2);
-                // Debug.WriteLine("Outside on RIGHT side")
             }
 
             if (NodeY < -withBlock.Y)
             {
                 iScrollY = (int)(NodeY - (PanelBase.Height - SystemInformation.HorizontalScrollBarHeight - 10 * m_Scale) / (double)2);
             }
-            // Debug.WriteLine("Outside on TOP side")
             else if (NodeY > -withBlock.Y + (PanelBase.Height - SystemInformation.HorizontalScrollBarHeight - 10 * m_Scale))
             {
                 iScrollY = (int)(NodeY - (PanelBase.Height - SystemInformation.HorizontalScrollBarHeight - 10 * m_Scale) / (double)2);
-                // Debug.WriteLine("Outside on BOTTOM side")
             }
-
-            // Debug.WriteLine("---------------")
-            // Debug.WriteLine("NodeX: "&& NodeX.ToString)
-            // Debug.WriteLine("ScrollX: "&& iScrollX.ToString)
-            // Debug.WriteLine("AutoScrollPositionX: "&& .X.ToString)
-            // Debug.WriteLine("PanelBase.Width: "&& PanelBase.Width)
 
             if (iScrollX == 0 && iScrollY == 0)
                 return;
@@ -1987,7 +1768,7 @@ namespace GenieClient.Mapper
             PanelMap.Invalidate();
         }
 
-        // Remove funkar ej om flera rum matchar i Equals()
+        // Remove does not work if multiple rooms match in Equals()
         private void EraseSelected()
         {
             if (!Information.IsNothing(m_SelectedNodes))
@@ -1997,7 +1778,6 @@ namespace GenieClient.Mapper
                     if (m_NodeList.Contains(n.ID))
                     {
                         m_NodeList.Remove(n);
-                        // Debug.WriteLine("Removing node "&& n.ID)
                     }
                 }
 
@@ -2008,7 +1788,6 @@ namespace GenieClient.Mapper
                     {
                         if (!Information.IsNothing(a.Destination) && Information.IsNothing(m_NodeList.Find(a.DestinationID)))
                         {
-                            // Debug.WriteLine("Removing destination "&& a.DestinationID)
                             Node argdest = null;
                             a.SetDestination(argdest);
                         }
@@ -2025,7 +1804,6 @@ namespace GenieClient.Mapper
                 {
                     if (m_NodeList.Labels.Contains(l))
                     {
-                        // MsgBox(l.Text)
                         m_NodeList.Labels.Remove(l);
                     }
                 }
@@ -2051,13 +1829,6 @@ namespace GenieClient.Mapper
         private void ToolStripButtonProperties_Click(object sender, EventArgs e)
         {
             ToolStripButtonProperties.Checked = !ToolStripButtonProperties.Checked;
-            // If ToolStripButtonProperties.Checked = True Then
-            // PanelDetails.Controls.Clear()
-            // PanelDetails.Controls.Add(PanelNodeDetails)
-            // PanelDetails.Controls.Add(PanelLabelDetails)
-            // PanelNodeDetails.Dock = DockStyle.Fill
-            // PanelLabelDetails.Dock = DockStyle.Fill
-            // End If
             PanelDetails.Visible = ToolStripButtonProperties.Checked;
             UpdateMapSize();
         }
@@ -2070,8 +1841,7 @@ namespace GenieClient.Mapper
 
         private void UpdateMapSize(bool MapChanged = false)
         {
-            // Sometimes this was changed, making the map appear outside of area...
-
+            // Sometimes this was changed, making the map appear outside of area
             if (!Information.IsNothing(m_NodeList) && m_NodeList.Count > 0) // No list = don't care
             {
                 var r = m_NodeList.GetMapSize();
@@ -2120,12 +1890,6 @@ namespace GenieClient.Mapper
                 }
             }
         }
-
-        // Private m_ToggleNumpadMap As Boolean = False
-        // Private Sub ToolStripButtonNumpad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButtonNumpad.Click
-        // ToolStripButtonNumpad.Checked = Not ToolStripButtonNumpad.Checked
-        // m_ToggleNumpadMap = ToolStripButtonNumpad.Checked
-        // End Sub
 
         private void PanelNodeDetails_UpdateMap()
         {
@@ -2207,13 +1971,6 @@ namespace GenieClient.Mapper
 
         private void ToolStripButtonWalk_Click(object sender, EventArgs e)
         {
-            // Dim sPath As String = String.Empty
-            // If Not IsNothing(m_PathDestination) Then
-            // RaiseEvent MoveMapPath()
-            // Else
-            // MsgBox("Select destination node by right clicking on it.")
-            // End If
-
             if (ToolStripButtonWalk.Checked == true)
             {
                 Interaction.MsgBox("Select destination node by right clicking on it.");
@@ -2295,10 +2052,6 @@ namespace GenieClient.Mapper
         {
             if (Visible == true)
             {
-                // If Not IsNothing(m_CurrentNode) Then
-                // CheckScrollTo(m_CurrentNode.Position.X, m_CurrentNode.Position.Y)
-                // End If
-
                 PanelMap.Invalidate();
             }
         }

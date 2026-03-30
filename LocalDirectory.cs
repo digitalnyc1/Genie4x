@@ -1,6 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
+using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -37,7 +37,7 @@ namespace GenieClient
             try
             {
                 if (!System.IO.Path.IsPathRooted(path)) path = Path + "\\" + path;
-                DirectoryInfo directory = new DirectoryInfo(path);
+                DirectoryInfo directory = new(path);
                 if (!directory.Exists)
                 {
                     directory.Create();

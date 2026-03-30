@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -60,7 +56,9 @@ namespace GenieClient
         }
 
         private string m_sConfigDir = string.Empty;
+
         public bool ClassicConnect { get; set; }
+
         public string ConfigDir
         {
             get
@@ -73,6 +71,7 @@ namespace GenieClient
                 m_sConfigDir = value;
             }
         }
+
         private void DialogProfileConnect_VisibleChanged(object sender, EventArgs e)
         {
             string sFile = string.Empty;
@@ -111,26 +110,10 @@ namespace GenieClient
                     }
                 }
                 _profiles.ExpandAll();
-                if (_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); //this will scroll the window to the top of the list
-
+                if (_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); // This will scroll the window to the top of the list
             }
-
-
-
         }
-        private string GetValue(string element, string profileContents)
-        {
-            int start = profileContents.IndexOf(element + "=");
-            string returnValue = string.Empty;
-            if (start > 0)
-            {
-                start += element.Length + 2;
-                int end = profileContents.IndexOf('"', start);
-                returnValue = profileContents.Substring(start, end - start);
-            }
-            if (string.IsNullOrEmpty(returnValue)) returnValue = $"{element} Missing";
-            return returnValue;
-        }
+
         private void ListBoxProfiles_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)

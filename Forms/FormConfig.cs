@@ -1,5 +1,5 @@
-﻿using System;
 using Microsoft.VisualBasic;
+using System;
 
 namespace GenieClient
 {
@@ -23,7 +23,6 @@ namespace GenieClient
 
         private void ApplyChanges()
         {
-            // MsgBox("Applying changes")
             if (UcWindows1.ItemChanged)
             {
                 if (Interaction.MsgBox("Current window item has been changed. Apply changes?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
@@ -103,10 +102,6 @@ namespace GenieClient
                     UcHighlightStrings1.ApplyChanges();
                 }
             }
-
-            // If TypeOf Me.ParentForm Is FormMain Then
-            // CType(Me.ParentForm, FormMain).SaveXMLConfig()
-            // End If
 
             UcMacros1.SaveToFile();
             UcAliases1.SaveToFile();

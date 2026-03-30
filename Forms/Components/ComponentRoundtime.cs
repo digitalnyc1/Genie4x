@@ -1,7 +1,7 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace GenieClient
 {
@@ -109,13 +109,11 @@ namespace GenieClient
             }
         }
 
-        // Private myImage As Image = Image.FromFile("RT.bmp")
         private void PanelRT_Paint(object sender, PaintEventArgs e)
         {
             Graphics g;
             int w;
             g = e.Graphics;
-            // Dim myTextureBrush As New TextureBrush(myImage)
 
             if (RT > 0 & StartRT > 0)
             {

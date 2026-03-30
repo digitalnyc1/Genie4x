@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -17,10 +17,10 @@ namespace GenieClient
 
         public FormSkin(string sID, string sTitle, ref Genie.Globals oGlobal)
         {
-            // This call is required by the Windows Form Designer.
+            // This call is required by the Windows Form Designer
             InitializeComponent();
 
-            // Add any initialization after the InitializeComponent() call.
+            // Add any initialization after the InitializeComponent() call
             ID = sID;
             Text = sTitle;
             Title = sTitle;
@@ -30,7 +30,6 @@ namespace GenieClient
         }
 
         public event EventLinkClickedEventHandler EventLinkClicked;
-
         public delegate void EventLinkClickedEventHandler(string link, System.Windows.Forms.LinkClickedEventArgs e);
 
         public int TriggerDistance = 5;
@@ -45,8 +44,6 @@ namespace GenieClient
         private Bitmap oBottomRight;
 
         public ToolStripMenuItem WindowMenuItem = null;
-
-        // int windowCloseX, windowCloseY, windowCloseWidth, windowCloseHeight; 
 
         private Font oTitleFont = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
         private DragType oDragType;
@@ -153,7 +150,6 @@ namespace GenieClient
         {
             var ResStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(sRef);
             var resourceName = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            //Console.Write(resourceName);
             return (Bitmap)Image.FromStream(ResStream);
         }
 
@@ -614,16 +610,6 @@ namespace GenieClient
             _RichTextBoxOutput.SetScrollBars();
         }
 
-        // Private Sub Resized()
-        // If Not IsNothing(oLeft) Then
-        // PanelContents.Width = Me.Width - oLeft.Width - oRight.Width
-        // PanelContents.Height = Me.Height - oTop.Height - oBottom.Height
-        // If RichTextBoxOutput.Visible = False Then
-        // RichTextBoxOutput.Visible = True
-        // End If
-        // End If
-        // End Sub
-
         private void PanelContents_MouseEnter(object sender, EventArgs e)
         {
             Cursor = Cursors.Default;
@@ -723,6 +709,7 @@ namespace GenieClient
 
         private bool m_bUnloadWindow = false;
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             if (this.MdiParent == null)
@@ -745,12 +732,6 @@ namespace GenieClient
                 ((FormMain)MdiParent).ActiveFormSkin = this;
             }
         }
-
-        // Private Sub FormSkin_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        // If Not IsNothing(Me.MdiParent) Then
-        // CType(Me.MdiParent, FormMain).ActiveFormSkin = Me
-        // End If
-        // End Sub
 
         private void FormSkin_VisibleChanged(object sender, EventArgs e)
         {

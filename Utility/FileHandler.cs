@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Drawing;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 
@@ -19,13 +16,16 @@ namespace GenieClient
         {
             return FileVersionInfo.GetVersionInfo(filename).FileVersion;
         }
+
         public static async Task<MemoryStream> DownloadToMemoryStream(string downloadURL)
         {
             SafeDownloadToMemoryStreamDelegate threadSafeCall = SafeDownloadToMemoryStream;
             var memoryStream = Task.Run(() => threadSafeCall.Invoke(downloadURL));
             return await memoryStream;
         }
+
         delegate Task<MemoryStream> SafeDownloadToMemoryStreamDelegate(string downloadURL);
+
         private static async Task<MemoryStream> SafeDownloadToMemoryStream(string downloadURL)
         {
             try
@@ -73,7 +73,7 @@ namespace GenieClient
             System.Drawing.Image image = Image.FromFile(filename);
             int h = height > 0 ? height : image.Height;
             int w = width > 0 ? width : image.Width;
-            image = (Image)new Bitmap(image, new Size(w, h));
+            image = new Bitmap(image, new Size(w, h));
             return image;
         }
     }

@@ -1,22 +1,19 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
     public class PluginHost : GeniePlugin.Plugins.IHost
     {
         public event EventEchoTextEventHandler EventEchoText;
-
         public delegate void EventEchoTextEventHandler(string sText, Color oColor, Color oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
-
         public delegate void EventSendTextEventHandler(string sText, string sPlugin);
 
         public event EventVariableChangedEventHandler EventVariableChanged;
-
         public delegate void EventVariableChangedEventHandler(string sVariable);
 
         private Genie.Globals m_oGlobals;

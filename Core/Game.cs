@@ -1,18 +1,16 @@
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using System.IO;
 
 namespace GenieClient.Genie
 {
@@ -31,64 +29,50 @@ namespace GenieClient.Genie
 
         public event EventAddImageEventHandler EventAddImage;
         public delegate void EventAddImageEventHandler(string filename, string window, int width, int height);
-        public event EventPrintTextEventHandler EventPrintText;
 
+        public event EventPrintTextEventHandler EventPrintText;
         public delegate void EventPrintTextEventHandler(string text, Color color, Color bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
 
         public event EventPrintErrorEventHandler EventPrintError;
-
         public delegate void EventPrintErrorEventHandler(string text);
 
         public event EventClearWindowEventHandler EventClearWindow;
-
         public delegate void EventClearWindowEventHandler(string sWindow);
 
         public event EventDataRecieveEndEventHandler EventDataRecieveEnd;
-
         public delegate void EventDataRecieveEndEventHandler();
 
         public event EventRoundTimeEventHandler EventRoundTime;
-
         public delegate void EventRoundTimeEventHandler(int time);
 
         public event EventCastTimeEventHandler EventCastTime;
-
         public delegate void EventCastTimeEventHandler();
 
         public event EventSpellTimeEventHandler EventSpellTime;
-
         public delegate void EventSpellTimeEventHandler();
 
         public event EventClearSpellTimeEventHandler EventClearSpellTime;
-
         public delegate void EventClearSpellTimeEventHandler();
 
         public event EventTriggerParseEventHandler EventTriggerParse;
-
         public delegate void EventTriggerParseEventHandler(string text);
 
         public event EventTriggerMoveEventHandler EventTriggerMove;
-
         public delegate void EventTriggerMoveEventHandler();
 
         public event EventTriggerPromptEventHandler EventTriggerPrompt;
-
         public delegate void EventTriggerPromptEventHandler();
 
         public event EventStatusBarUpdateEventHandler EventStatusBarUpdate;
-
         public delegate void EventStatusBarUpdateEventHandler();
 
         public event EventVariableChangedEventHandler EventVariableChanged;
-
         public delegate void EventVariableChangedEventHandler(string sVariable);
 
         public event EventParseXMLEventHandler EventParseXML;
-
         public delegate void EventParseXMLEventHandler(string xml);
 
         public event EventStreamWindowEventHandler EventStreamWindow;
-
         public delegate void EventStreamWindowEventHandler(object sID, object sTitle, object sIfClosed);
 
         private Connection _m_oSocket;
@@ -178,16 +162,10 @@ namespace GenieClient.Genie
         private string m_sRoomObjs = string.Empty;
         private string m_sRoomPlayers = string.Empty;
         private string m_sRoomExits = string.Empty;
-        private int m_iHealth = 100;
-        private int m_iMana = 100;
-        private int m_iSpirit = 100;
-        private int m_iStamina = 100;
-        private int m_iConcentration = 100;
         private int m_iEncumbrance = 0;
         private string m_sCharacterName = string.Empty;
         private string m_sGameName = string.Empty;
         private int m_iRoundTime = 0;
-        private int m_iSpellTime = 0;
         private int m_iCastTime = 0;
         private int m_iGameTime = 0;
         private string m_sTriggerBuffer = string.Empty;
@@ -196,7 +174,6 @@ namespace GenieClient.Genie
         private bool m_bUpdateRoomOnStreamEnd = false;
         private string m_sRoomTitle = string.Empty;
         private string m_sRoomUid = string.Empty;
-        // private Match m_oRegMatch;
         private Hashtable m_oIndicatorHash = new Hashtable();
         private Hashtable m_oCompassHash = new Hashtable();
         private WindowTarget m_oTargetWindow = WindowTarget.Main;
@@ -207,7 +184,6 @@ namespace GenieClient.Genie
         private bool m_bFamiliarLineParse = false;
         public bool IsLich = false;
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         public enum WindowTarget
         {
             Unknown,
@@ -267,7 +243,6 @@ namespace GenieClient.Genie
             Out
         }
 
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         private Hashtable m_oBanned = new Hashtable();
 
         public bool ShowRawOutput
@@ -305,6 +280,7 @@ namespace GenieClient.Genie
                 return m_oConnectState == ConnectStates.ConnectedGame;
             }
         }
+
         public bool LastRowWasPrompt
         {
             get
@@ -409,6 +385,7 @@ namespace GenieClient.Genie
             m_sConnectKey = Key;
             DirectConnect(Character, Game, Host, Port);
         }
+
         public void DirectConnect(string Character, string Game, string Host, int Port)
         {
             m_oLastUserActivity = DateTime.Now;
@@ -547,7 +524,6 @@ namespace GenieClient.Genie
             int iBoldIndex = 0;
             char cPreviousChar = Conversions.ToChar("");
             bool bCombatRow = false;
-            bool bPromptRow = false;
 
             // Fix for DR html encoding problems
             if (sText.StartsWith("< "))
@@ -579,11 +555,11 @@ namespace GenieClient.Genie
 
                     case '>':
                         {
-                            if (Conversions.ToString(cPreviousChar) == "/")	// End tag in same statement
+                            if (Conversions.ToString(cPreviousChar) == "/") // End tag in same statement
                             {
                                 iInsideXML -= 1;
                             }
-                            else if (bEndTagFound == true)	// Jump two steps back if we found end tag
+                            else if (bEndTagFound == true) // Jump two steps back if we found end tag
                             {
                                 iInsideXML -= 2;
                                 bEndTagFound = false;
@@ -624,7 +600,7 @@ namespace GenieClient.Genie
                                 if (buffer.EndsWith(@"<pushBold/>"))
                                 {
                                     sBoldBuffer = string.Empty;
-                                    iBoldIndex = sTextBuffer.Length; //do not subtract 1 because our start index isn't added yet
+                                    iBoldIndex = sTextBuffer.Length; // Do not subtract 1 because our start index isn't added yet
                                 }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
@@ -661,7 +637,7 @@ namespace GenieClient.Genie
 
                     case '/':
                         {
-                            if (Conversions.ToString(cPreviousChar) == "<")	// End tag found
+                            if (Conversions.ToString(cPreviousChar) == "<") // End tag found
                             {
                                 bEndTagFound = true;
                             }
@@ -790,7 +766,7 @@ namespace GenieClient.Genie
                 {
                     if (sBoldBuffer.EndsWith("\r\n")) sBoldBuffer = sBoldBuffer.Substring(0, sBoldBuffer.Length - "\r\n".Length);
                     sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
+                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex)); // Trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
 
@@ -881,11 +857,8 @@ namespace GenieClient.Genie
             {
                 oDocument.LoadXml("<data>" + sXML + "</data>");
             }
-#pragma warning disable CS0168
-            catch (XmlException ex)
-#pragma warning restore CS0168
+            catch (XmlException)
             {
-                /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                 return sReturn;
             }
 
@@ -928,7 +901,6 @@ namespace GenieClient.Genie
                 {
                     if (m_bUpdatingRoom == false)
                     {
-                        // ClearWindow(WindowTarget.Room)
                         WindowTarget targetRoom = WindowTarget.Room;
                         PrintTextToWindow("@suspend@", Color.Transparent, Color.Transparent, targetRoom, false, true);
                         if (Strings.Len(m_sRoomTitle) > 0)
@@ -1119,7 +1091,6 @@ namespace GenieClient.Genie
                                     string argtext4 = "Listing characters:";
                                     PrintError(argtext4);
                                     string strUserKey = string.Empty;
-                                    // bool blnFoundMatch = false;
                                     for (int i = 5, loopTo = oData.Count - 1; i <= loopTo; i++)
                                     {
                                         if (i % 2 == 0)
@@ -1194,7 +1165,8 @@ namespace GenieClient.Genie
 
                                 break;
                             }
-                        case "E": //Indicates an Error Message
+
+                        case "E": // Indicates an Error Message
                             {
                                 string[] errorStrings = sText.Split("\t");
                                 for (int i = 1; i < errorStrings.Length; i++)
@@ -1256,7 +1228,6 @@ namespace GenieClient.Genie
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
         {
             string sReturn = string.Empty;
-            // Debug.WriteLine(oXmlNode.Name);
             if (oXmlNode.NodeType == XmlNodeType.Element)
             {
                 var switchExpr = oXmlNode.Name;
@@ -1264,13 +1235,6 @@ namespace GenieClient.Genie
                 {
                     case "a":
                         {
-                            // Dim sText As String = "{{" & GetTextFromXML(oXmlNode) & "}}"
-                            // Dim sNoun As String = GetAttributeData(oXmlNode, "noun")
-                            // If sNoun.Length > 0 Then
-                            // sText = sText.Replace(sNoun, "[[" & sNoun & "]]")
-                            // End If
-                            // sReturn &= sText
-
                             sReturn += GetTextFromXML(oXmlNode);
                             break;
                         }
@@ -1310,7 +1274,6 @@ namespace GenieClient.Genie
                                     m_oGlobals.VariableList.Add(sName, sVal, Globals.Variables.VariableType.Server);
                                     string argsVariable = "$" + sName;
                                     VariableChanged(argsVariable);
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                                 }
                             }
 
@@ -1338,6 +1301,7 @@ namespace GenieClient.Genie
 
                             break;
                         }
+
                     case "resource":
                         {
                             if (!m_oGlobals.Config.bShowImages) break;
@@ -1345,13 +1309,14 @@ namespace GenieClient.Genie
                             if (!string.IsNullOrEmpty(attribute) && attribute != "0")
                             {
                                 attribute += ".jpg";
-                                string gamecode = "DR"; //default DR
+                                string gamecode = "DR"; // Default DR
                                 if (AccountGame.StartsWith("GS")) gamecode = "GS";
                                 if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute), "portrait");
                             }
                             break;
                         }
-                    case "streamWindow":	// Window Names
+
+                    case "streamWindow": // Window Names
                         {
                             string argstrAttributeName5 = "id";
                             var switchExpr2 = GetAttributeData(oXmlNode, argstrAttributeName5);
@@ -1443,7 +1408,6 @@ namespace GenieClient.Genie
                                     {
                                         break;
                                     }
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                             }
 
                             string argstrAttributeName10 = "target";
@@ -1489,6 +1453,7 @@ namespace GenieClient.Genie
                                         m_oTargetWindow = WindowTarget.Combat;
                                         break;
                                     }
+
                                 case "main":
                                     {
                                         m_oTargetWindow = WindowTarget.Main;
@@ -1589,10 +1554,6 @@ namespace GenieClient.Genie
 
                                 case "thoughts":
                                     {
-                                        // MsgBox(GetTextFromXML(oXmlNode))
-                                        // Exception - Thoughts reset back to Main window after one line send.
-                                        // m_oTargetWindow = WindowTarget.Thoughts
-                                        // sReturn &= Parse(oXmlNode)
                                         string argsText = GetTextFromXML(oXmlNode) + System.Environment.NewLine;
                                         bool argbIsRoomOutput = false;
                                         WindowTarget windowTarget = WindowTarget.Thoughts;
@@ -1624,7 +1585,6 @@ namespace GenieClient.Genie
                                     {
                                         break;
                                     }
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                             }
 
                             break;
@@ -1745,7 +1705,6 @@ namespace GenieClient.Genie
                                         m_bIgnoreXMLDepth = true; // Skip any elements inside an unknown component or compDef
                                         break;
                                     }
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                             }
 
                             break;
@@ -1823,7 +1782,6 @@ namespace GenieClient.Genie
                                     {
                                         break;
                                     }
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                             }
 
                             break;
@@ -2084,7 +2042,6 @@ namespace GenieClient.Genie
                                     {
                                         break;
                                     }
-                                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                             }
 
                             break;
@@ -2126,6 +2083,7 @@ namespace GenieClient.Genie
                             m_iCastTime = int.Parse(GetAttributeData(oXmlNode, "value"));
                             break;
                         }
+
                     case "spelltime":
                         {
                             if (m_oGlobals.VariableList["preparedspell"].ToString() == "None")
@@ -2155,6 +2113,7 @@ namespace GenieClient.Genie
                             VariableChanged("$spellstarttime");
                             break;
                         }
+
                     case "prompt":
                         {
                             string strBuffer = GetTextFromXML(oXmlNode);
@@ -2268,8 +2227,6 @@ namespace GenieClient.Genie
                                     }
                                 }
                             }
-
-                            // Dim strBuffer As String = String.Empty
 
                             string argstrAttributeName25 = "time";
                             if (int.TryParse(GetAttributeData(oXmlNode, argstrAttributeName25), out m_iGameTime))
@@ -2496,7 +2453,6 @@ namespace GenieClient.Genie
                                         {
                                             break;
                                         }
-                                        /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                                 }
 
                                 string argsVariable43 = "compass";
@@ -2534,7 +2490,6 @@ namespace GenieClient.Genie
 
                             break;
                         }
-                        /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                 }
             }
 
@@ -2577,8 +2532,6 @@ namespace GenieClient.Genie
             foreach (Match m in m_MonsterRegex.Matches(oXmlNode.InnerXml.Replace(" and ", ", ").Replace(" and <pushBold />", ", <pushBold />")))
             {
                 var sValue = m.Groups[1].Value + m.Groups[2].Value;
-                // PrintText(sValue & vbNewLine)
-
                 bool bIgnore = false;
                 foreach (string sIgnore in m_oGlobals.Config.sIgnoreMonsterList.Split('|'))
                 {
@@ -2685,7 +2638,6 @@ namespace GenieClient.Genie
             return sReturn;
         }
 
-        // Confuse decompilers and reverse engineers by having this method in the middle of everything and no string names in it
         private void DoConnect(string sHostName, int iPort)
         {
             m_sEncryptionKey = string.Empty;
@@ -2737,7 +2689,6 @@ namespace GenieClient.Genie
                             {
                                 break;
                             }
-                            /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     }
 
                     m_sStyle = string.Empty;
@@ -2746,10 +2697,6 @@ namespace GenieClient.Genie
                 if (m_bPresetSpeechOutput) m_bPresetSpeechOutput = false;
                 if (m_bPresetWhisperOutput) m_bPresetWhisperOutput = false;
                 if (m_bPresetThoughtOutput) m_bPresetThoughtOutput = false;
-
-                //if (m_bBold == true)
-                //{
-                //}
 
                 // Line begins with
                 if (m_oGlobals.HighlightBeginsWithList.AcquireReaderLock())
@@ -2903,7 +2850,6 @@ namespace GenieClient.Genie
 
                 case WindowTarget.Other:
                     {
-                        // Debug.Write("Target Window is " + targetwindow.ToString());
                         sTargetWindowString = m_sTargetWindow.ToLower();
                         break;
                     }
@@ -2959,45 +2905,6 @@ namespace GenieClient.Genie
             }
 
             text = ParseSubstitutions(text);
-            if (0 == 1)//(text.Trim().Length > 0)
-            {
-                // Substitute Lists Switch this to text = ParseSubstrings(text) so theres only one place subs are processed at
-                if (m_oGlobals.SubstituteList.AcquireReaderLock())
-                {
-                    try
-                    {
-                        foreach (Globals.SubstituteRegExp.Substitute sl in m_oGlobals.SubstituteList)
-                        {
-                            if (sl.IsActive && !Information.IsNothing(sl.SubstituteRegex))
-                            {
-                                if (sl.SubstituteRegex.Match(Utility.Trim(text)).Success)
-                                {
-                                    bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
-                                    bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
-                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
-                                    if (bNewLineStart == true)
-                                    {
-                                        text = System.Environment.NewLine + text;
-                                    }
-
-                                    if (bNewLineEnd == true)
-                                    {
-                                        text += System.Environment.NewLine;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        m_oGlobals.SubstituteList.ReleaseReaderLock();
-                    }
-                }
-                else
-                {
-                    GenieError.Error("PrintTextToWindow", "Unable to aquire reader lock.");
-                }
-            }
 
             if (targetwindow == WindowTarget.Main)
             {
@@ -3021,12 +2928,6 @@ namespace GenieClient.Genie
                 if (m_oGlobals.Config.bAutoLog == true)
                 {
                     m_oGlobals.Log?.LogText(text, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
-                    //if (m_bLastRowWasPrompt == true)
-                    //{
-                    //    m_oGlobals.Log?.LogText(text + System.Environment.NewLine, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
-                    //}
-
-                    //     m_oGlobals.Log.LogText(text, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
                 }
             }
 
@@ -3064,6 +2965,7 @@ namespace GenieClient.Genie
             var tempVar = false;
             EventPrintText?.Invoke(text, color, bgcolor, targetwindow, targetwindowstring, m_bMonoOutput, isprompt, tempVar);
         }
+
         private String ParseSubstitutions(string text)
         {
             if (text.Trim().Length > 0)
@@ -3108,6 +3010,7 @@ namespace GenieClient.Genie
 
             return text;
         }
+
         private void VariableChanged(string sVariable)
         {
             EventVariableChanged?.Invoke(sVariable);
@@ -3121,9 +3024,9 @@ namespace GenieClient.Genie
             }
         }
 
-        // Skip all blank line/prompt checks and just print it
         private void PrintInputText(string sText, Color oColor, Color oBgColor)
         {
+            // Skip all blank line/prompt checks and just print it
             if (sText.Length == 0)
             {
                 return;
@@ -3134,7 +3037,6 @@ namespace GenieClient.Genie
             var trueVar = true;
             var falseVar = false;
 
-            //   EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, trueVar, falseVar);
             EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
@@ -3142,26 +3044,27 @@ namespace GenieClient.Genie
         {
             EventAddImage?.Invoke(filename, window, 0, 0);
         }
+
         private void ClearWindow(string sWindow)
         {
             EventClearWindow?.Invoke(sWindow);
         }
 
-        // Round Time
         private void SetRoundTime(int iTime)
         {
+            // Round Time
             EventRoundTime?.Invoke(iTime);
         }
 
-        // Reset Spell Time
         private void SetSpellTime()
         {
+            // Reset Spell Time
             EventSpellTime?.Invoke();
         }
 
-        // Clear Spell Time
         private void ClearSpellTime()
         {
+            // Clear Spell Time
             EventClearSpellTime?.Invoke();
         }
 
@@ -3210,7 +3113,6 @@ namespace GenieClient.Genie
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
                         m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
-                        string argkey = "connected";
                         m_oGlobals.VariableList["connected"] = m_oSocket.IsConnected ? "1" : "0";
                         VariableChanged("$connected");
                         m_oGlobals.VariableList["account"] = AccountName;
@@ -3234,10 +3136,6 @@ namespace GenieClient.Genie
             }
         }
 
-        private void GameSocket_EventExit()
-        {
-            Disconnect(true);
-        }
         private void GameSocket_EventParseRow(StringBuilder row)
         {
             var rowVar = row.ToString();
@@ -3258,12 +3156,10 @@ namespace GenieClient.Genie
                         {
                             sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
                         }
-                        /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
                             GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
                             (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
-                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         }
                     }
                 }
@@ -3275,12 +3171,10 @@ namespace GenieClient.Genie
                         {
                             sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
                         }
-                        /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
                             GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
                             (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
-                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         }
                     }
                 }

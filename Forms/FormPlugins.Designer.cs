@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -44,6 +44,9 @@ namespace GenieClient
             _FlowLayoutPanel1 = new FlowLayoutPanel();
             _ImageListPlugin = new ImageList(components);
             _OpenFileDialog1 = new OpenFileDialog();
+            _ToolStrip1 = new ToolStrip();
+            _ToolStripButtonLoad = new ToolStripButton();
+            _ToolStripButton1 = new ToolStripButton();
             _TabControlPlugins.SuspendLayout();
             _TabPage1.SuspendLayout();
             SuspendLayout();
@@ -93,12 +96,37 @@ namespace GenieClient
             _OpenFileDialog1.DefaultExt = "dll";
             _OpenFileDialog1.Filter = "Plugin files|*.dll|All files|*.*";
             // 
+            // ToolStrip1
+            // 
+            _ToolStrip1.Dock = DockStyle.Top;
+            _ToolStrip1.ImageList = _ImageListPlugin;
+            _ToolStrip1.Items.AddRange(new ToolStripItem[] { _ToolStripButtonLoad, _ToolStripButton1 });
+            _ToolStrip1.Name = "ToolStrip1";
+            _ToolStrip1.Size = new Size(401, 25);
+            _ToolStrip1.TabIndex = 5;
+            // 
+            // ToolStripButtonLoad
+            // 
+            _ToolStripButtonLoad.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            _ToolStripButtonLoad.ImageIndex = 1;
+            _ToolStripButtonLoad.Name = "ToolStripButtonLoad";
+            _ToolStripButtonLoad.Text = "Load Plugin";
+            _ToolStripButtonLoad.Click += new EventHandler(ToolStripButtonLoad_Click);
+            // 
+            // ToolStripButton1
+            // 
+            _ToolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            _ToolStripButton1.Name = "ToolStripButton1";
+            _ToolStripButton1.Text = "Reload All";
+            _ToolStripButton1.Click += new EventHandler(ToolStripButton1_Click);
+            // 
             // FormPlugins
             // 
             AutoScaleDimensions = new SizeF(6.0F, 13.0F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(401, 529);
             Controls.Add(_TabControlPlugins);
+            Controls.Add(_ToolStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
@@ -228,6 +256,78 @@ namespace GenieClient
 
                 _OpenFileDialog1 = value;
                 if (_OpenFileDialog1 != null)
+                {
+                }
+            }
+        }
+
+        private ToolStrip _ToolStrip1;
+
+        internal ToolStrip ToolStrip1
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStrip1;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStrip1 != null)
+                {
+                }
+
+                _ToolStrip1 = value;
+                if (_ToolStrip1 != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonLoad;
+
+        internal ToolStripButton ToolStripButtonLoad
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonLoad;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonLoad != null)
+                {
+                }
+
+                _ToolStripButtonLoad = value;
+                if (_ToolStripButtonLoad != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButton1;
+
+        internal ToolStripButton ToolStripButton1
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButton1;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButton1 != null)
+                {
+                }
+
+                _ToolStripButton1 = value;
+                if (_ToolStripButton1 != null)
                 {
                 }
             }

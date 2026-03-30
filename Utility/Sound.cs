@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
 using Microsoft.VisualBasic.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace GenieClient.Genie
 {
@@ -7,16 +7,17 @@ namespace GenieClient.Genie
     {
         [DllImport("winmm.dll", CharSet = CharSet.Auto)]
         static extern int PlaySound(string name, int hmod, int flags);
+
         [DllImport("winmm.dll", CharSet = CharSet.Auto)]
         static extern int PlaySound(byte[] name, int hmod, int flags);
 
-        public const int SND_SYNC = 0x0; // play synchronously 
-        public const int SND_ASYNC = 0x1; // play asynchronously 
+        public const int SND_SYNC = 0x0; // Play synchronously 
+        public const int SND_ASYNC = 0x1; // Play asynchronously 
         public const int SND_MEMORY = 0x4;  // Play wav in memory
         public const int SND_ALIAS = 0x10000; // Play system alias wav 
         public const int SND_NODEFAULT = 0x2;
-        public const int SND_FILENAME = 0x20000; // name is file name 
-        public const int SND_RESOURCE = 0x40004; // name is resource name or atom
+        public const int SND_FILENAME = 0x20000; // Name is file name 
+        public const int SND_RESOURCE = 0x40004; // Name is resource name or atom
         public const int SND_PURGE = 0x40;
 
         public static void PlayWaveFile(string fileWaveFullPath)
@@ -42,20 +43,20 @@ namespace GenieClient.Genie
 
         public static void PlayWaveResource(string WaveResourceName)
         {
-            // get the namespace 
+            // Get the namespace 
             string strNameSpace = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.ToString();
 
-            // get the resource into a stream
+            // Get the resource into a stream
             var resourceStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(strNameSpace + "." + WaveResourceName);
             if (resourceStream is null)
                 return;
 
-            // bring stream into a byte array
+            // Bring stream into a byte array
             byte[] wavData;
             wavData = new byte[Conversions.ToInteger(resourceStream.Length) + 1];
             resourceStream.ReadExactly(wavData, 0, Conversions.ToInteger(resourceStream.Length));
 
-            // play the resource
+            // Play the resource
             PlaySound(wavData, 0, SND_ASYNC | SND_MEMORY);
         }
 
@@ -66,7 +67,6 @@ namespace GenieClient.Genie
 
         public static void StopPlaying()
         {
-            // PlaySound(String.Empty, 0, SND_FILENAME Or SND_PURGE)
             string argname = "";
             Sound.PlaySound(argname, 0, SND_NODEFAULT | SND_MEMORY);
         }

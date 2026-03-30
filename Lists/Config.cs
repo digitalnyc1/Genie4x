@@ -1,9 +1,9 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
@@ -520,9 +520,7 @@ namespace GenieClient.Genie
                 oStreamWriter.Close();
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -1217,11 +1215,6 @@ namespace GenieClient.Genie
 
                         case "connectstring":
                             {
-                                if (sValue.Length > 0)
-                                {
-                                    // sConnectString = sValue
-                                }
-
                                 break;
                             }
 
@@ -1300,7 +1293,7 @@ namespace GenieClient.Genie
                                 if (!string.IsNullOrEmpty(sValue))
                                 {
                                     AutoMapperAlpha = Convert.ToInt32(sValue);
-                                    sValue = AutoMapperAlpha.ToString(); //the setter can change the value, reflect that
+                                    sValue = AutoMapperAlpha.ToString(); // The setter can change the value, reflect that
                                 }
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
                                 break;
@@ -1473,7 +1466,7 @@ namespace GenieClient.Genie
                 }
                 return messages;
             }
-            catch (Exception up)
+            catch (Exception)
             {
                 throw;
             }

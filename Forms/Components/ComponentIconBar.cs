@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -16,7 +16,7 @@ namespace GenieClient
         }
 
         private Genie.Globals m_Globals = null;
-        private object m_Lock = new object();
+        private readonly object m_Lock = new();
 
         public Genie.Globals Globals
         {
@@ -72,7 +72,7 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(pb.Tag) && pb.Tag.ToString().EndsWith("_gray") == true)
                 {
-                    ShowImage(pb, pb.Tag.ToString().Substring(0, pb.Tag.ToString().Length - 5));
+                    ShowImage(pb, pb.Tag.ToString()[..^5]);
                 }
             }
             else if (!Information.IsNothing(pb.Tag) && pb.Tag.ToString().EndsWith("_gray") == false)
@@ -93,9 +93,7 @@ namespace GenieClient
             }
             else
             {
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
                 Interaction.MsgBox("Missing icon files in Genie folder.");
-                /* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
 
@@ -110,9 +108,8 @@ namespace GenieClient
             }
         }
 
-        private Bitmap ImageToGrayScale(Bitmap b)
+        private static Bitmap ImageToGrayScale(Bitmap b)
         {
-            // int iColor = 0;
             var oOutput = new Bitmap(b.Width, b.Height);
             for (int X = 0, loopTo = b.Width - 1; X <= loopTo; X++)
             {
@@ -171,7 +168,6 @@ namespace GenieClient
             }
         }
 
-        // Threadsafe
         private void SetImage(PictureBox p, string sName)
         {
             if (p.InvokeRequired == true)

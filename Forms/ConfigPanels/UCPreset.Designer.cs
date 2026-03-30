@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -32,6 +32,7 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCPreset));
             this._ListViewBase = new System.Windows.Forms.ListView();
             this._GroupBoxBase = new System.Windows.Forms.GroupBox();

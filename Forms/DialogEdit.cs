@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Text;
+using System.Windows.Forms;
 
 namespace GenieClient
 {

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Drawing;
 using Microsoft.VisualBasic;
+using System;
 
 namespace GenieClient
 {
@@ -40,11 +39,6 @@ namespace GenieClient
             if (!Information.IsNothing(m_Config))
             {
             }
-        }
-
-        private string GetFontName(Font f)
-        {
-            return f.Name.ToString() + ", " + f.Size.ToString();
         }
 
         private void ButtonApply_Click(object sender, EventArgs e)

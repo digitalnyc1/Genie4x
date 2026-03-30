@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualBasic;
@@ -60,7 +60,6 @@ namespace GenieClient.Genie
                 return default;
             }
         }
-
 
         public int AddToQueue(double Delay, string Action, bool WaitForRoundtime, bool WaitForWebbed, bool WaitForStunned)
         {
@@ -148,14 +147,10 @@ namespace GenieClient.Genie
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-                // Else
-                // Throw New Exception("Unable to aquire commandqueue thread lock.")
             }
 
             return sReturn;
         }
-
-
 
         private void SetNextTime(double dDelay)
         {

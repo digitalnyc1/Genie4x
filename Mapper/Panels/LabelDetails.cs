@@ -1,7 +1,7 @@
-﻿using System;
-using System.Drawing;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Drawing;
 
 namespace GenieClient
 {
@@ -13,23 +13,18 @@ namespace GenieClient
         }
 
         public event NewLabelEventHandler NewLabel;
-
         public delegate void NewLabelEventHandler();
 
         public event CopyLabelEventHandler CopyLabel;
-
         public delegate void CopyLabelEventHandler();
 
         public event RemoveLabelEventHandler RemoveLabel;
-
         public delegate void RemoveLabelEventHandler();
 
         public event AddLabelEventHandler AddLabel;
-
         public delegate void AddLabelEventHandler(Mapper.Label oLabel);
 
         public event UpdateMapEventHandler UpdateMap;
-
         public delegate void UpdateMapEventHandler();
 
         private int m_X = 0;

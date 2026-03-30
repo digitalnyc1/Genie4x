@@ -1,6 +1,6 @@
-﻿using System;
 using GeniePlugin.Interfaces;
 using Microsoft.VisualBasic;
+using System;
 
 namespace GenieClient
 {
@@ -12,23 +12,18 @@ namespace GenieClient
         }
 
         public event PluginButtonReloadEventHandler PluginButtonReload;
-
         public delegate void PluginButtonReloadEventHandler(ComponentPluginItem sender);
 
         public event PluginButtonUnloadEventHandler PluginButtonUnload;
-
         public delegate void PluginButtonUnloadEventHandler(ComponentPluginItem sender);
 
         public event PluginButtonEnableEventHandler PluginButtonEnable;
-
         public delegate void PluginButtonEnableEventHandler(ComponentPluginItem sender);
 
         public event PluginButtonDisableEventHandler PluginButtonDisable;
-
         public delegate void PluginButtonDisableEventHandler(ComponentPluginItem sender);
 
         public event PluginButtonDeleteEventHandler PluginButtonDelete;
-
         public delegate void PluginButtonDeleteEventHandler(ComponentPluginItem sender);
 
         private IPlugin _Plugin;

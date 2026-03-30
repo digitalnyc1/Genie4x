@@ -1,12 +1,12 @@
-﻿/// <summary>
+/// <summary>
 /// Window Style Flags
 /// </summary>
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -60,21 +60,17 @@ namespace GenieClient
         WS_EX_STATICEDGE = 0x20000,
         WS_EX_APPWINDOW = 0x40000,
         WS_EX_LAYERED = 0x80000,
-        WS_EX_NOINHERITLAYOUT = 0x100000,    // Disable inheritence of mirroring by children
-        WS_EX_LAYOUTRTL = 0x400000,          // Right to left mirroring
+        WS_EX_NOINHERITLAYOUT = 0x100000, // Disable inheritence of mirroring by children
+        WS_EX_LAYOUTRTL = 0x400000, // Right to left mirroring
         WS_EX_COMPOSITED = 0x2000000,
         WS_EX_NOACTIVATE = 0x8000000
     }
 
-
-    /* TODO ERROR: Skipped RegionDirectiveTrivia *//// <summary>
     public class EnumWindows
     {
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private delegate int EnumWindowsProc(IntPtr hwnd, int lParam);
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
+
         private class UnManagedMethods
         {
             [DllImport("user32")]
@@ -83,14 +79,9 @@ namespace GenieClient
 
             [DllImport("user32")]
             public static extern int EnumChildWindows(IntPtr hWndParent, EnumWindowsProc lpEnumFunc, int lParam);
-
-
-
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private EnumWindowsCollection m_items = null;
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
+
         /// <summary>
         /// Returns the collection of windows returned by
         /// GetWindows
@@ -126,12 +117,12 @@ namespace GenieClient
 
         }
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */    /// <summary>
-                                                           /// The enum Windows callback.
-                                                           /// </summary>
-                                                           /// <param name="hWnd">Window Handle</param>
-                                                           /// <param name="lParam">Application defined value</param>
-                                                           /// <returns>1 to continue enumeration, 0 to stop</returns>
+        /// <summary>
+        /// The enum Windows callback.
+        /// </summary>
+        /// <param name="hWnd">Window Handle</param>
+        /// <param name="lParam">Application defined value</param>
+        /// <returns>1 to continue enumeration, 0 to stop</returns>
         private int WindowEnum(IntPtr hWnd, int lParam)
 
 
@@ -145,7 +136,7 @@ namespace GenieClient
                 return 0;
             }
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
+
         /// <summary>
         /// Called whenever a new window is about to be added
         /// by the Window enumeration called from GetWindows.
@@ -163,16 +154,12 @@ namespace GenieClient
             return true;
         }
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         public EnumWindows()
         {
             // nothing to do
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
-    /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
 
-    /* TODO ERROR: Skipped RegionDirectiveTrivia *//// <summary>
     public class EnumWindowsCollection : ReadOnlyCollectionBase
     {
 
@@ -206,12 +193,9 @@ namespace GenieClient
             // nothing to do
         }
     }
-    /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-    /* TODO ERROR: Skipped RegionDirectiveTrivia *//// <summary>
+
     public class EnumWindowsItem
     {
-
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
         private struct RECT
         {
@@ -230,8 +214,7 @@ namespace GenieClient
             public int uCount;
             public int dwTimeout;
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
+
         private class UnManagedMethods
         {
             [DllImport("user32")]
@@ -253,8 +236,6 @@ namespace GenieClient
             [DllImport("user32", CharSet = CharSet.Auto)]
             public static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
 
-
-
             [DllImport("user32")]
             public static extern int FlashWindow(IntPtr hWnd, FLASHWINFO pwfi);
 
@@ -264,12 +245,8 @@ namespace GenieClient
             [DllImport("user32", CharSet = CharSet.Auto)]
             public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
-
-
-
             [DllImport("user32", CharSet = CharSet.Auto)]
             public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
-
 
             public const int WM_COMMAND = 0x111;
             public const int WM_SYSCOMMAND = 0x112;
@@ -305,7 +282,7 @@ namespace GenieClient
             /// </summary>
             public const int FLASHW_TIMERNOFG = 0xC;
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
+
         /// <summary>
         /// The window handle.
         /// </summary>
@@ -497,4 +474,3 @@ namespace GenieClient
         }
     }
 }
-/* TODO ERROR: Skipped EndRegionDirectiveTrivia */

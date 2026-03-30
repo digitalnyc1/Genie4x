@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -352,49 +352,49 @@ namespace GenieClient
             // genieToolStripMenuItem
             // 
             genieToolStripMenuItem.Name = "genieToolStripMenuItem";
-            genieToolStripMenuItem.Size = new Size(180, 22);
+            genieToolStripMenuItem.Size = new Size(113, 22);
             genieToolStripMenuItem.Text = "Genie";
             genieToolStripMenuItem.Click += genieToolStripMenuItem_Click;
             // 
             // scriptsToolStripMenuItem
             // 
             scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
-            scriptsToolStripMenuItem.Size = new Size(180, 22);
+            scriptsToolStripMenuItem.Size = new Size(113, 22);
             scriptsToolStripMenuItem.Text = "Scripts";
             scriptsToolStripMenuItem.Click += scriptsToolStripMenuItem_Click;
             // 
             // mapsToolStripMenuItem
             // 
             mapsToolStripMenuItem.Name = "mapsToolStripMenuItem";
-            mapsToolStripMenuItem.Size = new Size(180, 22);
+            mapsToolStripMenuItem.Size = new Size(113, 22);
             mapsToolStripMenuItem.Text = "Maps";
             mapsToolStripMenuItem.Click += mapsToolStripMenuItem_Click;
             // 
             // pluginsToolStripMenuItem
             // 
             pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            pluginsToolStripMenuItem.Size = new Size(180, 22);
+            pluginsToolStripMenuItem.Size = new Size(113, 22);
             pluginsToolStripMenuItem.Text = "Plugins";
             pluginsToolStripMenuItem.Click += pluginsToolStripMenuItem_Click;
             // 
             // logsToolStripMenuItem
             // 
             logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(180, 22);
+            logsToolStripMenuItem.Size = new Size(113, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
             // 
             // artToolStripMenuItem
             // 
             artToolStripMenuItem.Name = "artToolStripMenuItem";
-            artToolStripMenuItem.Size = new Size(180, 22);
+            artToolStripMenuItem.Size = new Size(113, 22);
             artToolStripMenuItem.Text = "Art";
             artToolStripMenuItem.Click += artToolStripMenuItem_Click;
             // 
             // soundsToolStripMenuItem
             // 
             soundsToolStripMenuItem.Name = "soundsToolStripMenuItem";
-            soundsToolStripMenuItem.Size = new Size(180, 22);
+            soundsToolStripMenuItem.Size = new Size(113, 22);
             soundsToolStripMenuItem.Text = "Sounds";
             soundsToolStripMenuItem.Click += soundsToolStripMenuItem_Click;
             // 
@@ -1098,7 +1098,7 @@ namespace GenieClient
             // _LabelSpell
             // 
             _LabelSpell.Dock = DockStyle.Fill;
-            _LabelSpell.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelSpell.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
             _LabelSpell.ForeColor = Color.DimGray;
             _LabelSpell.Location = new Point(913, 0);
             _LabelSpell.Margin = new Padding(0);
@@ -1111,7 +1111,7 @@ namespace GenieClient
             // _LabelRH
             // 
             _LabelRH.Dock = DockStyle.Fill;
-            _LabelRH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelRH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
             _LabelRH.ForeColor = Color.DimGray;
             _LabelRH.Location = new Point(661, 0);
             _LabelRH.Margin = new Padding(0);
@@ -1124,7 +1124,7 @@ namespace GenieClient
             // _LabelLH
             // 
             _LabelLH.Dock = DockStyle.Fill;
-            _LabelLH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelLH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
             _LabelLH.ForeColor = Color.DimGray;
             _LabelLH.Location = new Point(408, 0);
             _LabelLH.Margin = new Padding(0);
@@ -1136,7 +1136,7 @@ namespace GenieClient
             // 
             // _LabelRT
             // 
-            _LabelRT.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelRT.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
             _LabelRT.ForeColor = Color.DimGray;
             _LabelRT.Location = new Point(1, 0);
             _LabelRT.Margin = new Padding(4, 0, 4, 0);
@@ -1400,7 +1400,7 @@ namespace GenieClient
             _TextBoxInput.BackColor = Color.White;
             _TextBoxInput.BorderStyle = BorderStyle.None;
             _TextBoxInput.Dock = DockStyle.Fill;
-            _TextBoxInput.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            _TextBoxInput.Font = new Font("Courier New", 9F);
             _TextBoxInput.HideSelection = false;
             _TextBoxInput.KeepInput = false;
             _TextBoxInput.Location = new Point(4, 2);

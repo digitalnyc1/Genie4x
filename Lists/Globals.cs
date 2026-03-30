@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,10 +16,8 @@ namespace GenieClient.Genie
     {
         private Config _Config = new Config();
 
-
         public Config Config
         {
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
@@ -107,9 +105,7 @@ namespace GenieClient.Genie
             }
             else
             {
-                //    Config.ConfigChanged(oField);
                 ConfigChanged?.Invoke(oField);
-                //    Config.ConfigChanged?.Invoke(oField);
             }
         }
 
@@ -157,11 +153,6 @@ namespace GenieClient.Genie
                 {
                     try
                     {
-                        // ' Replace global variables
-                        // For Each de As DictionaryEntry In VariableList
-                        // sText = sText.Replace("$" & de.Key.ToString, CType(de.Value, Variables.Variable).sValue)
-                        // Next
-
                         int p = Conversions.ToInteger(sText.Length - 1);
                         while (p >= 0)
                         {
@@ -273,11 +264,6 @@ namespace GenieClient.Genie
                         if (idx >= 0 && Information.UBound(oArr) >= idx)
                         {
                             return oArr[idx] + Line.Substring(Line.IndexOf(')') + 1);
-                        }
-                        else
-                        {
-                            // Invalid index - Return empty result and remainder string
-                            // Return Line.Substring(Line.IndexOf(")"c) + 1)
                         }
                     }
                 }
@@ -436,9 +422,7 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-#pragma warning disable CS0168
-                catch (Exception Err)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -449,7 +433,7 @@ namespace GenieClient.Genie
                 var oArgs = Utility.ParseArgs(sText);
                 if (oArgs.Count == 3)
                 {
-                    //preserve this for loading configs which predate new parameters
+                    // Preserve this for loading configs which predate new parameters
                     Add(oArgs[1].ToString(), oArgs[2].ToString(), true, false);
                 }
                 else if (oArgs.Count == 4)
@@ -494,9 +478,7 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -559,7 +541,6 @@ namespace GenieClient.Genie
                 public string sKey;
                 public string sValue;
                 public VariableType oType;
-                // Public bSaveToFile As Boolean = True
 
                 public bool bSaveToFile
                 {
@@ -595,10 +576,6 @@ namespace GenieClient.Genie
                     oType = _oType;
                 }
             }
-
-            // Public Sub New(Bydc As DescendingComparer)
-            // MyBase.New(dc)
-            // End Sub
 
             public void Add(string key, string value, VariableType oType = VariableType.SaveToFile)
             {
@@ -753,9 +730,7 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-#pragma warning disable CS0168
-                catch (Exception Err)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -818,9 +793,7 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -887,7 +860,6 @@ namespace GenieClient.Genie
 
                 Add("gametime", "0", VariableType.Reserved);
 
-
                 Add("poisoned", "0", VariableType.Reserved);
                 Add("diseased", "0", VariableType.Reserved);
                 Add("connected", "0", VariableType.Reserved);
@@ -917,7 +889,6 @@ namespace GenieClient.Genie
                 Add("zonename", "0", VariableType.Reserved);
                 Add("scriptlist", "none", VariableType.Reserved);
                 Add("repeatregex", @"^\.\.\.wait|^Sorry\, you may only type ahead|^You are still stunned|^You can\'t do that while|^You don\'t seem to be able", VariableType.Reserved);
-
             }
         }
 
@@ -1105,9 +1076,7 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1182,9 +1151,7 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1565,9 +1532,7 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-#pragma warning disable CS0168
-                catch (Exception Err)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1641,9 +1606,7 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1793,9 +1756,7 @@ namespace GenieClient.Genie
                         return false;
                     }
                 }
-#pragma warning disable CS0168
-                catch (Exception Err)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1870,9 +1831,7 @@ namespace GenieClient.Genie
 
                     return true;
                 }
-#pragma warning disable CS0168
-                catch (Exception ex)
-#pragma warning restore CS0168
+                catch (Exception)
                 {
                     return false;
                 }
@@ -1994,7 +1953,6 @@ namespace GenieClient.Genie
 
                 if (File.Exists(sFileName) == true)
                 {
-                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     var oStreamReader = new StreamReader(sFileName);
                     string strLine = oStreamReader.ReadLine();
                     while (!Information.IsNothing(strLine))
@@ -2011,7 +1969,6 @@ namespace GenieClient.Genie
                     oStreamReader.Close();
                     HighlightList.RebuildLineIndex();
                     HighlightList.RebuildStringIndex();
-                    /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     return true;
                 }
                 else
@@ -2019,9 +1976,7 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception Err)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -2045,7 +2000,7 @@ namespace GenieClient.Genie
                         if (oArgs.Count > 5)
                             sSound = oArgs[5].ToString();
                     }
-                    else // Add all args after 3 for highlights added without {} args.
+                    else // Add all args after 3 for highlights added without {} args
                     {
                         sHighlight = Utility.ArrayToString(oArgs, 3);
                     }

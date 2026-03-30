@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Windows.Forms;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -267,7 +267,7 @@ namespace GenieClient
             {
                 foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
                 {
-                    if (TextBoxTrigger.Enabled == true) // Single edit
+                    if (TextBoxTrigger.Enabled == true)
                     {
                         if (IsDuplicateTrigger(TextBoxTrigger.Text))
                         {
@@ -280,9 +280,6 @@ namespace GenieClient
                         string argsTrigger = Conversions.ToString(li.Tag);
                         m_TriggerList.Remove(argsTrigger); // Remove old
                     }
-                    else
-                    {
-                    } // Multi edit
 
                     if (TextBoxAction.Enabled == true)
                     {

@@ -1,9 +1,9 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -256,7 +256,7 @@ namespace GenieClient
             {
                 foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
                 {
-                    if (TextBoxReplace.Enabled == true) // Single edit
+                    if (TextBoxReplace.Enabled == true)
                     {
                         if (IsDuplicateSubstitute(TextBoxReplace.Text))
                         {
@@ -269,9 +269,6 @@ namespace GenieClient
                         string argText = Conversions.ToString(li.Tag);
                         m_SubstituteList.Remove(argText); // Remove old
                     }
-                    else
-                    {
-                    } // Multi edit
 
                     if (TextBoxReplaceWith.Enabled == true)
                     {

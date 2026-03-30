@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace GenieClient
@@ -7,20 +7,18 @@ namespace GenieClient
     {
         [DllImport("user32")]
         private static extern int GetTopWindow(int hwnd);
+
         [DllImport("user32", EntryPoint = "GetWindow")]
         private static extern int GetNextWindow(int hwnd, int wFlag);
+
         [DllImport("user32.dll", EntryPoint = "SendMessageA")]
         private static extern int SendMessageA(IntPtr hwnd, int wMsg, int wParam, int lParam);
-
-
-
-
 
         private const int WM_SETREDRAW = 0xB;
         private const int EM_GETFIRSTVISIBLELINE = 0xCE;
         private const int EM_LINESCROLL = 0xB6;
-        // private const int EM_GETLINECOUNT = 0xBA;
 
+        [StructLayout(LayoutKind.Sequential)]
         private struct SCROLLINFO
         {
             public int cbSize;
@@ -33,16 +31,10 @@ namespace GenieClient
         }
 
         [DllImport("user32.dll")]
-        private static extern bool GetScrollInfo(IntPtr hWnd, int nBar, SCROLLINFO lpScrollInfo);
-
-
+        private static extern bool GetScrollInfo(IntPtr hWnd, int nBar, ref SCROLLINFO lpScrollInfo);
 
         [DllImport("user32.dll")]
-        private static extern bool SetScrollInfo(IntPtr hWnd, int nBar, SCROLLINFO lpScrollInfo, bool fRedraw);
-
-
-
-
+        private static extern bool SetScrollInfo(IntPtr hWnd, int nBar, ref SCROLLINFO lpScrollInfo, bool fRedraw);
 
         public const int WM_USER = 0x400;
         public const int EM_SETEVENTMASK = WM_USER + 69;
@@ -72,7 +64,7 @@ namespace GenieClient
         {
             sc.fMask = SIF_ALL;
             sc.cbSize = Marshal.SizeOf(sc);
-            GetScrollInfo(hwnd, SBS_VERT, sc);
+            GetScrollInfo(hwnd, SBS_VERT, ref sc);
             return sc.nPos;
         }
 
@@ -81,7 +73,7 @@ namespace GenieClient
             sc.fMask = SIF_ALL;
             sc.nPos = pos;
             sc.cbSize = Marshal.SizeOf(sc);
-            return SetScrollInfo(hwnd, SBS_VERT, sc, true);
+            return SetScrollInfo(hwnd, SBS_VERT, ref sc, true);
         }
 
         public static void BeginUpdate(IntPtr hwnd)
@@ -108,10 +100,9 @@ namespace GenieClient
             SendMessage(hwnd, EM_SETEVENTMASK, 0, EventMaskOld);
         }
 
-        // Skinning
-
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
+
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
@@ -194,7 +185,7 @@ namespace GenieClient
             WM_GETICON = 0x7F,
             WM_SETICON = 0x80,
 
-            // non client area
+            // Non client area
             WM_NCCREATE = 0x81,
             WM_NCDESTROY = 0x82,
             WM_NCCALCSIZE = 0x83,
@@ -204,7 +195,7 @@ namespace GenieClient
             WM_GETDLGCODE = 0x87,
             WM_SYNCPAINT = 0x88,
 
-            // non client mouse
+            // Non client mouse
             WM_NCMOUSEMOVE = 0xA0,
             WM_NCLBUTTONDOWN = 0xA1,
             WM_NCLBUTTONUP = 0xA2,
@@ -216,13 +207,13 @@ namespace GenieClient
             WM_NCMBUTTONUP = 0xA8,
             WM_NCMBUTTONDBLCLK = 0xA9,
 
-            // keyboard
+            // Keyboard
             WM_KEYDOWN = 0x100,
             WM_KEYUP = 0x101,
             WM_CHAR = 0x102,
             WM_SYSCOMMAND = 0x112,
 
-            // menu
+            // Menu
             WM_INITMENU = 0x116,
             WM_INITMENUPOPUP = 0x117,
             WM_MENUSELECT = 0x11F,
@@ -237,7 +228,7 @@ namespace GenieClient
             WM_UPDATEUISTATE = 0x128,
             WM_QUERYUISTATE = 0x129,
 
-            // mouse
+            // Mouse
             WM_MOUSEFIRST = 0x200,
             WM_MOUSEMOVE = 0x200,
             WM_LBUTTONDOWN = 0x201,

@@ -1,7 +1,7 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Microsoft.VisualBasic;
 
 namespace GenieClient.Genie
 {
@@ -39,9 +39,7 @@ namespace GenieClient.Genie
                     return (Color)new ColorConverter().ConvertFromString(sColor);
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception ex) // Unfortunately there is no specific error for convert errors.
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return default;
             }
@@ -101,9 +99,7 @@ namespace GenieClient.Genie
             {
                 return ColorTranslator.FromHtml(sColor);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return default;
             }

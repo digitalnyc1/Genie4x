@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -14,23 +13,18 @@ namespace GenieClient
         }
 
         public event SendTextEventHandler SendText;
-
         public delegate void SendTextEventHandler(string text);
 
         public event PageUpEventHandler PageUp;
-
         public delegate void PageUpEventHandler();
 
         public event PageDownEventHandler PageDown;
-
         public delegate void PageDownEventHandler();
 
         public event CtrlPageUpEventHandler CtrlPageUp;
-
         public delegate void CtrlPageUpEventHandler();
 
         public event CtrlPageDownEventHandler CtrlPageDown;
-
         public delegate void CtrlPageDownEventHandler();
 
         private Genie.Collections.ArrayList HistoryArray = new Genie.Collections.ArrayList();
@@ -66,14 +60,16 @@ namespace GenieClient
         {
             if (HistorySize == 0 || text.Length < HistoryMinLength)
             {
-                return; // Don't save command
+                // Don't save command
+                return;
             }
 
             if (HistoryArray.Count > 0)
             {
                 if (string.Compare(text, Conversions.ToString(HistoryArray[0])) == 0)
                 {
-                    return; // Same as last command
+                    // Same as last command
+                    return;
                 }
             }
 
@@ -138,8 +134,9 @@ namespace GenieClient
                 HistoryPos = HistoryPos - 1;
                 Text = Conversions.ToString(HistoryArray[HistoryPos]);
             }
-            else // On Request from Fatal (Down Clears)
+            else
             {
+                // On Request from Fatal (Down Clears)
                 Clear();
             }
 
@@ -186,11 +183,6 @@ namespace GenieClient
                 return base.ProcessCmdKey(ref msg, keyData);
             }
         }
-
-        // Private Sub ComponentTextBox_FontChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.FontChanged
-        // MsgBox(Me.FontHeight)
-        // Me.Height = Me.FontHeight + 4
-        // End Sub
 
         public new int FontHeight
         {

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic;
 
 namespace GenieClient.Genie.Script
 {
@@ -133,24 +133,5 @@ namespace GenieClient.Genie.Script
 
             return s;
         }
-
-        // Public Shadows Function ToString() As String
-        // Dim s As String = String.Empty
-
-        // For I As Integer = m_CurrentIndex To 0 Step -1
-        // If Not IsNothing(m_TraceList(I)) AndAlso m_TraceList(I).Length > 0 Then
-        // s &= m_TraceList(I) & "*" & vbNewLine
-        // End If
-        // Next
-
-        // For I As Integer = m_TraceSize - 1 To m_CurrentIndex + 1 Step -1
-        // If Not IsNothing(m_TraceList(I)) AndAlso m_TraceList(I).Length > 0 Then
-        // s &= m_TraceList(I) & vbNewLine
-        // End If
-        // Next
-
-        // Return s
-        // End Function
-
     }
 }

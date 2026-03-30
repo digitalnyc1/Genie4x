@@ -1,27 +1,18 @@
+using GenieClient.Genie;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using GenieClient.Genie;
-using Jint.Debugger;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using static GenieClient.Genie.Globals;
 
-namespace GenieClient
+namespace GenieClient.Forms.Components
 {
     public class ComponentRichTextBox : RichTextBox
     {
-
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [StructLayout(LayoutKind.Sequential)]
         private struct CHARFORMAT2_STRUCT
         {
@@ -38,7 +29,6 @@ namespace GenieClient
             public ushort wWeight;
             public ushort sSpacing;
             public int crBackColor;
-            // Color.ToArgb() -> int
             public int lcid;
             public int dwReserved;
             public short sStyle;
@@ -49,8 +39,10 @@ namespace GenieClient
             public byte bReserved1;
         }
 
+#pragma warning disable SYSLIB1054
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+#pragma warning restore SYSLIB1054
 
         private const int WM_USER = 0x400;
         private const int EM_GETCHARFORMAT = WM_USER + 58;
@@ -59,7 +51,6 @@ namespace GenieClient
         private const int SCF_WORD = 0x2;
         private const int SCF_ALL = 0x4;
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private const uint CFE_BOLD = 1;
         private const uint CFE_ITALIC = 2;
         private const uint CFE_UNDERLINE = 4;
@@ -67,40 +58,28 @@ namespace GenieClient
         private const uint CFE_PROTECTED = 16;
         private const uint CFE_LINK = 32;
         private const uint CFE_AUTOCOLOR = 1073741824;
+
+        // Superscript and subscript are mutually exclusive 
         private const uint CFE_SUBSCRIPT = 65536;
-        // Superscript and subscript are 
         private const uint CFE_SUPERSCRIPT = 131072;
-        // mutually exclusive 
 
         private const int CFM_SMALLCAPS = 0x40;
-        // (*) 
         private const int CFM_ALLCAPS = 0x80;
-        // Displayed by 3.0 
         private const int CFM_HIDDEN = 0x100;
-        // Hidden by 3.0 
         private const int CFM_OUTLINE = 0x200;
-        // (*) 
         private const int CFM_SHADOW = 0x400;
-        // (*) 
         private const int CFM_EMBOSS = 0x800;
-        // (*) 
         private const int CFM_IMPRINT = 0x1000;
-        // (*) 
         private const int CFM_DISABLED = 0x2000;
         private const int CFM_REVISED = 0x4000;
         private const int CFM_BACKCOLOR = 0x4000000;
         private const int CFM_LCID = 0x2000000;
         private const int CFM_UNDERLINETYPE = 0x800000;
-        // Many displayed by 3.0 
         private const int CFM_WEIGHT = 0x400000;
         private const int CFM_SPACING = 0x200000;
-        // Displayed by 3.0 
         private const int CFM_KERNING = 0x100000;
-        // (*) 
         private const int CFM_STYLE = 0x80000;
-        // (*) 
         private const int CFM_ANIMATION = 0x40000;
-        // (*) 
         private const int CFM_REVAUTHOR = 0x8000;
         private const uint CFM_BOLD = 1;
         private const uint CFM_ITALIC = 2;
@@ -118,9 +97,7 @@ namespace GenieClient
         private const byte CFU_UNDERLINENONE = 0;
         private const byte CFU_UNDERLINE = 1;
         private const byte CFU_UNDERLINEWORD = 2;
-        // (*) displayed as ordinary underline 
         private const byte CFU_UNDERLINEDOUBLE = 3;
-        // (*) displayed as ordinary underline 
         private const byte CFU_UNDERLINEDOTTED = 4;
         private const byte CFU_UNDERLINEDASH = 5;
         private const byte CFU_UNDERLINEDASHDOT = 6;
@@ -128,16 +105,12 @@ namespace GenieClient
         private const byte CFU_UNDERLINEWAVE = 8;
         private const byte CFU_UNDERLINETHICK = 9;
         private const byte CFU_UNDERLINEHAIRLINE = 10;
-        // (*) displayed as ordinary underline 
 
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        private Win32Utility Win32Utility = new Win32Utility();
-        // private int m_iMaxScroll = int.MinValue;
+        private readonly Win32Utility Win32Utility = new();
         private int m_iEndLine = int.MinValue;
         private FormSkin m_oParentForm;
-        private RichTextBox m_oRichTextBuffer = new RichTextBox();
-        private Font m_MonoFont = new Font("Courier New", 9, FontStyle.Regular);
+        private readonly RichTextBox m_oRichTextBuffer = new();
+        private Font m_MonoFont = new("Courier New", 9, FontStyle.Regular);
         private bool m_bTimeStamp = false;
         private bool m_bNameListOnly = false;
         private int m_iMaxBufferSize = 500000;
@@ -201,7 +174,7 @@ namespace GenieClient
             {
                 if (sText.Trim().Length > 0)
                 {
-                    if (sText.StartsWith(" "))
+                    if (sText.StartsWith(' '))
                     {
                         return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
                     }
@@ -307,7 +280,7 @@ namespace GenieClient
                 {
                     if (!Information.IsNothing(m_oParentForm.Globals.NameList.RegexNames))
                     {
-                        Match m = (Match)m_oParentForm.Globals.NameList.RegexNames.Match(sText);
+                        Match m = m_oParentForm.Globals.NameList.RegexNames.Match(sText);
                         if (m.Success == false)
                         {
                             return;
@@ -374,15 +347,17 @@ namespace GenieClient
             Clipboard.Clear();
             Clipboard.SetDataObject(obj);
         }
+
         public void TryInvalidate()
         {
             if (m_oRichTextBuffer.TextLength == 0)
             {
-                Rectangle rc = new Rectangle(this.Location.X, this.Location.Y, this.Margin.Left * 3, this.Height);
+                Rectangle rc = new(this.Location.X, this.Location.Y, this.Margin.Left * 3, this.Height);
                 Invalidate(rc, true);
 
             }
         }
+
         public void AddText(string sText, Color oColor, Color oBgColor, bool bNoCache = true, bool bMono = false)
         {
             if (IsDisposed)
@@ -401,13 +376,12 @@ namespace GenieClient
             }
         }
 
-        private Color m_oEmptyColor = default;
+        private readonly Color m_oEmptyColor = default;
 
         private void AddToBuffer(string sText, Color oColor, Color oBgColor, bool bMono = false, Font oFont = null)
         {
             m_oRichTextBuffer.SelectionLength = 0;
             m_oRichTextBuffer.SelectionStart = int.MaxValue;
-            int startIndex = m_oRichTextBuffer.SelectionStart;
             if (oColor != Color.Transparent & oColor != m_oEmptyColor)
             {
                 m_oRichTextBuffer.SelectionColor = oColor;
@@ -445,7 +419,7 @@ namespace GenieClient
             }
         }
 
-        private void ParseLineHighlights(int StartIndex, string Line)
+        private void ParseLineHighlights()
         {
             if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
             {
@@ -455,7 +429,7 @@ namespace GenieClient
             // Presets and Bold
             ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
 
-            //RegExp
+            // RegExp highlights
             if (m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock())
             {
                 try
@@ -476,49 +450,8 @@ namespace GenieClient
             }
         }
 
-        private void ParseRegExpHighlight(int StartIndex, string Line, Globals.HighlightRegExp.Highlight Highlight)
-        {
-            int iDiff = Line.Length - Line.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
-            foreach (Match oMatch in Highlight.HighlightRegex.Matches(Line))
-            {
-                if (oMatch.Groups.Count > 1)    // () highlighting
-                {
-                    foreach (Group oGroup in oMatch.Groups)
-                    {
-
-                        m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index - iDiff;
-                        m_oRichTextBuffer.SelectionLength = oGroup.Length;
-                        if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
-                        {
-                            m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
-                        }
-                        if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
-                        }
-                    }
-                }
-                else // highlight the whole match
-                {
-                    m_oRichTextBuffer.SelectionStart = StartIndex - iDiff;
-                    m_oRichTextBuffer.SelectionLength = oMatch.Length;
-                    if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
-                    {
-                        m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
-                    }
-
-                    if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
-                    {
-                        m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
-                    }
-                }
-                if (Conversions.ToBoolean(Highlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
-                    Sound.PlayWaveFile(Highlight.SoundFile);
-            }
-        }
-
-        private Regex oClickRegex = new Regex("{([^{]*):([^{]*)}", MyRegexOptions.options);
-        private List<Link> LinkList = new List<Link>();
+        private readonly Regex oClickRegex = new("{([^{]*):([^{]*)}", MyRegexOptions.options);
+        private readonly List<Link> LinkList = [];
 
         private class Link
         {
@@ -570,8 +503,8 @@ namespace GenieClient
                     if (m_oParentForm.Globals.PresetList[highlight.Preset].bHighlightLine && line.Contains(highlight.Text))
                     {
                         int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight);
-                        int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
-                        int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
+                        int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf('\n', indexOfHighlight);
+                        int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf('\n', indexOfHighlight);
                         if (lastNewLineIndex == -1) lastNewLineIndex = 0;
                         if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
                         m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
@@ -590,28 +523,30 @@ namespace GenieClient
 
                     if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
                     {
-                        m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                        m_oRichTextBuffer.SelectionColor = m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
                     }
 
                     if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
                     {
-                        m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
+                        m_oRichTextBuffer.SelectionBackColor = m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
                     }
 
                     lineIndex += 1;
-                    runningPosition += line.Length + 1; //add 1 to account for the \n characters removed by the split
+                    runningPosition += line.Length + 1; // Add 1 to account for the \n characters removed by the split
                 }
 
             }
         }
+
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
-            ParseLineHighlights(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
+            ParseLineHighlights();
+
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {
-                oMatchCollection = (MatchCollection)m_oParentForm.Globals.HighlightList.RegexString.Matches(m_oRichTextBuffer.Text);
+                oMatchCollection = m_oParentForm.Globals.HighlightList.RegexString.Matches(m_oRichTextBuffer.Text);
                 Highlights.Highlight oHighlightString;
                 foreach (Match oMatch in oMatchCollection)
                 {
@@ -647,10 +582,12 @@ namespace GenieClient
                 string sNewText = oMatch.Groups[1].Value;
                 string sCommand = oMatch.Groups[2].Value + "!#";
                 int iDiff = sOldText.Length - sNewText.Length;
-                var link = new Link();
-                link.Index = m_oRichTextBuffer.SelectionStart;
-                link.Length = sNewText.Length;
-                link.Command = sCommand;
+                var link = new Link()
+                {
+                    Index = m_oRichTextBuffer.SelectionStart,
+                    Length = sNewText.Length,
+                    Command = sCommand
+                };
                 LinkList.Add(link);
                 m_oRichTextBuffer.SelectedText = sNewText;
                 iOffset += iDiff;
@@ -659,7 +596,7 @@ namespace GenieClient
             // Name List
             if (!Information.IsNothing(m_oParentForm.Globals.NameList.RegexNames))
             {
-                oMatchCollection = (MatchCollection)m_oParentForm.Globals.NameList.RegexNames.Matches(m_oRichTextBuffer.Text);
+                oMatchCollection = m_oParentForm.Globals.NameList.RegexNames.Matches(m_oRichTextBuffer.Text);
                 Names.Name oName;
                 foreach (Match oMatch in oMatchCollection)
                 {
@@ -752,12 +689,12 @@ namespace GenieClient
 
         public void BeginUpdate()
         {
-            Win32Utility.BeginUpdate((IntPtr)Handle.ToInt32());
+            Win32Utility.BeginUpdate(Handle.ToInt32());
         }
 
         public void EndUpdate()
         {
-            Win32Utility.EndUpdate((IntPtr)Handle.ToInt32());
+            Win32Utility.EndUpdate(Handle.ToInt32());
         }
 
         public delegate void InvokeAddRTFDelegate(string text);
@@ -766,7 +703,7 @@ namespace GenieClient
         {
             int iSelectionStart = SelectionStart;
             int iSelectionLength = SelectionLength;
-            int iFirstLineVisible = Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32());
+            int iFirstLineVisible = Win32Utility.GetFirstLineVisible(Handle.ToInt32());
             bool bIsFlushingBuffer = false;
             if (m_bIsScrolling == true)
             {
@@ -794,7 +731,7 @@ namespace GenieClient
                 bScroll = false;
             }
 
-            m_iEndLine = Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32());
+            m_iEndLine = Win32Utility.GetFirstLineVisible(Handle.ToInt32());
             if (iSelectionLength > 0)
             {
                 SelectionStart = iSelectionStart;
@@ -803,7 +740,7 @@ namespace GenieClient
             else if (bScroll == true) // We are scrolling
             {
                 int i = iFirstLineVisible - m_iEndLine;
-                Win32Utility.LineScroll((IntPtr)Handle.ToInt32(), i);
+                Win32Utility.LineScroll(Handle.ToInt32(), i);
             }
 
             if (m_bIsScrolling == true | bIsFlushingBuffer == true)
@@ -844,7 +781,7 @@ namespace GenieClient
                     BeginUpdate();
                 }
 
-                int iFirstLineVisible = Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32());
+                int iFirstLineVisible = Win32Utility.GetFirstLineVisible(Handle.ToInt32());
                 int startPosition = SelectionStart;
                 int startLength = SelectionLength;
                 foreach (Link link in LinkList)
@@ -855,12 +792,12 @@ namespace GenieClient
 
                 LinkList.Clear();
                 bool bScroll = true;
-                if (iFirstLineVisible + 2 >= m_iEndLine)	// +2 extra lines
+                if (iFirstLineVisible + 2 >= m_iEndLine) // +2 extra lines
                 {
                     bScroll = false;
                 }
 
-                m_iEndLine = Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32());
+                m_iEndLine = Win32Utility.GetFirstLineVisible(Handle.ToInt32());
                 if (startLength > 0)
                 {
                     SelectionStart = startPosition;
@@ -869,7 +806,7 @@ namespace GenieClient
                 else if (bScroll == true) // We are scrolling
                 {
                     int i = iFirstLineVisible - m_iEndLine;
-                    Win32Utility.LineScroll((IntPtr)Handle.ToInt32(), i);
+                    Win32Utility.LineScroll(Handle.ToInt32(), i);
                 }
 
                 if (m_bIsScrolling == true)
@@ -908,7 +845,6 @@ namespace GenieClient
         }
 
         public event EventKeyPressEventHandler EventKeyPress;
-
         public delegate void EventKeyPressEventHandler(KeyPressEventArgs e);
 
         public void ComponentRichTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -941,17 +877,16 @@ namespace GenieClient
                     FlushBuffer();
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
+                // Ignore
             }
-            // Ignore
             finally
             {
                 m_bMouseDown = false;
             }
         }
+
         public void InsertLink(string text, string hyperlink)
         {
             text = text.Replace(@"\", @"\\");
@@ -964,7 +899,7 @@ namespace GenieClient
         {
             if (position < 0 || position > Text.Length)
             {
-                throw new ArgumentOutOfRangeException("position");
+                throw new ArgumentOutOfRangeException(nameof(position));
             }
 
             SelectionStart = position;
@@ -979,7 +914,7 @@ namespace GenieClient
         {
             if (position < 0 || position > Text.Length)
             {
-                throw new ArgumentOutOfRangeException("position");
+                throw new ArgumentOutOfRangeException(nameof(position));
             }
 
             SelectionStart = position;
@@ -993,12 +928,12 @@ namespace GenieClient
             }
         }
 
-        public void SetSelectionLink(IntPtr handle, bool link)
+        public static void SetSelectionLink(IntPtr handle, bool link)
         {
             SetSelectionStyle(handle, CFM_LINK, Conversions.ToUInteger(Interaction.IIf(link, CFE_LINK, 0)));
         }
 
-        private void SetSelectionStyle(IntPtr handle, uint mask, uint effect)
+        private static void SetSelectionStyle(IntPtr handle, uint mask, uint effect)
         {
             var cf = new CHARFORMAT2_STRUCT();
             cf.cbSize = Convert.ToUInt32(Marshal.SizeOf(cf));
@@ -1007,7 +942,7 @@ namespace GenieClient
             var wpar = new IntPtr(SCF_SELECTION);
             var lpar = Marshal.AllocCoTaskMem(Marshal.SizeOf(cf));
             Marshal.StructureToPtr(cf, lpar, false);
-            var res = SendMessage(handle, EM_SETCHARFORMAT, wpar, lpar);
+            SendMessage(handle, EM_SETCHARFORMAT, wpar, lpar);
             Marshal.FreeCoTaskMem(lpar);
         }
 
@@ -1026,7 +961,7 @@ namespace GenieClient
         public void SetScrollBars()
         {
 
-            if (Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32()) > 0)
+            if (Win32Utility.GetFirstLineVisible(Handle.ToInt32()) > 0)
             {
                 ScrollBars = RichTextBoxScrollBars.ForcedVertical;
             }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Xml;
 using Microsoft.VisualBasic;
+using System;
+using System.Xml;
 
 namespace GenieClient.Genie
 {
@@ -106,10 +106,13 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    // can this throw?
+                    // Can this throw?
                     return Convert.ToString(ro);
                 }
-                catch { }
+                catch
+                {
+                    // Ignore
+                }
             }
             return DefaultValue;
         }
@@ -135,7 +138,7 @@ namespace GenieClient.Genie
                 }
                 catch { }
             }
-            // If value doesn't exist or is invalid, return default:
+            // If value doesn't exist or is invalid, return default
             return DefaultValue;
         }
 

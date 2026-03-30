@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -149,7 +149,6 @@ namespace GenieClient
                     Genie.Names.Name oName = (Genie.Names.Name)de.Value;
                     li.SubItems.Add(oName.ColorName);
                     li.ForeColor = oName.FgColor;
-                    // MsgBox(li.BackColor.ToString)
                     if (oName.BgColor != Color.Transparent)
                     {
                         li.BackColor = oName.BgColor;
@@ -324,9 +323,6 @@ namespace GenieClient
                         string argsKey = Conversions.ToString(li.Tag);
                         m_NameList.Remove(argsKey); // Remove old
                     }
-                    else
-                    {
-                    } // Multi edit
 
                     if (TextBoxColor.Enabled == true)
                     {

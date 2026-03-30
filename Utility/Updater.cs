@@ -1,15 +1,13 @@
-﻿using System;
-using System.Diagnostics;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.CompilerServices;
 
 namespace GenieClient
 {
@@ -29,6 +27,7 @@ namespace GenieClient
                 return "0";
             }
         }
+
         public static string LocalClientVersion
         {
             get
@@ -36,6 +35,7 @@ namespace GenieClient
                 return FileVersionInfo.GetVersionInfo(AppDomain.CurrentDomain.BaseDirectory + "\\Genie.exe").FileVersion;
             }
         }
+
         public static string ServerUpdaterVersion
         {
             get
@@ -67,7 +67,7 @@ namespace GenieClient
                 }
                 catch
                 {
-                    //if we can't reach github just report current because we can't update
+                    // If we can't reach github just report current because we can't update
                     return LocalClientVersion;
                 }
             }
@@ -122,6 +122,7 @@ namespace GenieClient
             await UpdateUpdater(autoUpdateLamp);
             return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false, true);
         }
+
         public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
@@ -133,6 +134,7 @@ namespace GenieClient
             await UpdateUpdater(autoUpdateLamp);
             return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins", true, false);
         }
+
         public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
@@ -177,6 +179,7 @@ namespace GenieClient
                 }
             }
         }
+
         public class Asset
         {
             [JsonPropertyName("name")]
@@ -191,10 +194,5 @@ namespace GenieClient
                 }
             }
         }
-
-
-
-
-
     }
 }

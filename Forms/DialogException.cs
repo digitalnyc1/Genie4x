@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -74,7 +74,6 @@ namespace GenieClient
             objStringBuilder.Append("Operating System:      ");
             try
             {
-                // System.Environment.OSVersion.VersionString
                 objStringBuilder.Append(My.MyProject.Computer.Info.OSFullName.Trim());
                 if (IntPtr.Size == 8)
                 {

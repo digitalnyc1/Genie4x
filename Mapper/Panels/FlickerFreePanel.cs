@@ -1,4 +1,4 @@
-﻿using GenieClient.Genie;
+using GenieClient.Genie;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,6 +7,7 @@ namespace GenieClient
     public class FlickerFreePanel : Panel
     {
         private Globals _Globals;
+
         public FlickerFreePanel(Globals Globals)
         {
             _Globals = Globals;

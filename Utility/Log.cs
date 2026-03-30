@@ -1,13 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
-using Microsoft.VisualBasic;
 
 namespace GenieClient.Genie
 {
     public class Log
     {
-        private object m_oThreadLock = new object(); // Thread safety. Only write from one thread at a time.
+        private object m_oThreadLock = new object(); // Thread safety. Only write from one thread at a time
         public string LogDirectory = "Logs";
 
         public bool LogText(string sText, string sCharacterName, string sInstanceName)
@@ -48,10 +47,6 @@ namespace GenieClient.Genie
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // Throw New Exception("Unable to aquire log thread lock.")
-            }
 
             return default;
         }
@@ -87,10 +82,6 @@ namespace GenieClient.Genie
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // Throw New Exception("Unable to aquire log thread lock.")
             }
 
             return default;

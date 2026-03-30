@@ -1,7 +1,5 @@
-﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 
 namespace GenieClient.Forms.Components
 {
@@ -45,6 +43,7 @@ namespace GenieClient.Forms.Components
         {
             get { return Color.Transparent; }
         }
+
         public override Color MenuItemPressedGradientEnd
         {
             get { return Color.Transparent; }
@@ -64,6 +63,7 @@ namespace GenieClient.Forms.Components
         {
             get { return Presets["ui.menu.checked"].FgColor; }
         }
+
         public override Color CheckSelectedBackground
         {
             get { return Presets["ui.menu.highlight"].FgColor; }

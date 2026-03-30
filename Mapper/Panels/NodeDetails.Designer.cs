@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -24,9 +24,7 @@ namespace GenieClient
         }
 
         // Required by the Windows Form Designer
-        #pragma warning disable 0649
         private System.ComponentModel.IContainer components;
-        #pragma warning restore 0649
 
         // NOTE: The following procedure is required by the Windows Form Designer
         // It can be modified using the Windows Form Designer.  
@@ -34,6 +32,7 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeDetails));
             _PanelProperties = new TableLayoutPanel();
             _TextBoxNote = new TextBox();

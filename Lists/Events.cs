@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Threading;
 
@@ -83,8 +83,6 @@ namespace GenieClient.Genie
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-                // Else
-                // Throw New Exception("Unable to aquire commandqueue thread lock.")
             }
 
             return sReturn;

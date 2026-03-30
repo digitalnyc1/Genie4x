@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -70,9 +70,7 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception Err)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }
@@ -127,9 +125,7 @@ namespace GenieClient.Genie
 
                 return true;
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }

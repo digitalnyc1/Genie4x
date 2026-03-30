@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -83,9 +83,7 @@ namespace GenieClient
                 // Get an array of all sub-directories as DirectoryInfo objects
                 adiDirectories = diDirectory.GetDirectories();
             }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return;
             }
@@ -114,9 +112,7 @@ namespace GenieClient
                 // Get an array of all files as FileInfo objects
                 adiFiles = diDirectory.GetFiles();
             }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return;
             }

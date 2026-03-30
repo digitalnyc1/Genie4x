@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -15,11 +14,10 @@ namespace GenieClient
 
         public static void Load(string embeddedResource, string fileName)
         {
-            if (dic == null)
-                dic = new Dictionary<string, Assembly>();
+            dic ??= [];
 
             byte[] ba = null;
-            Assembly asm = null;
+            Assembly asm;
             Assembly curAsm = Assembly.GetExecutingAssembly();
 
             using (Stream stm = curAsm.GetManifestResourceStream(embeddedResource))
@@ -47,33 +45,30 @@ namespace GenieClient
                 }
             }
 
-            bool fileOk = false;
-            string tempFile = "";
+            bool fileOk;
+            string tempFile;
 
-            using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+            string fileHash = Convert.ToHexString(SHA256.HashData(ba));
+
+            tempFile = Path.GetTempPath() + fileName;
+
+            if (File.Exists(tempFile))
             {
-                string fileHash = BitConverter.ToString(sha1.ComputeHash(ba)).Replace("-", string.Empty); ;
+                byte[] bb = File.ReadAllBytes(tempFile);
+                string fileHash2 = Convert.ToHexString(SHA256.HashData(bb));
 
-                tempFile = Path.GetTempPath() + fileName;
-
-                if (File.Exists(tempFile))
+                if (fileHash == fileHash2)
                 {
-                    byte[] bb = File.ReadAllBytes(tempFile);
-                    string fileHash2 = BitConverter.ToString(sha1.ComputeHash(bb)).Replace("-", string.Empty);
-
-                    if (fileHash == fileHash2)
-                    {
-                        fileOk = true;
-                    }
-                    else
-                    {
-                        fileOk = false;
-                    }
+                    fileOk = true;
                 }
                 else
                 {
                     fileOk = false;
                 }
+            }
+            else
+            {
+                fileOk = false;
             }
 
             if (!fileOk)

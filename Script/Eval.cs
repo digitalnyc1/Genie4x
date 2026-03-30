@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace GenieClient.Genie.Script
 {
     public class Eval
     {
         private const string SEPARATORS = "!=<>,&|";
-
-        // LINUS: Hade nog gjort såhär (String funkar också)
-        // Private aSeparators As Char() = {"!", "=", "<", ">", ",", "&", "|", " "}
 
         public enum ParseType
         {
@@ -161,7 +157,7 @@ namespace GenieClient.Genie.Script
                         bInsideString = false;
                     }
                 }
-                else if (ch == '"') // Or ch = "'"c
+                else if (ch == '"')
                 {
                     l = cp - sp;
                     if (l > 0)
@@ -243,8 +239,9 @@ namespace GenieClient.Genie.Script
                     }
                     else
                     {
+                        // For strings without "" that contains numbers
                         bIgnoreNumber = true;
-                    } // For strings without "" that contains numbers
+                    }
                 }
                 else if (CurrentType != ParseType.FunctionType) // Function
                 {
@@ -266,17 +263,10 @@ namespace GenieClient.Genie.Script
                 SectionEnqueue(sText.Substring(sp, l), CurrentType);
             }
 
-            // Parse the oSections object
-            //ShowQueue();  // ShowQueue();  //additional debug info for evals also uncomment the debug line in this method if its needed. Commented out for better clarity for debugging new issues.
             ParseQueue();
-
-            // ShowQueue()
         }
 
         private const string Functions = "|instr|instring|contains|indexof|lastindexof|match|startswith|endswith|replace|tolower|toupper|trim|len|length|substr|substring|matchre|replacere|count|element|def|defined";
-
-        // LINUS: Hade nog gjort såhär
-        // Private aFunctions As String() = {"instr", "instring", "contains", "indexof", "lastindexof", "match", "startswith", "endswith", "replace", "tolower", "toupper", "trim", "len", "length", "substr", "substring", "matchre", "replacere", "count", ""}
 
         // Add section to oSections array
         private void SectionEnqueue(string text, ParseType type)
@@ -397,11 +387,7 @@ namespace GenieClient.Genie.Script
                 {
                     if (((Sections)oSections[j]).BlockType == ParseType.NumberType | ((Sections)oSections[j]).BlockType == ParseType.StringType)
                     {
-                        if (sResult.Length > 0)
-                        {
-                        }
-                        // Error in eval
-                        else
+                        if (sResult.Length == 0)
                         {
                             sResult = ((Sections)oSections[j]).sBlock;
                         }
@@ -425,48 +411,13 @@ namespace GenieClient.Genie.Script
                         Sections argoSection = (Sections)oSections[j];
                         if (IsSectionTrue(argoSection) == true)
                         {
-                            if (bResult == true)
-                            {
-                            }
-                            // Error in eval
-                            else
-                            {
-                                bResult = true;
-                            }
+                            bResult = true;
                         }
-                    }
-                    else
-                    {
-                        // Error in statement
                     }
                 }
             }
 
             return bResult;
-        }
-
-        private void ShowQueue()
-        {
-            try
-            {
-                if (oSections.AcquireReaderLock())
-                {
-                    try
-                    {
-                        foreach (Sections o in oSections)
-                            Debug.Print("-" + o.bParsed + " " + o.BlockType.ToString() + " " + o.sBlock);
-                    }
-                    finally
-                    {
-                        oSections.ReleaseReaderLock();
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.Message);
-            }
         }
 
         // Parse Subsection. Typically () pairs
@@ -587,7 +538,6 @@ namespace GenieClient.Genie.Script
                                     {
                                         ((Sections)oSections[iArgRight]).bParsed = true; // Parsed
                                         ((Sections)oSections[iComparer]).bParsed = true; // Parsed
-                                                                                         // iArgLeft = -1
                                     }
 
                                     iComparer = -1;
@@ -608,7 +558,6 @@ namespace GenieClient.Genie.Script
                     }
                 }
             }
-
 
             // Single object - Return it
             if (iArgRight == -1 & iArgLeft > -1)
@@ -637,7 +586,6 @@ namespace GenieClient.Genie.Script
                 {
                     sLeftValue = ((Sections)oSections[iArgLeft]).sBlock;
                     sRightValue = ((Sections)oSections[iArgRight]).sBlock;
-                    //Debug.Print("Compare Left: " + sLeftValue + ", Compare Right: " + sRightValue); //additional debug info for evals. Commented out for better clarity for debugging new issues.
                 }
 
                 if (bSkipAndOr == true)
@@ -648,14 +596,6 @@ namespace GenieClient.Genie.Script
                         case "=":
                         case "==":
                             {
-                                // ' LINUS: Använd WITH och IIF!!
-                                // ' Koden nedan är samma som koden under, bara förenklad
-                                // With CType(oSections.Item(iArgLeft), Sections)
-                                // .sBlock = IIf(bNumberCompare, IIf(dLeftValue = dRightValue, "1", "0"), IIf(String.Equals(sLeftValue, sRightValue), "1", "0"))
-                                // .BlockType = ParseType.NumberType
-                                // .bParsed = False ' Unparse
-                                // End With
-
                                 if (bNumberCompare == true)
                                 {
                                     if (dLeftValue == dRightValue)
@@ -903,10 +843,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -919,10 +855,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -934,10 +866,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = (((Sections)args[0]).sBlock.LastIndexOf(((Sections)args[1]).sBlock) + 1).ToString();
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -958,10 +886,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -980,10 +904,6 @@ namespace GenieClient.Genie.Script
                             }
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1004,10 +924,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -1019,10 +935,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Replace(((Sections)args[1]).sBlock, ((Sections)args[2]).sBlock).ToString();
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1036,10 +948,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -1051,10 +959,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.ToUpper();
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1068,10 +972,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -1084,10 +984,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Length.ToString();
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1103,35 +999,37 @@ namespace GenieClient.Genie.Script
                             int substringLength = Conversions.ToInteger(((Sections)args[2]).sBlock);
                             if (substringLength < 0)
                             {
-                                //This allows for negative substrings lengths to read starting before the start index
-                                //however, we cannot actually go negative on our substring call so 
+                                // This allows for negative substrings lengths to read starting before the start index
+                                // however, we cannot actually go negative on our substring call so 
                                 if (startPosition + substringLength >= 0)
                                 {
-                                    //if the negative length is not below 0 simply set our new start there and 
-                                    //and set the length to its absolute value
+                                    // If the negative length is not below 0 simply set our new start there and 
+                                    // set the length to its absolute value
                                     startPosition = startPosition + substringLength;
                                     substringLength = System.Math.Abs(substringLength);
                                 }
                                 else
                                 {
-                                    //the new startPosition would be less than 0 so set it to zero
+                                    // The new startPosition would be less than 0 so set it to zero
                                     startPosition = 0;
-                                    //and read the remainder of the length, which is conveniently the start position
+                                    // Read the remainder of the length, which is conveniently the start position
                                     substringLength = Conversions.ToInteger(((Sections)args[1]).sBlock);
                                 }
                             }
 
-                            if (startPosition < 0) startPosition = 0; //prevent negative start or end positions
-                            if (substringLength < 0) substringLength = 0; //in the case we got a negative length and negative start position this can be negative here
+                            if (startPosition < 0) startPosition = 0; // Prevent negative start or end positions
+                            if (substringLength < 0) substringLength = 0; // In the case we got a negative length and negative start position this can be negative here
 
                             if (startPosition + substringLength > stringLength)
-                            {   //If the start position + substringLength are greater than the size of the string, just read to the end
+                            {
+                                // If the start position + substringLength are greater than the size of the string, just read to the end
                                 ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
                             }
                             else
-                            {   //the full substring is within the size of the string
+                            {
+                                // The full substring is within the size of the string
                                 ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition, substringLength).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
@@ -1143,7 +1041,7 @@ namespace GenieClient.Genie.Script
                             int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);
                             if (startPosition <= stringLength && startPosition >= 0)
                             {
-                                //Will only evalutate if starting position is within supplied string
+                                // Will only evalutate if starting position is within supplied string
                                 ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
@@ -1174,10 +1072,6 @@ namespace GenieClient.Genie.Script
                             }
                             ((Sections)oSections[iStart]).bParsed = false; // Result
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -1190,10 +1084,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
                         }
-                        else
-                        {
-                            // Error
-                        }
 
                         break;
                     }
@@ -1205,10 +1095,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = Count(((Sections)args[0]).sBlock, ((Sections)args[1]).sBlock).ToString();
                             ((Sections)oSections[iStart]).BlockType = ParseType.NumberType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1237,10 +1123,6 @@ namespace GenieClient.Genie.Script
                             ((Sections)oSections[iStart]).sBlock = oArray[iIndex];
                             ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                             ((Sections)oSections[iStart]).bParsed = false;
-                        }
-                        else
-                        {
-                            // Error
                         }
 
                         break;
@@ -1295,9 +1177,7 @@ namespace GenieClient.Genie.Script
                     return false;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 return false;
             }

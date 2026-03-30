@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Threading;
 
@@ -7,7 +7,6 @@ namespace GenieClient.Genie.Collections
     public class ArrayList : System.Collections.ArrayList
     {
         private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-        private const int m_iDefaultTimeout = 250;
 
         public bool AcquireWriterLock()
         {
@@ -107,8 +106,6 @@ namespace GenieClient.Genie.Collections
             {
                 throw new Exception("Unable to aquire writer lock.");
             }
-
-            return -1;
         }
 
         public new void Remove(object key)
@@ -129,19 +126,6 @@ namespace GenieClient.Genie.Collections
                 throw new Exception("Unable to aquire writer lock.");
             }
         }
-
-        // If m_oRWLock.IsReaderLockHeld Then
-        // Dim cookie As LockCookie = UpgradeToWriterLock(m_iDefaultTimeout)
-        // If Not IsNothing(cookie) Then
-        // Try
-        // MyBase.RemoveAt(index)
-        // Finally
-        // DowngradeToReaderLock(cookie)
-        // End Try
-        // Else
-        // Throw New Exception("Unable to upgrade to writer lock.")
-        // End If
-        // Else
 
         public new void RemoveAt(int index)
         {

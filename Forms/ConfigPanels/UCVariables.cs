@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -185,7 +185,7 @@ namespace GenieClient
             {
                 foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
                 {
-                    if (TextBoxVariable.Enabled == true) // Single edit
+                    if (TextBoxVariable.Enabled == true)
                     {
                         if (IsDuplicateVariable(TextBoxVariable.Text))
                         {
@@ -197,9 +197,6 @@ namespace GenieClient
                         li.Text = TextBoxVariable.Text;
                         m_VariableList.Remove(li.Tag); // Remove old
                     }
-                    else
-                    {
-                    } // Multi edit
 
                     if (TextBoxAction.Enabled == true)
                     {

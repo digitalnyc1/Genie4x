@@ -1,6 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
 using GenieClient.Genie;
+using System;
+using System.Windows.Forms;
 
 namespace GenieClient.Forms
 {
@@ -11,8 +11,10 @@ namespace GenieClient.Forms
 
         public event EventVariableChangedEventHandler EventVariableChanged;
         public delegate void EventVariableChangedEventHandler(string sVariable);
+
         public event EventClassChangeEventHandler EventClassChange;
         public delegate void EventClassChangeEventHandler();
+
         public FormMapperSettings(ref Globals globals)
         {
             this.InitializeComponent();
@@ -85,6 +87,7 @@ namespace GenieClient.Forms
             Globals.Variables.Variable tvar = _globals.VariableList.get_GetVariable(variable);
             return tvar != null ? tvar.sValue : "";
         }
+
         private async void FormMapperSettings_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)
@@ -97,7 +100,6 @@ namespace GenieClient.Forms
 
         private void RefreshVariables()
         {
-
             for (int i = 0; i < CheckedListVariables.Items.Count; i++)
             {
                 Globals.Variables.Variable retrievedVariable = _globals.VariableList.get_GetVariable(CheckedListVariables.Items[i].ToString());
@@ -121,7 +123,6 @@ namespace GenieClient.Forms
             }
         }
 
-
         private void UpdateVariable(string key, string value, bool temp)
         {
             Globals.Variables.VariableType type = temp ? Globals.Variables.VariableType.Temporary : Globals.Variables.VariableType.SaveToFile;
@@ -139,11 +140,6 @@ namespace GenieClient.Forms
         private bool GetCheckedStateVariable(string variableName)
         {
             return GetVariableValue(variableName) == "1";
-        }
-
-        private bool GetCheckedStateClass(string className)
-        {
-            return _globals.ClassList.GetValue(className);
         }
 
         private void CheckedListVariables_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -204,6 +200,7 @@ namespace GenieClient.Forms
             }
             return (!string.IsNullOrWhiteSpace(GetVariableValue("automapper.userwalkaction")) && !string.IsNullOrWhiteSpace(GetVariableValue("automapper.userwalksuccess")));
         }
+
         private bool SetDragTarget()
         {
             My.MyProject.Forms.DialogDragTarget.TargetText = GetVariableValue("drag.target");
@@ -261,6 +258,7 @@ namespace GenieClient.Forms
             if (My.MyProject.Forms.DialogSetClasses.ShowDialog(Parent) == DialogResult.OK)
             {
                 UpdateVariable("automapper.class", My.MyProject.Forms.DialogSetClasses.ClassText.Trim(), false);
+                EventClassChange?.Invoke();
             }
         }
     }

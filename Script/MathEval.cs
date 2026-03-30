@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections;
 
 namespace GenieClient.Genie.Script
 {
@@ -56,12 +55,10 @@ namespace GenieClient.Genie.Script
 
         private Collection m_tokens;
         private int[,] m_State;
-        // private string[] m_KeyWords;
         private string m_colstring;
         private const string ALPHA = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string DIGITS = "#0123456789";
         private string[] m_funcs = new[] { "sin", "cos", "tan", "arcsin", "arccos", "arctan", "sqrt", "max", "min", "floor", "ceiling", "log", "log10", "ln", "round", "abs", "neg", "pos" };
-
 
         private ArrayList m_operators;
         private Stack m_stack = new Stack();
@@ -272,7 +269,7 @@ namespace GenieClient.Genie.Script
                 case "max":
                     {
                         double currentMax = Conversions.ToDouble(args[1]);
-                        for (int i = 2; i <= args.Count; i++) //0 index is null, 1 index is used above
+                        for (int i = 2; i <= args.Count; i++) // 0 index is null, 1 index is used above
                         {
                             currentMax = Math.Max(currentMax, Conversions.ToDouble(args[i]));
                         }
@@ -282,7 +279,7 @@ namespace GenieClient.Genie.Script
                 case "min":
                     {
                         double currentMin = Conversions.ToDouble(args[1]);
-                        for (int i = 2; i <= args.Count; i++) //0 index is null, 1 index is used above
+                        for (int i = 2; i <= args.Count; i++) // 0 index is null, 1 index is used above
                         {
                             currentMin = Math.Min(currentMin, Conversions.ToDouble(args[i]));
                         }
@@ -374,7 +371,7 @@ namespace GenieClient.Genie.Script
                     {
                         break;
                     }
-                    // look in symbol table....?
+                    // Look in symbol table....?
             }
 
             return default;
@@ -417,13 +414,13 @@ namespace GenieClient.Genie.Script
 
         public bool calc_scan(string line, ref Queue symbols)
         {
-            int sp;  // start position marker
-            int cp;  // current position marker
-            int col; // input column
+            int sp; // Start position marker
+            int cp; // Current position marker
+            int col; // Input column
             int lex_state;
             char cc;
             symbols = new Queue();
-            line = line + " "; // add a space as an end marker
+            line = line + " "; // Add a space as an end marker
             sp = 0;
             cp = 0;
             lex_state = 1;
@@ -431,24 +428,24 @@ namespace GenieClient.Genie.Script
             {
                 cc = line[cp];
 
-                // if cc is not found then IndexOf returns -1 giving col = 2.
+                // If cc is not found then IndexOf returns -1 giving col = 2.
                 col = m_colstring.IndexOf(cc) + 3;
 
-                // set the input column 
+                // Set the input column 
                 var switchExpr = col;
                 switch (switchExpr)
                 {
                     case 2: // cc wasn't found in the column string
                         {
-                            if (ALPHA.IndexOf(char.ToUpper(cc)) > 0)      // letter column?
+                            if (ALPHA.IndexOf(char.ToUpper(cc)) > 0) // Letter column?
                             {
                                 col = 1;
                             }
-                            else if (DIGITS.IndexOf(char.ToUpper(cc)) > 0) // number column?
+                            else if (DIGITS.IndexOf(char.ToUpper(cc)) > 0) // Number column?
                             {
                                 col = 2;
                             }
-                            else // everything else is assigned to the punctuation column
+                            else // Everything else is assigned to the punctuation column
                             {
                                 col = 6;
                             }
@@ -461,21 +458,15 @@ namespace GenieClient.Genie.Script
                             col = 7;
                             break;
                         }
-                        // case else ' cc was found - col contains the correct column
                 }
 
-                // find the new state based on current state and column (determined by input)
+                // Find the new state based on current state and column (determined by input)
                 lex_state = m_State[lex_state - 1, col - 1];
                 var switchExpr1 = lex_state;
                 switch (switchExpr1)
                 {
-                    case 3: // function or variable  end state 
+                    case 3: // Function or variable end state
                         {
-
-                            // TODO variables aren't supported but substitution 
-                            // could easily be performed here or after
-                            // tokenization
-
                             var sym = new ClassSymbol();
                             sym.Token = line.Substring(sp, cp - sp);
                             if (is_function(sym.Token))
@@ -493,7 +484,7 @@ namespace GenieClient.Genie.Script
                             break;
                         }
 
-                    case 5: // number end state
+                    case 5: // Number end state
                         {
                             var sym = new ClassSymbol();
                             sym.Token = line.Substring(sp, cp - sp);
@@ -504,7 +495,7 @@ namespace GenieClient.Genie.Script
                             break;
                         }
 
-                    case 6: // punctuation end state
+                    case 6: // Punctuation end state
                         {
                             var sym = new ClassSymbol();
                             sym.Token = line.Substring(sp, cp - sp + 1);
@@ -514,7 +505,7 @@ namespace GenieClient.Genie.Script
                             break;
                         }
 
-                    case 7: // operator end state
+                    case 7: // Operator end state
                         {
                             var sym = new ClassSymbol();
                             sym.Token = line.Substring(sp, cp - sp + 1);
@@ -551,7 +542,6 @@ namespace GenieClient.Genie.Script
             init();
         }
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private double level0(ref Queue tokens)
         {
             return level1(ref tokens);
@@ -569,7 +559,7 @@ namespace GenieClient.Genie.Script
                 return result;
             }
 
-            // binary level1 precedence operators....+, -
+            // Binary level1 precedence operators....+, -
             if (is_operator(symbol.Token, ref myoperator, PRECEDENCE.LEVEL1))
             {
                 tokens.Dequeue();
@@ -602,8 +592,7 @@ namespace GenieClient.Genie.Script
                 return result;
             }
 
-            // binary level2 precedence operators....*, /, \, %
-
+            // Binary level2 precedence operators....*, /, \, %
             if (is_operator(symbol.Token, ref myoperator, PRECEDENCE.LEVEL2))
             {
                 tokens.Dequeue();
@@ -631,7 +620,7 @@ namespace GenieClient.Genie.Script
                 return result;
             }
 
-            // binary level3 precedence operators....^
+            // Binary level3 precedence operators....^
             if (is_operator(symbol.Token, ref myoperator, PRECEDENCE.LEVEL3))
             {
                 tokens.Dequeue();
@@ -659,7 +648,7 @@ namespace GenieClient.Genie.Script
                 throw new Exception("Invalid expression.");
             }
 
-            // unary level4 precedence right associative  operators.... +, -
+            // Unary level4 precedence right associative  operators.... +, -
             if (is_operator(symbol.Token, ref myoperator, PRECEDENCE.LEVEL4))
             {
                 tokens.Dequeue();
@@ -688,7 +677,7 @@ namespace GenieClient.Genie.Script
                 return result;
             }
 
-            // unary level5 precedence left associative operators.... !
+            // Unary level5 precedence left associative operators.... !
             if (is_operator(symbol.Token, ref myoperator, PRECEDENCE.LEVEL5))
             {
                 tokens.Dequeue();
@@ -714,13 +703,13 @@ namespace GenieClient.Genie.Script
 
             double val;
 
-            // constants, identifiers, keywords, -> expressions
-            if ((symbol.Token ?? "") == "(") // opening paren of new expression
+            // Constants, identifiers, keywords, -> expressions
+            if ((symbol.Token ?? "") == "(") // Opening paren of new expression
             {
                 tokens.Dequeue();
                 val = level0(ref tokens);
                 symbol = (ClassSymbol)tokens.Dequeue();
-                // closing paren
+                // Closing paren
                 if ((symbol.Token ?? "") != ")")
                     throw new Exception("Invalid expression.");
                 return val;
@@ -796,6 +785,5 @@ namespace GenieClient.Genie.Script
                 throw new Exception("Invalid expression.");
             }
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

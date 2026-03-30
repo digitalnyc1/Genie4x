@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -31,6 +31,7 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             _ToolStripMenu = new ToolStrip();
             _ToolStripButtonRefresh = new ToolStripButton();
             _ToolStripButtonRefresh.Click += new EventHandler(ToolStripButtonRefresh_Click);

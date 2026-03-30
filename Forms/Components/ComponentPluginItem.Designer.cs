@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -37,6 +37,7 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(ComponentPluginItem));
             _Label1 = new Label();
             _ButtonEnable = new Button();

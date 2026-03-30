@@ -1,10 +1,10 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -395,9 +395,7 @@ namespace GenieClient
                     m_ItemChanged = true;
                 }
             }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 TextBoxFont.Text = "";
                 TextBoxFont.Tag = null;

@@ -1,22 +1,19 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
     public class LegacyPluginHost : GeniePlugin.Interfaces.IHost
     {
         public event EventEchoTextEventHandler EventEchoText;
-
         public delegate void EventEchoTextEventHandler(string sText, Color oColor, Color oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
-
         public delegate void EventSendTextEventHandler(string sText, string sPlugin);
 
         public event EventVariableChangedEventHandler EventVariableChanged;
-
         public delegate void EventVariableChangedEventHandler(string sVariable);
 
         private Genie.Globals m_oGlobals;
@@ -94,7 +91,6 @@ namespace GenieClient
             string argsText = Utility.GenerateAccountHash(key);
             string premKey = Utility.EncryptString(m_oGlobals.GenieKey, argsText);
             return true;
-            //return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey); #Was checking Hash and returning true/false. Now always true.
         }
 
         public LegacyPluginHost(Form Form, ref Genie.Globals Globals)

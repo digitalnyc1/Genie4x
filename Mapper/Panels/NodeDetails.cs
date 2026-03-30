@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
 using GenieClient.Mapper;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 namespace GenieClient
 {
@@ -17,31 +17,24 @@ namespace GenieClient
         }
 
         public event NewNodeEventHandler NewNode;
-
         public delegate void NewNodeEventHandler();
 
         public event CopyNodeEventHandler CopyNode;
-
         public delegate void CopyNodeEventHandler();
 
         public event RemoveNodeEventHandler RemoveNode;
-
         public delegate void RemoveNodeEventHandler();
 
         public event AddNodeEventHandler AddNode;
-
         public delegate void AddNodeEventHandler(Node oNode);
 
         public event UpdateMapEventHandler UpdateMap;
-
         public delegate void UpdateMapEventHandler();
 
         public event ArcChangedEventHandler ArcChanged;
-
         public delegate void ArcChangedEventHandler();
 
         public event NewLabelEventHandler NewLabel;
-
         public delegate void NewLabelEventHandler();
 
         private int m_X = 0;
@@ -183,11 +176,7 @@ namespace GenieClient
 
         private void ToolStripButtonCopy_Click(object sender, EventArgs e)
         {
-            if (ToolStripButtonArcs.Checked == true)
-            {
-            }
-            // m_ArcDetails.CopyItem()
-            else
+            if (!ToolStripButtonArcs.Checked)
             {
                 CopyNode?.Invoke();
             }

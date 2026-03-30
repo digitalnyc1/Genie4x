@@ -1,11 +1,11 @@
-﻿using System;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Mapper
 {
@@ -1192,15 +1192,14 @@ namespace GenieClient.Mapper
                     if (a.Destination.Arranged == false)
                     {
                         var argn = a.Destination;
-                        Arrange(argn); // Hantera tillbaka-länkar senare
+                        Arrange(argn); // Handle back-links later
                         Debug.WriteLine("Arranging " + n.ID);
                         if (a.Direction != Direction.None & a.Direction != Direction.Go & a.Direction != Direction.Climb)
                         {
                             var argnode = a.Destination;
                             if (IsPointOccupied(argnode, false))
                             {
-                                // Debug.WriteLine("Moving from: " & a.Destination.ID)
-                                a.Destination.Position.Offset(a.Direction); // Ska kanske inte alltid vara högsta rummet som ska flyttas???
+                                a.Destination.Position.Offset(a.Direction); // Maybe shouldn't always be the highest room that gets moved???
                                 var argoriginal = a.Destination;
                                 OffsetAllNodes(argoriginal, a.Direction);
                             }
@@ -1291,7 +1290,6 @@ namespace GenieClient.Mapper
                                             var argpt2 = a.Destination.Position;
                                             if (IsPointOccupiedByLine(argdot, argpt1, argpt2))
                                             {
-                                                // Debug.WriteLine(node.ID & " is between " & n.ID & " and " & a.Destination.ID)
                                                 return true;
                                             }
                                         }

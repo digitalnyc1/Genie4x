@@ -1,4 +1,7 @@
-﻿using System;
+using Jint;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,10 +9,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
-using Jint;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -18,9 +17,7 @@ namespace GenieClient
         private const int m_iDefaultTimeout = 3500;
         private const string GENIE_INTERNAL_ACTION_DO = "550276ca-49f0-4067-aa5b-b3cba4869564";
         private const string PARAMETER_REGEX = @"\{.*?\}";
-        //private static readonly Regex PARAMETER_REGEX = new Regex(@"\{.*?\}"); //for script commands to receive data as {string of text} {parameters as a string}
 
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         public class ScriptLine
         {
             public int iFileId = 0;
@@ -38,10 +35,9 @@ namespace GenieClient
             public Genie.Collections.ArrayList oArgList = new Genie.Collections.ArrayList();
             public bool bLastRowWasEvaluation = false;
         }
+
         private class CurrentLine
         {
-
-
             public Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
 
             public enum BlockState
@@ -193,7 +189,7 @@ namespace GenieClient
 
             public bool RemoveJump()
             {
-                if (oLineList.Count > 1) // Do not remove last one. We always need one object for loop to work.
+                if (oLineList.Count > 1) // Do not remove last one. We always need one object for loop to work
                 {
                     oLineList.RemoveAt(oLineList.Count - 1);
                     return true;
@@ -550,8 +546,7 @@ namespace GenieClient
                 }
             }
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
+
         public enum ScriptFunctions
         {
             action,
@@ -620,25 +615,19 @@ namespace GenieClient
             scripterror
         }
 
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         public event EventPrintErrorEventHandler EventPrintError;
-
         public delegate void EventPrintErrorEventHandler(string sText);
 
         public event EventPrintTextEventHandler EventPrintText;
-
         public delegate void EventPrintTextEventHandler(string sText, Color oColor, Color oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
-
         public delegate void EventSendTextEventHandler(string Text, string Script, bool ToQueue, bool DoCommand);
 
         public event EventDebugChangedEventHandler EventDebugChanged;
-
         public delegate void EventDebugChangedEventHandler(Script sender, int iLevel);
 
         public event EventStatusChangedEventHandler EventStatusChanged;
-
         public delegate void EventStatusChangedEventHandler(Script sender, ScriptState state);
 
         private Genie.Script.Eval m_oEval = new Genie.Script.Eval();
@@ -660,14 +649,12 @@ namespace GenieClient
         private ClassMatchList DoCommandMatchList = new ClassMatchList();
         private bool m_bWaitForStringResume = true;
         private bool m_bWaitForStringIsRegExp = false;
-        // private bool m_bWaitForStringIgnoreCase = false;
         private string m_sWaitForStringText = string.Empty;
         private Regex m_oWaitForRegex = null;
         private bool m_bWaitForMove = true;
         private bool m_bWaitForPrompt = true;
         private bool m_bWaitForMatch = true;
         private string m_sWaitForMatchLabel = string.Empty;
-        private Func<bool> WaitForMatchAction = null;
         private string m_sWaitForEventText = string.Empty;
         private bool m_bWaitForEvent = true;
         private DateTime m_oMatchTimeout;
@@ -690,7 +677,7 @@ namespace GenieClient
         private JintEngine m_JintEngine = null;
         private bool _pendingReload = false;
 
-        // Allocating and unallocating is slow.
+        // Allocating and unallocating is slow
         private Match m_oRegMatch;
 
         public delegate void JsEchoDelegate(object oOut);
@@ -783,11 +770,6 @@ namespace GenieClient
             {
                 AddLocalVariable(sVar, Conversions.ToString(sVal));
             }
-        }
-
-        private void JsPause(double dPauseMS)
-        {
-            EvalPauseScript(dPauseMS);
         }
 
         public int DebugLevel
@@ -991,21 +973,6 @@ namespace GenieClient
             ScriptInternalLabels.Add(GENIE_INTERNAL_ACTION_DO, RepeatDoCommand);
         }
 
-        // Public Shared Operator =(ByVal lsc As ClassScript, ByVal rsc As ClassScript) As Boolean
-        // If lsc.ScriptID = rsc.ScriptID Then
-        // Return True
-        // Else
-        // Return False
-        // End If
-        // End Operator
-        // Public Shared Operator <>(ByVal lsc As ClassScript, ByVal rsc As ClassScript) As Boolean
-        // If lsc.ScriptID <> rsc.ScriptID Then
-        // Return True
-        // Else
-        // Return False
-        // End If
-        // End Operator
-
         public void SetRoundTime(int iTime)
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
@@ -1021,10 +988,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1043,10 +1006,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1071,10 +1030,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
         }
 
         public void PauseScript()
@@ -1093,10 +1048,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
 
             EventStatusChanged?.Invoke(this, ScriptState.pausing);
@@ -1123,10 +1074,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
 
             EventStatusChanged?.Invoke(this, ScriptState.running);
         }
@@ -1152,10 +1099,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1191,10 +1134,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
 
             EventStatusChanged?.Invoke(this, ScriptState.finished);
@@ -1345,10 +1284,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
         }
 
         private string EvalString(string sText, Genie.Globals oGlobals, [Optional, DefaultParameterValue(0)] int iFileId, [Optional, DefaultParameterValue(0)] int iFileRow)
@@ -1405,7 +1340,7 @@ namespace GenieClient
                                 if (de.Key.ToString().Contains(sVariableName))
                                 {
                                     string s = "1";
-                                    // If the command isn't an eval. Simply trigger it without checking.
+                                    // If the command isn't an eval. Simply trigger it without checking
                                     if ((de.Key.ToString() ?? "") != (sVariableName ?? ""))
                                     {
                                         int argiFileId = 0;
@@ -1439,7 +1374,7 @@ namespace GenieClient
                     if (m_sWaitForEventText.Contains(sVariableName))
                     {
                         string s = "1";
-                        // If the command isn't an eval. Simply trigger it without checking.
+                        // If the command isn't an eval. Simply trigger it without checking
                         if ((m_sWaitForEventText ?? "") != (sVariableName ?? ""))
                         {
                             int argiFileId1 = 0;
@@ -1453,10 +1388,6 @@ namespace GenieClient
                         }
                     }
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1481,10 +1412,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
         }
 
         public void TriggerPrompt()
@@ -1507,10 +1434,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1674,7 +1597,6 @@ namespace GenieClient
                                 m_oTraceList.Add("matchwait timeout", GetFileName());
                                 // PrintText("MatchWait Timeout")
                                 MatchList.Clear();
-                                WaitForMatchAction = null;
                                 m_bMatchTimeoutState = false;
                                 RunScript();
                             }
@@ -1691,12 +1613,10 @@ namespace GenieClient
                         RunScript();
                     }
                 }
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
                 catch (Exception ex)
                 {
                     GenieError.Error("TickScript", ex.Message, ex.ToString());
                 }
-                /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                 finally
                 {
                     Monitor.Exit(m_oThreadLock);
@@ -1717,10 +1637,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1911,20 +1827,14 @@ namespace GenieClient
                     }
                 }
 
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
                 catch (Exception ex)
                 {
                     GenieError.Error("RunScript", ex.Message, ex.ToString());
                 }
-                /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                 finally
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
         }
 
@@ -1938,7 +1848,7 @@ namespace GenieClient
         {
             if (!_pendingReload) return (int)m_oScriptLabels[label];
             m_CurrentState = ScriptState.pausing;
-            //save what we want to preserve
+            // Save what we want to preserve
             ClassVariableList localVars = new ClassVariableList();
             ClassActionList actions = new ClassActionList();
             ClassMatchList matchList = new ClassMatchList();
@@ -1956,7 +1866,7 @@ namespace GenieClient
             foreach (Line jump in oldCurrentLine.oLineList) if (!oldScriptLines.ContainsKey(jump)) oldScriptLines.Add(jump, m_oScript.get_Item(jump.iIndex) as ScriptLine);
             if (ReloadFile(FileName) && m_oScriptLabels.Contains(label))
             {
-                //now load what we've saved over the initial values
+                // Now load what we've saved over the initial values
                 m_oLocalVarList = localVars;
                 m_oActions = actions;
                 MatchList = matchList;
@@ -2037,10 +1947,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
 
             return default;
         }
@@ -2083,10 +1989,6 @@ namespace GenieClient
                     Monitor.Exit(m_oThreadLock);
                 }
             }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
-            }
 
             return default;
         }
@@ -2116,10 +2018,6 @@ namespace GenieClient
                 {
                     Monitor.Exit(m_oThreadLock);
                 }
-            }
-            else
-            {
-                // GenieError("Unable to aquire script thread lock.")
             }
 
             return default;
@@ -2269,8 +2167,6 @@ namespace GenieClient
                             AbortOnScriptError();
                             return;
                         }
-                        // Case ScriptFunctions.gotofunc ' Do not wait for RT on action GOTO
-                        // m_CurrentState = ScriptState.delayed
                 }
 
                 int iResult = RunScriptRow(oLine, -1);
@@ -2281,18 +2177,18 @@ namespace GenieClient
                     PrintDebug(argiLevel2, argsText2, oLine.iFileId, oLine.iFileRow);
                     m_oTraceList.Add("action goto", GetFileName(oLine.iFileId), oLine.iFileRow);
                     m_bStopRunning = true;
+                    // So we can abort previous script thread if any
                     if (bInstant)
                     {
-                        m_CurrentState = ScriptState.actioninstant; // So we can abort previous script thread if any
+                        m_CurrentState = ScriptState.actioninstant;
                     }
                     else
                     {
                         m_CurrentState = ScriptState.actionwait;
-                    } // So we can abort previous script thread if any
-                      // Reset all depth in blocks
+                    }
+                    // Reset all depth in blocks
                     m_oCurrentLine.Clear();
                     MatchList.Clear();
-                    WaitForMatchAction = null;
                     m_oCurrentLine.LineValue = iResult;
                     return;
                 }
@@ -2334,10 +2230,6 @@ namespace GenieClient
             {
                 sText = sText.Replace(@"\%", @"\¤");
                 sText = sText.Replace(@"\$", "/¤");
-
-                // For Each de As DictionaryEntry In m_oLocalVarList
-                // sText = sText.Replace("%" & de.Key.ToString, de.Value.ToString)
-                // Next
 
                 int p = sText.Length - 1;
                 while (p >= 0)
@@ -2468,7 +2360,7 @@ namespace GenieClient
             string ParsedLine = ParseVariables(oLine.sRowContent);
             int argiLevel = 10;
             string argsText = "[" + ParsedLine + "]";
-            PrintDebug(argiLevel, argsText, oLine.iFileId, oLine.iFileRow); // SHOW ALL LINES at 10
+            PrintDebug(argiLevel, argsText, oLine.iFileId, oLine.iFileRow); // Show all lines at 10
             var switchExpr = oLine.oFunction;
             switch (switchExpr)
             {
@@ -2587,7 +2479,7 @@ namespace GenieClient
 
                 case ScriptFunctions.exitfunc:
                     {
-                        iRowIndex = m_oScript.Count; // End Script
+                        iRowIndex = m_oScript.Count; // End script
                         var argoDateEnd = DateTime.Now;
                         PrintText("[Script finished (In " + (Utility.GetTimeDiffInMilliseconds(m_oScriptStart, argoDateEnd) / 1000).ToString() + " seconds): " + GetFileAndRow(oLine.iFileId, oLine.iFileRow) + "]");
                         m_oTraceList.Add("exit", GetFileName(oLine.iFileId), oLine.iFileRow);
@@ -3023,9 +2915,7 @@ namespace GenieClient
                             m_oTimerStart = DateTime.Parse(Utility.GetArgumentString(sText));
                             m_oLocalVarList.Add("t", "@timer@"); // set automatically "start" timer
                         }
-#pragma warning disable CS0168
-                        catch (Exception ex)
-#pragma warning restore CS0168
+                        catch (Exception)
                         {
                             PrintError("Invalid datetime format in TIMER SETSTART command: " + Utility.GetArgumentString(sText), iFileId, iFileRow);
                             AbortOnScriptError();
@@ -3262,9 +3152,7 @@ namespace GenieClient
             {
                 return Utility.MathCalc(dValue, sExpression);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 PrintError("Invalid MATH expression: " + sExpression, iFileId, iFileRow);
                 AbortOnScriptError();
@@ -3274,7 +3162,7 @@ namespace GenieClient
 
         private void EvalMatchWait(double dPauseMS)
         {
-            if (dPauseMS > 0) // Timeout Value Supplied
+            if (dPauseMS > 0) // Timeout value supplied
             {
                 m_oMatchTimeout = DateTime.Now.AddMilliseconds(dPauseMS);
                 m_bMatchTimeoutState = true;
@@ -3293,7 +3181,6 @@ namespace GenieClient
             if ((sText.ToLower() ?? "") == "clear")
             {
                 MatchList.Clear();
-                WaitForMatchAction = null;
                 return true;
             }
 
@@ -3337,7 +3224,6 @@ namespace GenieClient
             if (sText.Trim().Length > 0)
             {
                 m_bWaitForStringIsRegExp = bIsRegExp;
-                // m_bWaitForStringIgnoreCase = false;
                 if (m_bWaitForStringIsRegExp)
                 {
                     if (sText.StartsWith("/"))
@@ -3347,7 +3233,6 @@ namespace GenieClient
 
                     if (sText.EndsWith("/i"))
                     {
-                        // m_bWaitForStringIgnoreCase = true;
                         sText = sText.Substring(0, sText.Length - 2);
                     }
                     else if (sText.EndsWith("/"))
@@ -3470,6 +3355,7 @@ namespace GenieClient
             }
             return false;
         }
+
         private void EvalSetvariableSave(string sText)
         {
             AddLocalVariable("s", sText);
@@ -3556,68 +3442,6 @@ namespace GenieClient
             InitJintEngine();
             m_JintEngine.Run(sBlock);
             return default;
-        }
-
-        private bool RunJSFile(string sFile)
-        {
-            string sFriendlyName = sFile;
-            if (sFile.IndexOf(@"\") == -1)
-            {
-                string sLocation = m_oGlobals.Config.ScriptDir;
-                if (sLocation.EndsWith(@"\"))
-                {
-                    sFile = sLocation + sFile;
-                }
-                else
-                {
-                    sFile = sLocation + @"\" + sFile;
-                }
-            }
-
-            int argiLevel = 1;
-            string argsText = "Loading JS file: " + sFriendlyName;
-            int argiFileId = 0;
-            int argiFileRow = 0;
-            PrintDebug(argiLevel, argsText, iFileId: argiFileId, iFileRow: argiFileRow);
-            try
-            {
-                var fi = new FileInfo(sFile);
-                if (fi.Exists & fi.Length > 0)
-                {
-                    var objFile = new FileStream(sFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    var objReader = new StreamReader(objFile);
-                    object strContent = objReader.ReadToEnd();
-                    RunJsblock(Conversions.ToString(strContent));
-                    objReader.Close();
-                    objFile.Close();
-                }
-                else
-                {
-                    int argiFileId1 = 0;
-                    int argiFileRow1 = 0;
-                    PrintError("Unable to load JS file: " + sFriendlyName, iFileId: argiFileId1, iFileRow: argiFileRow1);
-                    AbortScript();
-                    return false;
-                }
-            }
-#pragma warning disable CS0168
-            catch (FileNotFoundException ex)
-#pragma warning restore CS0168
-            {
-                PrintError("File not found: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
-                AbortScript();
-                return false;
-            }
-#pragma warning disable CS0168
-            catch (FileLoadException ex)
-#pragma warning restore CS0168
-            {
-                PrintError("File load exception: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
-                AbortScript();
-                return false;
-            }
-
-            return true;
         }
 
         private bool AppendFile(string sFile, bool bJSBlock = false)
@@ -3717,17 +3541,13 @@ namespace GenieClient
                     return false;
                 }
             }
-#pragma warning disable CS0168
-            catch (FileNotFoundException ex)
-#pragma warning restore CS0168
+            catch (FileNotFoundException)
             {
                 PrintError("File not found: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();
                 return false;
             }
-#pragma warning disable CS0168
-            catch (FileLoadException ex)
-#pragma warning restore CS0168
+            catch (FileLoadException)
             {
                 PrintError("File load exception: " + sFriendlyName, iFileId: argiFileId, iFileRow: argiFileRow);
                 AbortScript();
@@ -3804,7 +3624,6 @@ namespace GenieClient
                     string strArgument = Utility.GetArgumentString(sRow);
                     if (strKeyword.StartsWith("if_"))
                     {
-                        // if %argcount >= x then
                         if (strArgument.ToLower().StartsWith("then"))
                         {
                             sr.sRowContent = "if %argcount >= " + strKeyword.Substring(3) + " " + strArgument;
@@ -3870,7 +3689,6 @@ namespace GenieClient
                                             {
                                                 sr.sRowContent = sr.sRowContent.Substring(0, J).Trim();
                                                 m_oScript.Add(sr);
-                                                // PrintText("Adding virtual line: " & strArgument.Substring(I).Trim())
                                                 if (AddLine(iFileRow, strArgument.Substring(I).Trim(), iFileId) == false)
                                                 {
                                                     return false;
@@ -3914,7 +3732,6 @@ namespace GenieClient
                                             {
                                                 sr.sRowContent = sr.sRowContent.ToLower().Substring(0, J).Trim();
                                                 m_oScript.Add(sr);
-                                                // PrintError("Adding virtual line: " & strArgument.Substring(I).Trim())
                                                 if (AddLine(iFileRow, strArgument.Substring(I).Trim(), iFileId) == false)
                                                 {
                                                     return false;
@@ -3961,7 +3778,7 @@ namespace GenieClient
                                 break;
                             }
 
-                        case ScriptFunctions.elseiffunc: // "elseif"
+                        case ScriptFunctions.elseiffunc:
                             {
                                 if (strArgument.Length > 0)
                                 {
@@ -4055,10 +3872,12 @@ namespace GenieClient
                     {
                         return ScriptFunctions.send;
                     }
+
                 case "do":
                     {
                         return ScriptFunctions.dofunc;
                     }
+
                 case "exit":
                     {
                         return ScriptFunctions.exitfunc;

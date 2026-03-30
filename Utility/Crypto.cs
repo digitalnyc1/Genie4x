@@ -1,40 +1,21 @@
-﻿using System;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
     public class Crypto
     {
-
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
-        public enum KeySize : int
-        {
-            RC2 = 64,
-            DES = 64,
-            TripleDES = 192,
-            AES = 128,
-            RSA = 2048
-        }
+        private const int KEYSIZE_AES = 128;
 
         public enum Algorithm : int
         {
-            SHA1 = 0,
-            SHA256 = 1,
-            SHA384 = 2,
-            Rijndael = 3,
-            TripleDES = 4,
-            RSA = 5,
-            RC2 = 6,
-            DES = 7,
-            // DSA = 8
-            MD5 = 9,
-            RNG = 10,
-            // Base64 = 11
-            SHA512 = 12
+            SHA256 = 0,
+            SHA512 = 1,
+            AES = 2,
         }
 
         public enum EncodingType : int
@@ -44,25 +25,14 @@ namespace GenieClient
         }
 
         // Initialization Vectors that we will use for symmetric encryption/decryption. These
-        // byte arrays are completely arbitrary, and you can change them to whatever you like.
-        private static byte[] IV_8 = new byte[] { 2, 63, 9, 36, 235, 174, 78, 12 };
-        private static byte[] IV_16 = new byte[] { 15, 199, 56, 77, 244, 126, 107, 239, 9, 10, 88, 72, 24, 202, 31, 108 };
-        private static byte[] IV_24 = new byte[] { 37, 28, 19, 44, 25, 170, 122, 25, 25, 57, 127, 5, 22, 1, 66, 65, 14, 155, 224, 64, 9, 77, 18, 251 };
-
-        private static byte[] IV_32 = new byte[] { 133, 206, 56, 64, 110, 158, 132, 22, 99, 190, 35, 129, 101, 49, 204, 248, 251, 243, 13, 194, 160, 195, 89, 152, 149, 227, 245, 5, 218, 86, 161, 124 };
-
-
+        // byte arrays are completely arbitrary, and you can change them to whatever you like
+        private static readonly byte[] IV_8 = [2, 63, 9, 36, 235, 174, 78, 12];
+        private static readonly byte[] IV_16 = [15, 199, 56, 77, 244, 126, 107, 239, 9, 10, 88, 72, 24, 202, 31, 108];
+        private static readonly byte[] IV_24 = [37, 28, 19, 44, 25, 170, 122, 25, 25, 57, 127, 5, 22, 1, 66, 65, 14, 155, 224, 64, 9, 77, 18, 251];
+        private static readonly byte[] IV_32 = [133, 206, 56, 64, 110, 158, 132, 22, 99, 190, 35, 129, 101, 49, 204, 248, 251, 243, 13, 194, 160, 195, 89, 152, 149, 227, 245, 5, 218, 86, 161, 124];
 
         // Salt value used to encrypt a plain text key. Again, this can be whatever you like
-        private static byte[] SALT_BYTES = new byte[] { 162, 27, 98, 1, 28, 239, 64, 30, 156, 102, 223 };
-
-        // File names to be used for public and private keys
-        private const string KEY_PUBLIC = "public.key";
-        private const string KEY_PRIVATE = "private.key";
-
-        // Values used for RSA-based asymmetric encryption
-        private const int RSA_BLOCKSIZE = 58;
-        private const int RSA_DECRYPTBLOCKSIZE = 128;
+        private static readonly byte[] SALT_BYTES = [162, 27, 98, 1, 28, 239, 64, 30, 156, 102, 223];
 
         // Error messages
         private const string ERR_NO_KEY = "No encryption key was provided";
@@ -70,7 +40,6 @@ namespace GenieClient
         private const string ERR_NO_CONTENT = "No content was provided";
         private const string ERR_INVALID_PROVIDER = "An invalid cryptographic provider was specified for this method";
         private const string ERR_NO_FILE = "The specified file does not exist";
-        private const string ERR_INVALID_FILENAME = "The specified filename is invalid";
         private const string ERR_FILE_WRITE = "Could not create file";
         private const string ERR_FILE_READ = "Could not read file";
 
@@ -80,8 +49,7 @@ namespace GenieClient
         private static string _content;
         private static CryptographicException _exception;
         private static EncodingType _encodingType = EncodingType.HEX;
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
+
         [Description("The key that is used to encrypt and decrypt data")]
         public static string Key
         {
@@ -155,10 +123,7 @@ namespace GenieClient
                 var switchExpr = _algorithm;
                 switch (switchExpr)
                 {
-                    case Algorithm.MD5:
-                    case Algorithm.SHA1:
                     case Algorithm.SHA256:
-                    case Algorithm.SHA384:
                     case Algorithm.SHA512:
                         {
                             return true;
@@ -178,7 +143,7 @@ namespace GenieClient
             byte[] cipherBytes;
             try
             {
-                cipherBytes = _Encrypt(Content);
+                cipherBytes = Encrypt(Content);
             }
             catch (CryptographicException ex)
             {
@@ -200,11 +165,10 @@ namespace GenieClient
 
         public static bool DecryptString()
         {
-            // byte[] encText = null;
-            byte[] clearText = null;
+            byte[] clearText;
             try
             {
-                clearText = _Decrypt(_content);
+                clearText = Decrypt(_content);
             }
             catch (Exception ex)
             {
@@ -232,9 +196,7 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -246,9 +208,7 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -256,7 +216,7 @@ namespace GenieClient
 
             try
             {
-                cipherBytes = _Encrypt(inStream);
+                cipherBytes = Encrypt(inStream);
             }
             catch (CryptographicException ex)
             {
@@ -264,7 +224,7 @@ namespace GenieClient
                 return false;
             }
 
-            string encodedString = string.Empty;
+            string encodedString;
             if (_encodingType == EncodingType.BASE_64)
             {
                 encodedString = Convert.ToBase64String(cipherBytes);
@@ -300,9 +260,7 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -314,9 +272,7 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch (Exception)
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -324,7 +280,7 @@ namespace GenieClient
 
             try
             {
-                clearBytes = _Decrypt(inStream);
+                clearBytes = Decrypt(inStream);
             }
             catch (Exception ex)
             {
@@ -358,33 +314,15 @@ namespace GenieClient
             var switchExpr = _algorithm;
             switch (switchExpr)
             {
-                case Algorithm.SHA1:
-                    {
-                        hashAlgorithm = new SHA1CryptoServiceProvider();
-                        break;
-                    }
-
                 case Algorithm.SHA256:
                     {
-                        hashAlgorithm = new SHA256Managed();
-                        break;
-                    }
-
-                case Algorithm.SHA384:
-                    {
-                        hashAlgorithm = new SHA384Managed();
+                        hashAlgorithm = SHA256.Create();
                         break;
                     }
 
                 case Algorithm.SHA512:
                     {
-                        hashAlgorithm = new SHA512Managed();
-                        break;
-                    }
-
-                case Algorithm.MD5:
-                    {
-                        hashAlgorithm = new MD5CryptoServiceProvider();
+                        hashAlgorithm = SHA512.Create();
                         break;
                     }
 
@@ -430,9 +368,7 @@ namespace GenieClient
             _exception = null;
         }
 
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
-        private static byte[] _Encrypt(byte[] Content)
+        private static byte[] Encrypt(byte[] Content)
         {
             if (!IsHashAlgorithm && _key is null)
             {
@@ -450,84 +386,48 @@ namespace GenieClient
             }
 
             byte[] cipherBytes = null;
-            int NumBytes = 0;
-            if (_algorithm == Algorithm.RSA)
+            int NumBytes;
+            SymmetricAlgorithm provider;
+            var switchExpr = _algorithm;
+            switch (switchExpr)
             {
-                // This is an asymmetric call, which has to be treated differently
-                try
-                {
-                    cipherBytes = RSAEncrypt(Content);
-                }
-                catch (CryptographicException ex)
-                {
-                    throw;
-                }
+                case Algorithm.AES:
+                    {
+                        provider = Aes.Create();
+                        NumBytes = KEYSIZE_AES;
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new CryptographicException(ERR_INVALID_PROVIDER);
+                    }
             }
-            else
+
+            try
             {
-                SymmetricAlgorithm provider;
-                var switchExpr = _algorithm;
-                switch (switchExpr)
-                {
-                    case Algorithm.DES:
-                        {
-                            provider = new DESCryptoServiceProvider();
-                            NumBytes = (int)KeySize.DES;
-                            break;
-                        }
-
-                    case Algorithm.TripleDES:
-                        {
-                            provider = new TripleDESCryptoServiceProvider();
-                            NumBytes = (int)KeySize.TripleDES;
-                            break;
-                        }
-
-                    case Algorithm.Rijndael:
-                        {
-                            provider = new RijndaelManaged();
-                            NumBytes = (int)KeySize.AES;
-                            break;
-                        }
-
-                    case Algorithm.RC2:
-                        {
-                            provider = new RC2CryptoServiceProvider();
-                            NumBytes = (int)KeySize.RC2;
-                            break;
-                        }
-
-                    default:
-                        {
-                            throw new CryptographicException(ERR_INVALID_PROVIDER);
-                        }
-                }
-
-                try
-                {
-                    // Encrypt the string
-                    cipherBytes = SymmetricEncrypt(provider, Content, _key, NumBytes);
-                }
-                catch (CryptographicException ex)
-                {
-                    throw new CryptographicException(ex.Message, ex.InnerException);
-                }
-                finally
-                {
-                    // Free any resources held by the SymmetricAlgorithm provider
-                    provider.Clear();
-                }
+                // Encrypt the string
+                cipherBytes = SymmetricEncrypt(provider, Content, _key, NumBytes);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new CryptographicException(ex.Message, ex.InnerException);
+            }
+            finally
+            {
+                // Free any resources held by the SymmetricAlgorithm provider
+                provider.Clear();
             }
 
             return cipherBytes;
         }
 
-        private static byte[] _Encrypt(string Content)
+        private static byte[] Encrypt(string Content)
         {
-            return _Encrypt(System.Text.Encoding.UTF8.GetBytes(Content));
+            return Encrypt(System.Text.Encoding.UTF8.GetBytes(Content));
         }
 
-        private static byte[] _Decrypt(byte[] Content)
+        private static byte[] Decrypt(byte[] Content)
         {
             if (!IsHashAlgorithm && _key is null)
             {
@@ -552,80 +452,45 @@ namespace GenieClient
             }
 
             byte[] clearBytes = null;
-            int NumBytes = 0;
-            if (_algorithm == Algorithm.RSA)
+            int NumBytes;
+            SymmetricAlgorithm provider;
+            var switchExpr = _algorithm;
+            switch (switchExpr)
             {
-                try
-                {
-                    clearBytes = RSADecrypt(encText);
-                }
-                catch (CryptographicException ex)
-                {
-                    throw;
-                }
+                case Algorithm.AES:
+                    {
+                        provider = Aes.Create();
+                        NumBytes = KEYSIZE_AES;
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new CryptographicException(ERR_INVALID_PROVIDER);
+                    }
             }
-            else
+
+            try
             {
-                SymmetricAlgorithm provider;
-                var switchExpr = _algorithm;
-                switch (switchExpr)
-                {
-                    case Algorithm.DES:
-                        {
-                            provider = new DESCryptoServiceProvider();
-                            NumBytes = (int)KeySize.DES;
-                            break;
-                        }
-
-                    case Algorithm.TripleDES:
-                        {
-                            provider = new TripleDESCryptoServiceProvider();
-                            NumBytes = (int)KeySize.TripleDES;
-                            break;
-                        }
-
-                    case Algorithm.Rijndael:
-                        {
-                            provider = new RijndaelManaged();
-                            NumBytes = (int)KeySize.AES;
-                            break;
-                        }
-
-                    case Algorithm.RC2:
-                        {
-                            provider = new RC2CryptoServiceProvider();
-                            NumBytes = (int)KeySize.RC2;
-                            break;
-                        }
-
-                    default:
-                        {
-                            throw new CryptographicException(ERR_INVALID_PROVIDER);
-                        }
-                }
-
-                try
-                {
-                    clearBytes = SymmetricDecrypt(provider, encText, _key, NumBytes);
-                }
-                catch (CryptographicException ex)
-                {
-                    throw;
-                }
-                finally
-                {
-                    // Free any resources held by the SymmetricAlgorithm provider
-                    provider.Clear();
-                }
+                clearBytes = SymmetricDecrypt(provider, encText, _key, NumBytes);
+            }
+            catch (CryptographicException)
+            {
+                throw;
+            }
+            finally
+            {
+                // Free any resources held by the SymmetricAlgorithm provider
+                provider.Clear();
             }
 
             // Now return the plain text content
             return clearBytes;
         }
 
-        private static byte[] _Decrypt(string Content)
+        private static byte[] Decrypt(string Content)
         {
-            return _Decrypt(System.Text.Encoding.UTF8.GetBytes(Content));
+            return Decrypt(System.Text.Encoding.UTF8.GetBytes(Content));
         }
 
         private static byte[] ComputeHash(HashAlgorithm Provider, string plainText)
@@ -760,126 +625,7 @@ namespace GenieClient
             return result;
         }
 
-        private static byte[] RSAEncrypt(byte[] plainText)
-        {
-            // Make sure that the public and private key exists
-            ValidateRSAKeys();
-            string publicKey = GetTextFromFile(KEY_PUBLIC);
-            string privateKey = GetTextFromFile(KEY_PRIVATE);
-
-            // The RSA algorithm works on individual blocks of unencoded bytes. In this case, the
-            // maximum is 58 bytes. Therefore, we are required to break up the text into blocks and
-            // encrypt each one individually. Each encrypted block will give us an output of 128 bytes.
-            // If we do not break up the blocks in this manner, we will throw a "key not valid for use
-            // in specified state" exception
-
-            // Get the size of the final block
-            int lastBlockLength = plainText.Length % RSA_BLOCKSIZE;
-            int blockCount = Conversions.ToInteger(Math.Floor(plainText.Length / (double)RSA_BLOCKSIZE));
-            bool hasLastBlock = false;
-            if (!lastBlockLength.Equals(0))
-            {
-                // We need to create a final block for the remaining characters
-                blockCount += 1;
-                hasLastBlock = true;
-            }
-
-            // Initialize the result buffer
-            var result = new byte[] { };
-
-            // Initialize the RSA Service Provider with the public key
-            var Provider = new RSACryptoServiceProvider((int)KeySize.RSA);
-            Provider.FromXmlString(publicKey);
-
-            // Break the text into blocks and work on each block individually
-            for (int blockIndex = 0, loopTo = blockCount - 1; blockIndex <= loopTo; blockIndex++)
-            {
-                int thisBlockLength;
-
-                // If this is the last block and we have a remainder, then set the length accordingly
-                if (blockCount.Equals(blockIndex + 1) && hasLastBlock)
-                {
-                    thisBlockLength = lastBlockLength;
-                }
-                else
-                {
-                    thisBlockLength = RSA_BLOCKSIZE;
-                }
-
-                int startChar = blockIndex * RSA_BLOCKSIZE;
-
-                // Define the block that we will be working on
-                var currentBlock = new byte[thisBlockLength];
-                Array.Copy(plainText, startChar, currentBlock, 0, thisBlockLength);
-
-                // Encrypt the current block and append it to the result stream
-                var encryptedBlock = Provider.Encrypt(currentBlock, false);
-                int originalResultLength = result.Length;
-                Array.Resize(ref result, originalResultLength + encryptedBlock.Length);
-                encryptedBlock.CopyTo(result, originalResultLength);
-            }
-
-            // Release any resources held by the RSA Service Provider
-            Provider.Clear();
-            return result;
-        }
-
-        private static byte[] RSADecrypt(string encText)
-        {
-            // Make sure that the public and private key exists
-            ValidateRSAKeys();
-            string publicKey = GetTextFromFile(KEY_PUBLIC);
-            string privateKey = GetTextFromFile(KEY_PRIVATE);
-
-            // When we encrypt a string using RSA, it works on individual blocks of up to
-            // 58 bytes. Each block generates an output of 128 encrypted bytes. Therefore, to
-            // decrypt the message, we need to break the encrypted stream into individual
-            // chunks of 128 bytes and decrypt them individually
-
-            // Determine how many bytes are in the encrypted stream. The input is in hex format,
-            // so we have to divide it by 2
-            int maxBytes = (int)(encText.Length / (double)2);
-
-            // Ensure that the length of the encrypted stream is divisible by 128
-            if (!(maxBytes % RSA_DECRYPTBLOCKSIZE).Equals(0))
-            {
-                throw new CryptographicException("Encrypted text is an invalid length");
-            }
-
-            // Calculate the number of blocks we will have to work on
-            int blockCount = (int)(maxBytes / (double)RSA_DECRYPTBLOCKSIZE);
-
-            // Initialize the result buffer
-            var result = new byte[] { };
-
-            // Initialize the RSA Service Provider
-            var Provider = new RSACryptoServiceProvider((int)KeySize.RSA);
-            Provider.FromXmlString(privateKey);
-
-            // Iterate through each block and decrypt it
-            for (int blockIndex = 0, loopTo = blockCount - 1; blockIndex <= loopTo; blockIndex++)
-            {
-                // Get the current block to work on
-                object currentBlockHex = encText.Substring(blockIndex * RSA_DECRYPTBLOCKSIZE * 2, RSA_DECRYPTBLOCKSIZE * 2);
-                var currentBlockBytes = HexToBytes(Conversions.ToString(currentBlockHex));
-
-                // Decrypt the current block and append it to the result stream
-                var currentBlockDecrypted = Provider.Decrypt(currentBlockBytes, false);
-                int originalResultLength = result.Length;
-                Array.Resize(ref result, originalResultLength + currentBlockDecrypted.Length);
-                currentBlockDecrypted.CopyTo(result, originalResultLength);
-            }
-
-            // Release all resources held by the RSA service provider
-            Provider.Clear();
-            return result;
-        }
-
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */    // ********************************************************
-                                                           // * BytesToHex: Converts a byte array to a hex-encoded
-                                                           // *             string
-                                                           // ********************************************************
+        // Converts a byte array to a hex-encoded string
         private static string BytesToHex(byte[] bytes)
         {
             var hex = new StringBuilder();
@@ -888,10 +634,7 @@ namespace GenieClient
             return hex.ToString();
         }
 
-        // ********************************************************
-        // * HexToBytes: Converts a hex-encoded string to a
-        // *             byte array
-        // ********************************************************
+        // Converts a hex-encoded string to a byte array
         private static byte[] HexToBytes(string Hex)
         {
             int numBytes = (int)(Hex.Length / (double)2);
@@ -905,93 +648,10 @@ namespace GenieClient
             return bytes;
         }
 
-        // ********************************************************
-        // * ClearBuffer: Clears a byte array to ensure
-        // *              that it cannot be read from memory
-        // ********************************************************
-        private static void ClearBuffer(byte[] bytes)
-        {
-            if (bytes is null)
-                return;
-            for (int n = 0, loopTo = bytes.Length - 1; n <= loopTo; n++)
-                bytes[n] = 0;
-        }
-
-        // ********************************************************
-        // * GenerateSalt: No, this is not a culinary routine. This
-        // *               generates a random salt value for
-        // *               password generation
-        // ********************************************************
-        private static byte[] GenerateSalt(int saltLength)
-        {
-            byte[] salt;
-            if (saltLength > 0)
-            {
-                salt = new byte[saltLength + 1];
-            }
-            else
-            {
-                salt = new byte[1];
-            }
-
-            var seed = new RNGCryptoServiceProvider();
-            seed.GetBytes(salt);
-            return salt;
-        }
-
-        // ********************************************************
-        // * DerivePassword: This takes the original plain text key
-        // *                 and creates a secure key using SALT
-        // ********************************************************
+        // This takes the original plain text key and creates a secure key using SALT
         private static byte[] DerivePassword(string originalPassword, int passwordLength)
         {
-            var derivedBytes = new Rfc2898DeriveBytes(originalPassword, SALT_BYTES, 5);
-            return derivedBytes.GetBytes(passwordLength);
+            return Rfc2898DeriveBytes.Pbkdf2(originalPassword, SALT_BYTES, 5, HashAlgorithmName.SHA1, passwordLength);
         }
-
-        // ********************************************************
-        // * ValidateRSAKeys: Checks for the existence of a public
-        // *                  and private key file and creates them
-        // *                  if they do not exist
-        // ********************************************************
-        private static void ValidateRSAKeys()
-        {
-            if (!File.Exists(KEY_PRIVATE) || !File.Exists(KEY_PUBLIC))
-            {
-                // Dim rsa As New RSACryptoServiceProvider
-                var key = RSA.Create();
-                key.KeySize = (int)KeySize.RSA;
-                string privateKey = key.ToXmlString(true);
-                string publicKey = key.ToXmlString(false);
-                var privateFile = File.CreateText(KEY_PRIVATE);
-                privateFile.Write(privateKey);
-                privateFile.Close();
-                privateFile.Dispose();
-                var publicFile = File.CreateText(KEY_PUBLIC);
-                publicFile.Write(publicKey);
-                publicFile.Close();
-                publicFile.Dispose();
-            }
-        }
-
-        // ********************************************************
-        // * GetTextFromFile: Reads the text from a file
-        // ********************************************************
-        private static string GetTextFromFile(string fileName)
-        {
-            if (File.Exists(fileName))
-            {
-                var textFile = File.OpenText(fileName);
-                string result = textFile.ReadToEnd();
-                textFile.Close();
-                textFile.Dispose();
-                return result;
-            }
-            else
-            {
-                throw new IOException("Specified file does not exist");
-            }
-        }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
