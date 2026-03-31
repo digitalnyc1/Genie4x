@@ -395,7 +395,7 @@ namespace GenieClient.Genie
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingGameServer;
-            Task.Run(() => m_oSocket.Connect(Host, Port));
+            _ = m_oSocket.Connect(Host, Port);
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
@@ -992,7 +992,7 @@ namespace GenieClient.Genie
                 case ConnectStates.ConnectedGameHandshake:
                     {
                         m_oConnectState = ConnectStates.ConnectedGame;
-                        await Task.Delay(1000);
+                        await Task.Delay(1000).ConfigureAwait(false);
                         m_oSocket.Send(Constants.vbLf + Constants.vbLf);
                         break;
                     }
@@ -1199,11 +1199,11 @@ namespace GenieClient.Genie
                                     }
 
                                     if (m_sConnectKey.Length > 0)
-                                    {
-                                        m_oSocket.Disconnect();
-                                        m_oConnectState = ConnectStates.ConnectingGameServer;
-                                        Task.Run(() => m_oSocket.Connect(m_sConnectHost, m_sConnectPort));
-                                    }
+                                        {
+                                            m_oSocket.Disconnect();
+                                            m_oConnectState = ConnectStates.ConnectingGameServer;
+                                            _ = m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
+                                        }
                                 }
                                 else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
                                 {
@@ -2642,7 +2642,7 @@ namespace GenieClient.Genie
         {
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
-            Task.Run(() => m_oSocket.ConnectAndAuthenticate(sHostName, iPort));
+            _ = m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
         }
 
         private MatchCollection m_oMatchCollection;
@@ -3093,7 +3093,7 @@ namespace GenieClient.Genie
             GenieError.Error(section, message, description);
         }
 
-        private void GameSocket_EventConnected()
+        private async void GameSocket_EventConnected()
         {
             var switchExpr = m_oConnectState;
             switch (switchExpr)
@@ -3101,8 +3101,8 @@ namespace GenieClient.Genie
                 case ConnectStates.ConnectingKeyServer:
                     {
                         m_oConnectState = ConnectStates.ConnectedKey;
-                        m_oSocket.Authenticate(AccountName, AccountPassword);
-                        ParseKeyRow(m_oSocket.GetLoginKey(AccountGame, AccountCharacter));
+                        await m_oSocket.Authenticate(AccountName, AccountPassword).ConfigureAwait(false);
+                        ParseKeyRow(await m_oSocket.GetLoginKey(AccountGame, AccountCharacter).ConfigureAwait(false));
                         break;
                     }
 

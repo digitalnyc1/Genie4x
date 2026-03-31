@@ -8,6 +8,7 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GenieClient.Genie
 {
@@ -122,7 +123,7 @@ namespace GenieClient.Genie
 
         private string m_sHostname = string.Empty;
 
-        public void Connect(string sHostname, int iPort)
+        public async Task Connect(string sHostname, int iPort)
         {
             try
             {
@@ -141,7 +142,7 @@ namespace GenieClient.Genie
                 m_sHostname = sHostname;
                 _client = new TcpClient();
                 m_SocketClient = _client.Client;
-                _client.Connect(sHostname, iPort);
+                await _client.ConnectAsync(sHostname, iPort).ConfigureAwait(false);
                 m_oLastServerActivity = DateTime.Now;
                 PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
                 Recieve(_client);
@@ -154,7 +155,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public void ConnectAndAuthenticate(string sHostname, int iPort)
+        public async Task ConnectAndAuthenticate(string sHostname, int iPort)
         {
             try
             {
@@ -174,16 +175,16 @@ namespace GenieClient.Genie
                 _client = new TcpClient();
                 m_SocketClient = _client.Client;
 
-                var hostEntryList = Dns.GetHostEntry(sHostname);
+                var hostEntryList = await Dns.GetHostEntryAsync(sHostname).ConfigureAwait(false);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                _client.Connect(sHostname, iPort);
+                await _client.ConnectAsync(sHostname, iPort).ConfigureAwait(false);
                 m_oLastServerActivity = DateTime.Now;
                 try
                 {
                     sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
                     try
                     {
-                        sslStream.AuthenticateAsClient(m_sHostname, null, SslProtocols.Tls12, false);
+                        await sslStream.AuthenticateAsClientAsync(m_sHostname, null, SslProtocols.Tls12, false).ConfigureAwait(false);
                     }
                     catch (AuthenticationException e)
                     {
@@ -222,7 +223,7 @@ namespace GenieClient.Genie
 
         private AuthState CurrentAuthState = AuthState.Unauthenticated;
 
-        public AuthState Authenticate(string account, string password)
+        public async Task<AuthState> Authenticate(string account, string password)
         {
             if (!_client.Connected || sslStream == null)
             {
@@ -238,14 +239,14 @@ namespace GenieClient.Genie
             {
                 // Send K - Key Request
                 byte[] message = Encoding.Default.GetBytes("K" + Environment.NewLine);
-                sslStream.Write(message);
-                sslStream.Flush();
+                await sslStream.WriteAsync(message, 0, message.Length).ConfigureAwait(false);
+                await sslStream.FlushAsync().ConfigureAwait(false);
 
                 CurrentAuthState = AuthState.ListeningForKey;
 
                 // Read Key response: should be 32 bytes
                 byte[] buffer = new byte[MAX_PACKET_SIZE];
-                int bytes = sslStream.Read(buffer, 0, buffer.Length);
+                int bytes = await sslStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
                 if (bytes != 32)
                 {
                     sslStream.Close();
@@ -257,14 +258,14 @@ namespace GenieClient.Genie
                 message = new byte[account.Length + password.Length + 3];
                 Buffer.BlockCopy(Encoding.Default.GetBytes("A\t" + account.ToUpper() + "\t"), 0, message, 0, account.Length + 3);
                 Buffer.BlockCopy(Utility.EncryptText(buffer, password), 0, message, account.Length + 3, password.Length);
-                sslStream.Write(message);
-                sslStream.Flush();
+                await sslStream.WriteAsync(message, 0, message.Length).ConfigureAwait(false);
+                await sslStream.FlushAsync().ConfigureAwait(false);
 
                 // null out password to not keep it in memory longer than necessary
                 password = null;
 
                 buffer = new byte[MAX_PACKET_SIZE];
-                _ = sslStream.Read(buffer, 0, buffer.Length);
+                _ = await sslStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
                 if (Encoding.Default.GetString(buffer).Contains("\tKEY\t"))
                 {
@@ -280,7 +281,7 @@ namespace GenieClient.Genie
             return CurrentAuthState;
         }
 
-        public string GetLoginKey(string instance, string character)
+        public async Task<string> GetLoginKey(string instance, string character)
         {
             // Sanity checks
             if (!IsConnected || sslStream == null)
@@ -300,12 +301,12 @@ namespace GenieClient.Genie
 
             // Send G - Game Details Request
             byte[] message = Encoding.Default.GetBytes("G\t" + instance.ToUpper());
-            sslStream.Write(message);
-            sslStream.Flush();
+            await sslStream.WriteAsync(message, 0, message.Length).ConfigureAwait(false);
+            await sslStream.FlushAsync().ConfigureAwait(false);
 
             // Read response: 
             byte[] buffer = new byte[MAX_PACKET_SIZE];
-            _ = sslStream.Read(buffer, 0, buffer.Length);
+            _ = await sslStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
             // Validate Access - list of status responses:
             // Known good status:
@@ -324,12 +325,12 @@ namespace GenieClient.Genie
 
             // Send C - Character Slot Request
             message = Encoding.Default.GetBytes("C");
-            sslStream.Write(message);
-            sslStream.Flush();
+            await sslStream.WriteAsync(message, 0, message.Length).ConfigureAwait(false);
+            await sslStream.FlushAsync().ConfigureAwait(false);
 
             // Read response: 
             buffer = new byte[MAX_PACKET_SIZE];
-            _ = sslStream.Read(buffer, 0, buffer.Length);
+            _ = await sslStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
             string characterResponse = Encoding.Default.GetString(buffer).TrimEnd('\0').ToUpper();
             // Requesting character list with no character name given
@@ -366,17 +367,16 @@ namespace GenieClient.Genie
 
             // Send L - Login Key Request
             message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM");
-            sslStream.Write(message);
-            sslStream.Flush();
+            await sslStream.WriteAsync(message, 0, message.Length).ConfigureAwait(false);
+            await sslStream.FlushAsync().ConfigureAwait(false);
 
             // Read response 
             buffer = new byte[MAX_PACKET_SIZE];
             CurrentAuthState = AuthState.Authenticated;
-            _ = sslStream.Read(buffer, 0, buffer.Length);
+            _ = await sslStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
             sslStream.Close();
-            string loginKey = Encoding.Default.GetString(buffer);
-            return loginKey;
+            return Encoding.Default.GetString(buffer);
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
