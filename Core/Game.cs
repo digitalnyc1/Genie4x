@@ -395,7 +395,7 @@ namespace GenieClient.Genie
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingGameServer;
-            _ = m_oSocket.Connect(Host, Port);
+            Task.Run(async () => await m_oSocket.Connect(Host, Port));
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
@@ -2642,7 +2642,7 @@ namespace GenieClient.Genie
         {
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
-            _ = m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
+            Task.Run(async () => await m_oSocket.ConnectAndAuthenticate(sHostName, iPort));
         }
 
         private MatchCollection m_oMatchCollection;
