@@ -1199,11 +1199,11 @@ namespace GenieClient.Genie
                                     }
 
                                     if (m_sConnectKey.Length > 0)
-                                        {
-                                            m_oSocket.Disconnect();
-                                            m_oConnectState = ConnectStates.ConnectingGameServer;
-                                            _ = m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
-                                        }
+                                    {
+                                        m_oSocket.Disconnect();
+                                        m_oConnectState = ConnectStates.ConnectingGameServer;
+                                        Task.Run(async () => await m_oSocket.Connect(m_sConnectHost, m_sConnectPort));
+                                    }
                                 }
                                 else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
                                 {
