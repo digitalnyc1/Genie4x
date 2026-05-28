@@ -3144,43 +3144,52 @@ namespace GenieClient.Genie
 
         private string ParsePluginText(string sText, string sWindow)
         {
+            return ParsePluginTextAsync(sText, sWindow).GetAwaiter().GetResult();
+        }
+
+        private async Task<string> ParsePluginTextAsync(string sText, string sWindow)
+        {
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
-            foreach (object oPlugin in m_oGlobals.PluginList)
-            {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
-                {
-                    if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
-                    {
-                        try
-                        {
-                            sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
-                        }
-                        catch (Exception ex)
-                        {
-                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
-                            (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
-                        }
-                    }
-                }
-                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
-                {
-                    if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
-                    {
-                        try
-                        {
-                            sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
-                        }
-                        catch (Exception ex)
-                        {
-                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
-                            (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
-                        }
-                    }
-                }
-            }
 
-            return sText;
+            return await Task.Run(() =>
+            {
+                string result = sText;
+                foreach (object oPlugin in m_oGlobals.PluginList)
+                {
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    {
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                        {
+                            try
+                            {
+                                result = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(result, sWindow);
+                            }
+                            catch (Exception ex)
+                            {
+                                GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
+                                (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                            }
+                        }
+                    }
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                    {
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                        {
+                            try
+                            {
+                                result = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(result, sWindow);
+                            }
+                            catch (Exception ex)
+                            {
+                                GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
+                                (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                            }
+                        }
+                    }
+                }
+                return result;
+            }).ConfigureAwait(false);
         }
 
         private void GameSocket_EventParsePartialRow(string row)
