@@ -1668,14 +1668,14 @@ namespace GenieClient.Mapper
                         r.Width = size.Width;
                         l.Rectangle = r;
 
-                        var b = Brushes.White;
+                        var b = SystemBrushes.Window;
                         var bt = new SolidBrush(m_oGlobals.PresetList["automapper.panel"].FgColor);
                         if (m_SelectedLabels.Contains(l))
                         {
-                            b = Brushes.Blue;
-                            bt = new SolidBrush(Color.White);
+                            b = SystemBrushes.Highlight;
+                            bt = new SolidBrush(SystemColors.HighlightText);
                             e.Graphics.FillRectangle(b, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
-                            e.Graphics.DrawRectangle(Pens.Black, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
+                            e.Graphics.DrawRectangle(SystemPens.WindowText, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
                         }
 
                         e.Graphics.DrawString(l.Text, LabelText, bt, l.Rectangle.X + 1, l.Rectangle.Y + 1);

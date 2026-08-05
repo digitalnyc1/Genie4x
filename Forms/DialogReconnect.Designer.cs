@@ -103,7 +103,7 @@ namespace GenieClient
             // 
             // TextBoxLog
             // 
-            _TextBoxLog.BackColor = Color.White;
+            _TextBoxLog.BackColor = SystemColors.Window;
             _TextBoxLog.Dock = DockStyle.Fill;
             _TextBoxLog.Location = new Point(0, 39);
             _TextBoxLog.Multiline = true;

@@ -55,7 +55,7 @@ namespace GenieClient
             _LabelRT.BackColor = Color.Transparent;
             _LabelRT.Dock = DockStyle.Fill;
             _LabelRT.Font = new Font("Arial", 14.25F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            _LabelRT.ForeColor = Color.White;
+            _LabelRT.ForeColor = SystemColors.ControlText;
             _LabelRT.Location = new Point(0, 0);
             _LabelRT.Name = "LabelRT";
             _LabelRT.Size = new Size(127, 33);
@@ -70,7 +70,7 @@ namespace GenieClient
             // 
             AutoScaleDimensions = new SizeF(6.0F, 13.0F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Black;
+            BackColor = SystemColors.Control;
             Controls.Add(_PanelRT);
             Name = "ComponentRoundtime";
             Size = new Size(127, 33);

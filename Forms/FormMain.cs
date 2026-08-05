@@ -128,33 +128,8 @@ namespace GenieClient
 
         private void RecolorUI()
         {
-            this._MenuStripMain.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            this._MenuStripMain.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
-            this._MenuStripMain.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
-
-            this._ToolStripButtons.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            this._ToolStripButtons.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
-            this._ToolStripButtons.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
-
             this._TextBoxInput.BackColor = m_oGlobals.PresetList["ui.textbox"].BgColor;
             this._TextBoxInput.ForeColor = m_oGlobals.PresetList["ui.textbox"].FgColor;
-
-            this._StatusStripMain.BackColor = m_oGlobals.PresetList["ui.status"].BgColor;
-            this._StatusStripMain.ForeColor = m_oGlobals.PresetList["ui.status"].FgColor;
-
-            foreach (ToolStripMenuItem menu in _MenuStripMain.Items)
-            {
-                foreach (ToolStripItem item in menu.DropDownItems)
-                {
-                    item.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-                    item.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
-                    if (string.IsNullOrWhiteSpace(item.Text))
-                    {
-                        item.AutoSize = false;
-                        item.Height = item.Height / 2;
-                    }
-                }
-            }
         }
 
         public async void UpdateOnStartup()
@@ -1126,8 +1101,6 @@ namespace GenieClient
             PluginsToolStripMenuItem.DropDownItems.Clear();
             ToolStripMenuItem pluginDialogItem;
             pluginDialogItem = new ToolStripMenuItem();
-            pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginDialogItem.Name = "ToolStripMenuItemPluginDialog";
             pluginDialogItem.Text = "&Plugins...";
             pluginDialogItem.Click += PluginDialogItem_Click;
@@ -1135,16 +1108,12 @@ namespace GenieClient
 
             ToolStripMenuItem pluginUpdateItem;
             pluginUpdateItem = new ToolStripMenuItem();
-            pluginUpdateItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            pluginUpdateItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginUpdateItem.Name = "ToolStripMenuItemPluginDialog";
             pluginUpdateItem.Text = "&Update Plugins";
             pluginUpdateItem.Click += updatePluginsToolStripMenuItem_Click;
             PluginsToolStripMenuItem.DropDownItems.Add(pluginUpdateItem);
 
             ToolStripMenuItem pluginSeparator = new ToolStripMenuItem();
-            pluginSeparator.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            pluginSeparator.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginSeparator.Name = "ToolStripMenuItemPluginSeparator";
             PluginsToolStripMenuItem.DropDownItems.Add(pluginSeparator);
             int I = 1;
@@ -1153,8 +1122,6 @@ namespace GenieClient
                 if (!Information.IsNothing(oPlugin))
                 {
                     pluginDialogItem = new ToolStripMenuItem();
-                    pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-                    pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
                     if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
@@ -3204,8 +3171,6 @@ namespace GenieClient
         {
             WindowToolStripMenuItem.DropDownItems.Clear();
             var ti = new ToolStripMenuItem();
-            ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-            ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             ti.Name = "ToolStripMenuItemWindowMain";
             ti.Text = "&1. " + m_oOutputMain.Text;
             ti.Tag = m_oOutputMain;
@@ -3220,8 +3185,6 @@ namespace GenieClient
             foreach (FormSkin fo in m_oFormList)
             {
                 ti = new ToolStripMenuItem();
-                ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
-                ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
                 ti.Name = "ToolStripMenuItemWindow" + fo.Text;
                 ti.Text = "&" + I.ToString() + ". " + fo.Text;
                 ti.Tag = fo;

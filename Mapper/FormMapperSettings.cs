@@ -28,45 +28,6 @@ namespace GenieClient.Forms
             }
         }
 
-        public async void Recolor()
-        {
-            Globals.Presets.Preset menu = _globals.PresetList["ui.menu"];
-            Globals.Presets.Preset button = _globals.PresetList["ui.button"];
-            Globals.Presets.Preset textbox = _globals.PresetList["ui.textbox"];
-            Globals.Presets.Preset window = _globals.PresetList["ui.window"];
-
-            BackColor = window.BgColor;
-            ForeColor = window.FgColor;
-
-            _ButtonSetTypeahead.BackColor = button.BgColor;
-            _ButtonSetTypeahead.ForeColor = button.FgColor;
-            _ButtonSetDragging.BackColor = button.BgColor;
-            _ButtonSetDragging.ForeColor = button.FgColor;
-            _ButtonSetUserWalk.BackColor = button.BgColor;
-            _ButtonSetUserWalk.ForeColor = button.FgColor;
-            _ButtonSetClasses.BackColor = button.BgColor;
-            _ButtonSetClasses.ForeColor = button.FgColor;
-            CheckedListVariables.BackColor = textbox.BgColor;
-            CheckedListVariables.ForeColor = textbox.FgColor;
-            _TextboxAction.BackColor = textbox.BgColor;
-            _TextboxAction.ForeColor = textbox.FgColor;
-            _TextboxSuccess.BackColor = textbox.BgColor;
-            _TextboxSuccess.ForeColor = textbox.FgColor;
-            _TextboxRetry.BackColor = textbox.BgColor;
-            _TextboxRetry.ForeColor = textbox.FgColor;
-            _TextboxDragging.BackColor = textbox.BgColor;
-            _TextboxDragging.ForeColor = textbox.FgColor;
-            _TextboxTypeahead.BackColor = textbox.BgColor;
-            _TextboxTypeahead.ForeColor = textbox.FgColor;
-            _TextboxClass.BackColor = textbox.BgColor;
-            _TextboxClass.ForeColor = textbox.FgColor;
-
-            My.MyProject.Forms.DialogDragTarget.Recolor(window, textbox, button);
-            My.MyProject.Forms.DialogSetTypeahead.Recolor(window, textbox, button);
-            My.MyProject.Forms.DialogUserWalk.Recolor(window, textbox, button);
-            My.MyProject.Forms.DialogSetClasses.Recolor(window, textbox, button);
-        }
-
         public async void VariableChanged(string variable)
         {
             if (variable == "automapper.typeahead") _TextboxTypeahead.Text = GetVariableValue(variable);
@@ -92,7 +53,6 @@ namespace GenieClient.Forms
         {
             if (Visible)
             {
-                Recolor();
                 RefreshVariables();
 
             }

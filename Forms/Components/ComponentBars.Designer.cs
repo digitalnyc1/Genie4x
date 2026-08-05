@@ -52,7 +52,7 @@ namespace GenieClient
             // 
             _LabelValue.BackColor = Color.Transparent;
             _LabelValue.Dock = DockStyle.Fill;
-            _LabelValue.ForeColor = Color.White;
+            _LabelValue.ForeColor = SystemColors.ControlText;
             _LabelValue.Location = new Point(0, 0);
             _LabelValue.Name = "LabelValue";
             _LabelValue.Size = new Size(162, 20);
@@ -67,7 +67,7 @@ namespace GenieClient
             // 
             AutoScaleDimensions = new SizeF(6.0F, 13.0F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Black;
+            BackColor = SystemColors.Control;
             Controls.Add(_PanelBar);
             Margin = new Padding(0);
             Name = "ComponentBars";

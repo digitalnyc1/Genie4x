@@ -68,10 +68,10 @@ namespace GenieClient
             // 
             // TextBoxInfo
             // 
-            _TextBoxInfo.BackColor = Color.White;
+            _TextBoxInfo.BackColor = SystemColors.Window;
             _TextBoxInfo.Dock = DockStyle.Fill;
             _TextBoxInfo.Font = new Font("Courier New", 9.0F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            _TextBoxInfo.ForeColor = Color.Black;
+            _TextBoxInfo.ForeColor = SystemColors.WindowText;
             _TextBoxInfo.Location = new Point(0, 0);
             _TextBoxInfo.Margin = new Padding(4, 4, 4, 4);
             _TextBoxInfo.Multiline = true;

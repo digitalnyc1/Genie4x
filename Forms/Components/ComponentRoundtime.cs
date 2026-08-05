@@ -14,11 +14,11 @@ namespace GenieClient
 
         private int RT = 0;
         private int StartRT = 0;
-        private Color m_BackgroundColor = Color.Black;
+        private Color m_BackgroundColor = SystemColors.Control;
         private Color m_ForegroundColor = Color.Gray;
         private Pen m_BorderColor = Pens.Gray;
         private Pen m_BorderColorGrayScale = Pens.Gray;
-        private Color m_BackgroundColorRT = Color.Black;
+        private Color m_BackgroundColorRT = SystemColors.Control;
         private Pen m_BorderColorRT = Pens.Gray;
         private Pen m_BorderColorRTGrayScale = Pens.Gray;
         private bool m_IsConnected = false;

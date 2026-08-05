@@ -440,7 +440,7 @@ namespace GenieClient.Mapper
             // _PanelMap
             // 
             this._PanelMap.AutoScroll = true;
-            this._PanelMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelMap.BackColor = System.Drawing.SystemColors.Window;
             this._PanelMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this._PanelMap.DrawLines = false;
             this._PanelMap.Location = new System.Drawing.Point(0, 0);

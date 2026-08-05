@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +9,6 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
@@ -509,13 +509,7 @@ namespace GenieClient.Genie
                 Add("spirit", "Purple");
                 Add("stamina", "Green");
                 Add("thoughts", "Cyan");
-                Add("ui.menu", "Black, #EEEEEE");
-                Add("ui.menu.checked", "LightBlue");
-                Add("ui.menu.highlight", "LightBlue");
-                Add("ui.window", "Black, #EEEEEE");
-                Add("ui.status", "Black, #EEEEEE");
                 Add("ui.textbox", "Black, White");
-                Add("ui.button", "Black, Silver");
                 Add("whispers", "Magenta");
             }
 

@@ -15,7 +15,7 @@ namespace GenieClient
 
         private int m_CurrentValue = 0;
         private string m_Text = string.Empty;
-        private Color m_BackgroundColor = Color.Black;
+        private Color m_BackgroundColor = SystemColors.Control;
         private Color m_ForegroundColor = Color.Gray;
         private Pen m_BorderColor = Pens.Gray;
         private Pen m_BorderColorGrayScale = Pens.Gray;

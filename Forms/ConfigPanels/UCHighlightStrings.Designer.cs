@@ -76,10 +76,10 @@ namespace GenieClient
             // 
             // _ListViewBase
             // 
-            this._ListViewBase.BackColor = System.Drawing.Color.Black;
+            this._ListViewBase.BackColor = System.Drawing.SystemColors.Window;
             this._ListViewBase.ContextMenuStrip = this._ContextMenuStripBase;
             this._ListViewBase.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._ListViewBase.ForeColor = System.Drawing.Color.White;
+            this._ListViewBase.ForeColor = System.Drawing.SystemColors.WindowText;
             this._ListViewBase.FullRowSelect = true;
             this._ListViewBase.Location = new System.Drawing.Point(0, 25);
             this._ListViewBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

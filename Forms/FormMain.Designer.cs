@@ -190,11 +190,11 @@ namespace GenieClient
             // 
             // _Castbar
             // 
-            _Castbar.BackColor = Color.Black;
-            _Castbar.BackgroundColor = Color.Black;
+            _Castbar.BackColor = SystemColors.Control;
+            _Castbar.BackgroundColor = SystemColors.Control;
             _Castbar.BackgroundColorRT = Color.FromArgb(0, 0, 75);
             _Castbar.BorderColor = Color.FromArgb(64, 64, 64);
-            _Castbar.BorderColorRT = Color.White;
+            _Castbar.BorderColorRT = SystemColors.ControlText;
             _Castbar.ForegroundColor = Color.Magenta;
             _Castbar.IsConnected = false;
             _Castbar.Location = new Point(1172, 7);
@@ -1062,7 +1062,7 @@ namespace GenieClient
             // _LabelSpellC
             // 
             _LabelSpellC.Dock = DockStyle.Fill;
-            _LabelSpellC.ForeColor = Color.White;
+            _LabelSpellC.ForeColor = SystemColors.ControlText;
             _LabelSpellC.Location = new Point(925, 0);
             _LabelSpellC.Margin = new Padding(0);
             _LabelSpellC.Name = "_LabelSpellC";
@@ -1074,7 +1074,7 @@ namespace GenieClient
             // _LabelRHC
             // 
             _LabelRHC.Dock = DockStyle.Fill;
-            _LabelRHC.ForeColor = Color.White;
+            _LabelRHC.ForeColor = SystemColors.ControlText;
             _LabelRHC.Location = new Point(673, 0);
             _LabelRHC.Margin = new Padding(0);
             _LabelRHC.Name = "_LabelRHC";
@@ -1086,7 +1086,7 @@ namespace GenieClient
             // _LabelLHC
             // 
             _LabelLHC.Dock = DockStyle.Fill;
-            _LabelLHC.ForeColor = Color.White;
+            _LabelLHC.ForeColor = SystemColors.ControlText;
             _LabelLHC.Location = new Point(420, 0);
             _LabelLHC.Margin = new Padding(0);
             _LabelLHC.Name = "_LabelLHC";
@@ -1099,7 +1099,7 @@ namespace GenieClient
             // 
             _LabelSpell.Dock = DockStyle.Fill;
             _LabelSpell.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
-            _LabelSpell.ForeColor = Color.DimGray;
+            _LabelSpell.ForeColor = SystemColors.GrayText;
             _LabelSpell.Location = new Point(913, 0);
             _LabelSpell.Margin = new Padding(0);
             _LabelSpell.Name = "_LabelSpell";
@@ -1112,7 +1112,7 @@ namespace GenieClient
             // 
             _LabelRH.Dock = DockStyle.Fill;
             _LabelRH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
-            _LabelRH.ForeColor = Color.DimGray;
+            _LabelRH.ForeColor = SystemColors.GrayText;
             _LabelRH.Location = new Point(661, 0);
             _LabelRH.Margin = new Padding(0);
             _LabelRH.Name = "_LabelRH";
@@ -1125,7 +1125,7 @@ namespace GenieClient
             // 
             _LabelLH.Dock = DockStyle.Fill;
             _LabelLH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
-            _LabelLH.ForeColor = Color.DimGray;
+            _LabelLH.ForeColor = SystemColors.GrayText;
             _LabelLH.Location = new Point(408, 0);
             _LabelLH.Margin = new Padding(0);
             _LabelLH.Name = "_LabelLH";
@@ -1137,7 +1137,7 @@ namespace GenieClient
             // _LabelRT
             // 
             _LabelRT.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
-            _LabelRT.ForeColor = Color.DimGray;
+            _LabelRT.ForeColor = SystemColors.GrayText;
             _LabelRT.Location = new Point(1, 0);
             _LabelRT.Margin = new Padding(4, 0, 4, 0);
             _LabelRT.Name = "_LabelRT";
@@ -1148,7 +1148,7 @@ namespace GenieClient
             // 
             // _PanelBars
             // 
-            _PanelBars.BackColor = Color.Black;
+            _PanelBars.BackColor = SystemColors.Control;
             _PanelBars.Controls.Add(_TableLayoutPanelBars);
             _PanelBars.Dock = DockStyle.Bottom;
             _PanelBars.Location = new Point(0, 724);

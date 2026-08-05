@@ -73,10 +73,10 @@ namespace GenieClient
             // 
             // _ListViewBase
             // 
-            this._ListViewBase.BackColor = System.Drawing.Color.Black;
+            this._ListViewBase.BackColor = System.Drawing.SystemColors.Window;
             this._ListViewBase.ContextMenuStrip = this._ContextMenuStripBase;
             this._ListViewBase.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._ListViewBase.ForeColor = System.Drawing.Color.White;
+            this._ListViewBase.ForeColor = System.Drawing.SystemColors.WindowText;
             this._ListViewBase.FullRowSelect = true;
             this._ListViewBase.Location = new System.Drawing.Point(0, 25);
             this._ListViewBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -272,9 +272,9 @@ namespace GenieClient
             // 
             // _LabelExampleColor
             // 
-            this._LabelExampleColor.BackColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.BackColor = System.Drawing.SystemColors.Window;
             this._LabelExampleColor.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this._LabelExampleColor.ForeColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.ForeColor = System.Drawing.SystemColors.WindowText;
             this._LabelExampleColor.Location = new System.Drawing.Point(191, 82);
             this._LabelExampleColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._LabelExampleColor.Name = "_LabelExampleColor";
