@@ -335,17 +335,24 @@ namespace GenieClient.Forms.Components
 
         private void InvokeAddImage(Image image)
         {
-            IDataObject obj = Clipboard.GetDataObject();
-            Clipboard.Clear();
-            Clipboard.SetDataObject(image);
-            this.ReadOnly = false;
-            this.Select(this.TextLength, 0);
-            this.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
-            this.Select(this.TextLength, 0);
-            this.SelectedText = Environment.NewLine;
-            this.ReadOnly = true;
-            Clipboard.Clear();
-            Clipboard.SetDataObject(obj);
+            try
+            {
+                IDataObject obj = Clipboard.GetDataObject();
+                Clipboard.Clear();
+                Clipboard.SetDataObject(image);
+                this.ReadOnly = false;
+                this.Select(this.TextLength, 0);
+                this.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
+                this.Select(this.TextLength, 0);
+                this.SelectedText = Environment.NewLine;
+                this.ReadOnly = true;
+                Clipboard.Clear();
+                Clipboard.SetDataObject(obj);
+            }
+            catch (System.Runtime.InteropServices.ExternalException)
+            {
+                // Ignore clipboard access failures (e.g. clipboard locked by another process).
+            }
         }
 
         public void TryInvalidate()
