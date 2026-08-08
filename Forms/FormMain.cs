@@ -1434,6 +1434,78 @@ namespace GenieClient
         public bool bCloseAllDocument = false;
         public bool bCloseNow = false;
         private const int WM_CLOSE = 0x10;
+        private int m_iHealthBorderAlpha = 0;
+        private const uint DWMWA_BORDER_COLOR = 34;
+        private const uint DWMWA_CAPTION_COLOR = 35;
+        private const uint DWMWA_COLOR_DEFAULT = 0xFFFFFFFF;
+
+        private static Color HealthBorderBaseColor => SystemColors.ActiveBorder;
+
+        [DllImport("dwmapi.dll", PreserveSig = true)]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref uint pvAttribute, uint cbAttribute);
+
+        public delegate void UpdateHealthBorderTintDelegate(int health);
+
+        // Tints the application's window frame (title bar + border) red with increasing opacity
+        // as the $health percentage drops from 100 to 0. Uses DWM's native border/caption color
+        // attributes (Windows 11 build 22000+) so the OS draws and maintains the frame itself.
+        public void UpdateHealthBorderTint(int health)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new UpdateHealthBorderTintDelegate(InvokeUpdateHealthBorderTint), health);
+            }
+            else
+            {
+                InvokeUpdateHealthBorderTint(health);
+            }
+        }
+
+        private void InvokeUpdateHealthBorderTint(int health)
+        {
+            health = Math.Max(0, Math.Min(100, health));
+            int alpha = (int)Math.Round((100 - health) / 100.0 * 255.0);
+
+            if (alpha == m_iHealthBorderAlpha)
+            {
+                return;
+            }
+
+            m_iHealthBorderAlpha = alpha;
+
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            uint colorRef;
+            if (alpha <= 0)
+            {
+                colorRef = DWMWA_COLOR_DEFAULT;
+            }
+            else
+            {
+                float t = alpha / 255f;
+                int r = (int)Math.Round(HealthBorderBaseColor.R + (255 - HealthBorderBaseColor.R) * t);
+                int g = (int)Math.Round(HealthBorderBaseColor.G + (0 - HealthBorderBaseColor.G) * t);
+                int b = (int)Math.Round(HealthBorderBaseColor.B + (0 - HealthBorderBaseColor.B) * t);
+                colorRef = (uint)((b << 16) | (g << 8) | r); // COLORREF is 0x00BBGGRR
+            }
+
+            try
+            {
+                DwmSetWindowAttribute(Handle, DWMWA_BORDER_COLOR, ref colorRef, sizeof(uint));
+                DwmSetWindowAttribute(Handle, DWMWA_CAPTION_COLOR, ref colorRef, sizeof(uint));
+            }
+            catch (DllNotFoundException)
+            {
+                // dwmapi.dll unavailable; nothing to do.
+            }
+            catch (EntryPointNotFoundException)
+            {
+                // Running on an OS that doesn't support these DWM attributes (pre-Windows 11); nothing to do.
+            }
+        }
 
         protected override void WndProc(ref Message m)
         {
@@ -3941,17 +4013,18 @@ namespace GenieClient
                 case "$health":
                     {
                         int barValue = Conversions.ToInteger(m_oGlobals.VariableList["health"]);
-                        string barText = m_oGlobals.VariableList["healthBarText"].ToString();
+                        string barText = m_oGlobals.VariableList["healthBarText"]?.ToString() ?? string.Empty;
                         var bar = ComponentBarsHealth;
                         bar.BarText = barText;
                         SetBarValue(barValue, bar);
+                        UpdateHealthBorderTint(barValue);
                         break;
                     }
 
                 case "$mana":
                     {
                         int barValue = Conversions.ToInteger(m_oGlobals.VariableList["mana"]);
-                        string barText = m_oGlobals.VariableList["manaBarText"].ToString();
+                        string barText = m_oGlobals.VariableList["manaBarText"]?.ToString() ?? string.Empty;
                         var bar = ComponentBarsMana;
                         bar.BarText = barText;
                         SetBarValue(barValue, bar);
@@ -3961,7 +4034,7 @@ namespace GenieClient
                 case "$stamina":
                     {
                         int barValue = Conversions.ToInteger(m_oGlobals.VariableList["stamina"]);
-                        string barText = m_oGlobals.VariableList["staminaBarText"].ToString();
+                        string barText = m_oGlobals.VariableList["staminaBarText"]?.ToString() ?? string.Empty;
                         var bar = ComponentBarsFatigue;
                         bar.BarText = barText;
                         SetBarValue(barValue, bar);
@@ -3971,7 +4044,7 @@ namespace GenieClient
                 case "$spirit":
                     {
                         int barValue = Conversions.ToInteger(m_oGlobals.VariableList["spirit"]);
-                        string barText = m_oGlobals.VariableList["spiritBarText"].ToString();
+                        string barText = m_oGlobals.VariableList["spiritBarText"]?.ToString() ?? string.Empty;
                         var bar = ComponentBarsSpirit;
                         bar.BarText = barText;
                         SetBarValue(barValue, bar);
@@ -3981,7 +4054,7 @@ namespace GenieClient
                 case "$concentration":
                     {
                         int barValue = Conversions.ToInteger(m_oGlobals.VariableList["concentration"]);
-                        string barText = m_oGlobals.VariableList["concentrationBarText"].ToString();
+                        string barText = m_oGlobals.VariableList["concentrationBarText"]?.ToString() ?? string.Empty;
                         var bar = ComponentBarsConc;
                         bar.BarText = barText;
                         SetBarValue(barValue, bar);
