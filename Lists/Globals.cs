@@ -91,10 +91,12 @@ namespace GenieClient.Genie
             }
         }
 
-        private void HandleGenieException(string section, string message, string description = null) // Pass it up
+        private void HandleGenieException(string section, string message, string description = null)
         {
             Config.bAutoLog = false;
-            GenieError.Error(section, message, description);
+            // Note: This handler is itself invoked via the GenieError.EventGenieError event,
+            // so it must not call GenieError.Error again here or it will re-invoke every
+            // subscriber (including this one) and recurse infinitely, causing a StackOverflowException.
         }
 
         public void Config_ConfigChanged(Config.ConfigFieldUpdated oField)

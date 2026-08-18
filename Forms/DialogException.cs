@@ -36,11 +36,20 @@ namespace GenieClient
 
         private void LogToSystemEventLog(string details)
         {
-            EventLog eventLog = new EventLog();
-            //The source was not found, but some or all event logs could not be searched
-            eventLog.Source = ".NET Runtime";
-            string message = _whathappened + "\r\n\r\n----------------------------\r\n\r\n" + details;
-            eventLog.WriteEntry(message, EventLogEntryType.Error, 1000);
+            try
+            {
+                EventLog eventLog = new EventLog();
+                //The source was not found, but some or all event logs could not be searched
+                eventLog.Source = ".NET Runtime";
+                string message = _whathappened + "\r\n\r\n----------------------------\r\n\r\n" + details;
+                eventLog.WriteEntry(message, EventLogEntryType.Error, 1000);
+            }
+            catch
+            {
+                // Writing to the system event log requires elevated permissions in some
+                // environments. Failing to log should never prevent the error dialog
+                // from being shown or crash the application.
+            }
         }
 
         private void OK_Button_Click(object sender, EventArgs e)

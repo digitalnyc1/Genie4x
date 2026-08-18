@@ -3090,7 +3090,9 @@ namespace GenieClient.Genie
 
         private void HandleGenieException(string section, string message, string description = null)
         {
-            GenieError.Error(section, message, description);
+            // Note: This handler is itself invoked via the GenieError.EventGenieError event,
+            // so it must not call GenieError.Error again here or it will re-invoke every
+            // subscriber (including this one) and recurse infinitely, causing a StackOverflowException.
         }
 
         private async void GameSocket_EventConnected()

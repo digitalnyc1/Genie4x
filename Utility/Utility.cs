@@ -7,7 +7,6 @@ using System.IO;
 using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -63,7 +62,7 @@ namespace GenieClient
             FileInfo monitor = new FileInfo(sFileName);
             do
             {
-                await Task.Delay(10);
+                await Task.Delay(100);
             } while (FileIsLocked(monitor));
             try
             {
@@ -71,7 +70,7 @@ namespace GenieClient
             }
             catch (Exception ex)
             {
-                GenieError.Error("Utility", $"Error Starting {sFileName}", ex.Message);
+                GenieError.Error("Utility", $"Error starting {sFileName}", ex.Message);
                 return false;
             }
 
@@ -79,8 +78,14 @@ namespace GenieClient
             if (closeProcess)
             {
                 while (myProcess.HasExited == false)
-                    await Task.Delay(10);
+                    await Task.Delay(100);
+                int exitCode = myProcess.ExitCode;
                 myProcess.Close();
+                if (exitCode != 0)
+                {
+                    GenieError.Error("Utility", $"Error running {sFileName}", $"Process exited with code {exitCode}");
+                    return false;
+                }
             }
             return true;
         }
