@@ -116,9 +116,9 @@ namespace GenieClient
 
         private void FormConfig_Load(object sender, EventArgs e)
         {
-            if (ParentForm is FormMain)
+            if (Owner is FormMain)
             {
-                FormMain oFormMain = (FormMain)ParentForm;
+                FormMain oFormMain = (FormMain)Owner;
                 UcWindows1.FormParent = oFormMain;
                 UcPreset1.FormParent = oFormMain;
                 UcWindowSettings1.FormParent = oFormMain;

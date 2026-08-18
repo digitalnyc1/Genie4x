@@ -5552,9 +5552,13 @@ namespace GenieClient
 
         private void ConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            My.MyProject.Forms.FormConfig.MdiParent = this;
-            My.MyProject.Forms.FormConfig.Show();
-            My.MyProject.Forms.FormConfig.BringToFront();
+            var oFormConfig = My.MyProject.Forms.FormConfig;
+            oFormConfig.MdiParent = null;
+            oFormConfig.Owner = this;
+            oFormConfig.StartPosition = FormStartPosition.Manual;
+            oFormConfig.Location = new Point(Bounds.Left + (Bounds.Width - oFormConfig.Width) / 2, Bounds.Top + (Bounds.Height - oFormConfig.Height) / 2);
+            oFormConfig.Show();
+            oFormConfig.BringToFront();
         }
 
         public delegate void PrintDialogExceptionDelegate(string section, string message, string description);
