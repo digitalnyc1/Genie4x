@@ -66,7 +66,7 @@ namespace GenieClient.Genie
         public bool AutoUpdate { get; set; } = false;
         public bool AutoUpdateLamp { get; set; } = true;
 
-        public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
+        public string sConnectString = "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_UNKNOWN /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich5\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
@@ -1215,6 +1215,7 @@ namespace GenieClient.Genie
 
                         case "connectstring":
                             {
+                                if (!string.IsNullOrEmpty(sValue)) sConnectString = sValue;
                                 break;
                             }
 

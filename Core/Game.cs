@@ -3114,7 +3114,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + m_oGlobals.Config.sConnectString + Constants.vbLf);
                         m_oGlobals.VariableList["connected"] = m_oSocket.IsConnected ? "1" : "0";
                         VariableChanged("$connected");
                         m_oGlobals.VariableList["account"] = AccountName;
