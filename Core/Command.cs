@@ -921,11 +921,11 @@ namespace GenieClient.Genie
                                                 {
                                                     if (oGlobals.VariableList.get_GetVariable(sName).oType == Globals.Variables.VariableType.Server)
                                                     {
-                                                        sCmdRaw += "<vars><<d><k name=\"" + sName + "\" value=\"" + oGlobals.VariableList[sName] + "\"/></<d></vars>";
+                                                        sCmdRaw += "<vars><d><k name=\"" + sName + "\" value=\"" + oGlobals.VariableList[sName] + "\"/></d></vars>";
                                                     }
                                                 }
 
-                                                sCmdRaw += "<vars><<a><k name=\"" + sName + "\" value=\"" + sValue + "\"/></<a></vars>";
+                                                sCmdRaw += "<vars><a><k name=\"" + sName + "\" value=\"" + sValue + "\"/></a></vars>";
                                                 oGlobals.VariableList.Add(sName, sValue, Globals.Variables.VariableType.Server);
                                                 string argsVariable2 = "$" + oArgs[1].ToString();
                                                 VariableChanged(argsVariable2);
@@ -947,7 +947,7 @@ namespace GenieClient.Genie
                                                 {
                                                     if (oGlobals.VariableList.get_GetVariable(sName).oType == Globals.Variables.VariableType.Server)
                                                     {
-                                                        string sCmdRaw = Conversions.ToString("<stgupd><vars><<d><k name=\"" + sName + "\" value=\"" + oGlobals.VariableList[sName] + "\"/></<d></vars>");
+                                                        string sCmdRaw = Conversions.ToString("<stgupd><vars><d><k name=\"" + sName + "\" value=\"" + oGlobals.VariableList[sName] + "\"/></d></vars>");
                                                         EventSendRaw?.Invoke(sCmdRaw + Constants.vbLf);
                                                     }
 

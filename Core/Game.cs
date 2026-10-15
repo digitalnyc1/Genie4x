@@ -1241,7 +1241,7 @@ namespace GenieClient.Genie
 
                     case "d":
                         {
-                            if ((oXmlNode.ParentNode.Name ?? "") != "component")
+                            if ((oXmlNode.ParentNode.Name ?? "") != "component" && (oXmlNode.ParentNode.Name ?? "") != "vars")
                             {
                                 string sText = GetTextFromXML(oXmlNode);
                                 if (m_oGlobals.Config.bShowLinks)
