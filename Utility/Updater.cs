@@ -125,7 +125,7 @@ namespace GenieClient
 
         public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
-            await UpdateUpdater(autoUpdateLamp);
+            //await UpdateUpdater(autoUpdateLamp);
             return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps", true, false);
         }
 
