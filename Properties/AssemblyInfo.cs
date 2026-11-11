@@ -30,6 +30,6 @@ using System.Runtime.Versioning;
 // by using the '*' as shown below:
 // <Assembly: AssemblyVersion("1.0.*")> 
 
-[assembly: AssemblyVersion("4.2.4.0")]
-[assembly: AssemblyFileVersion("4.2.4.0")]
+[assembly: AssemblyVersion("4.2.4.1")]
+[assembly: AssemblyFileVersion("4.2.4.1")]
 [assembly: SupportedOSPlatform("windows")]

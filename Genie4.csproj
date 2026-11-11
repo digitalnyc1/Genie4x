@@ -203,6 +203,13 @@
   <ItemGroup>
     <ProjectReference Include="Plugin\Plugins.vbproj" />
   </ItemGroup>
+  <Target Name="KeepPluginsOutOfSingleFile" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'Plugins.dll'">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
   <ItemGroup>
     <EmbeddedResource Include="Libs\Antlr3.Runtime.dll" />
     <EmbeddedResource Include="Libs\Interfaces.dll">
@@ -222,6 +229,9 @@
   <ItemGroup>
     <None Remove="Libs\lua51.dll" />
     <None Remove="Libs\LuaInterface.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\release.yml" />
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE">
